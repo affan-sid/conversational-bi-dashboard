@@ -1,0 +1,4 @@
+source_id,company_id,source_type,source_name,status,last_sync_at
+1,1,csv_upload,sales_export_q1.csv,active,2026-03-31 22:00:00
+2,1,csv_upload,finance_export_q1.csv,active,2026-03-31 22:05:00
+3,1,api_mock,marketing_ads_mock,active,2026-03-31 22:10:00

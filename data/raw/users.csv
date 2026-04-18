@@ -1,0 +1,4 @@
+user_id,company_id,full_name,email,role,password_hash,created_at
+1,1,Amina Roy,amina@northstar.test,Admin,demo_hash_1,2025-09-15 09:00:00
+2,1,David Chen,david@northstar.test,Manager,demo_hash_2,2025-09-15 09:00:00
+3,1,Lina Martin,lina@northstar.test,Analyst,demo_hash_3,2025-09-15 09:00:00

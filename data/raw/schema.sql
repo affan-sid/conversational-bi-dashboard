@@ -1,0 +1,15 @@
+
+PRAGMA foreign_keys = ON;
+CREATE TABLE companies (company_id INTEGER PRIMARY KEY, company_name TEXT, industry TEXT, country TEXT, currency TEXT, created_at TEXT);
+CREATE TABLE users (user_id INTEGER PRIMARY KEY, company_id INTEGER, full_name TEXT, email TEXT, role TEXT, password_hash TEXT, created_at TEXT, FOREIGN KEY(company_id) REFERENCES companies(company_id));
+CREATE TABLE data_sources (source_id INTEGER PRIMARY KEY, company_id INTEGER, source_type TEXT, source_name TEXT, status TEXT, last_sync_at TEXT, FOREIGN KEY(company_id) REFERENCES companies(company_id));
+CREATE TABLE products (product_id INTEGER PRIMARY KEY, company_id INTEGER, product_name TEXT, category TEXT, price REAL, cost REAL, active_flag INTEGER, FOREIGN KEY(company_id) REFERENCES companies(company_id));
+CREATE TABLE customers (customer_id INTEGER PRIMARY KEY, company_id INTEGER, full_name TEXT, email TEXT, phone TEXT, segment TEXT, city TEXT, country TEXT, created_at TEXT, FOREIGN KEY(company_id) REFERENCES companies(company_id));
+CREATE TABLE campaigns (campaign_id INTEGER PRIMARY KEY, company_id INTEGER, campaign_name TEXT, platform TEXT, start_date TEXT, end_date TEXT, budget REAL, FOREIGN KEY(company_id) REFERENCES companies(company_id));
+CREATE TABLE orders (order_id INTEGER PRIMARY KEY, company_id INTEGER, customer_id INTEGER, order_date TEXT, total_amount REAL, discount_amount REAL, channel TEXT, status TEXT, FOREIGN KEY(company_id) REFERENCES companies(company_id), FOREIGN KEY(customer_id) REFERENCES customers(customer_id));
+CREATE TABLE order_items (order_item_id INTEGER PRIMARY KEY, order_id INTEGER, product_id INTEGER, quantity INTEGER, unit_price REAL, cost_price REAL, line_total REAL, FOREIGN KEY(order_id) REFERENCES orders(order_id), FOREIGN KEY(product_id) REFERENCES products(product_id));
+CREATE TABLE marketing_performance (record_id INTEGER PRIMARY KEY, campaign_id INTEGER, date TEXT, impressions INTEGER, clicks INTEGER, leads INTEGER, conversions INTEGER, spend REAL, revenue_attributed REAL, FOREIGN KEY(campaign_id) REFERENCES campaigns(campaign_id));
+CREATE TABLE transactions (transaction_id INTEGER PRIMARY KEY, company_id INTEGER, date TEXT, type TEXT, category TEXT, amount REAL, payment_method TEXT, source_id INTEGER, description TEXT, FOREIGN KEY(company_id) REFERENCES companies(company_id), FOREIGN KEY(source_id) REFERENCES data_sources(source_id));
+CREATE TABLE expenses (expense_id INTEGER PRIMARY KEY, company_id INTEGER, date TEXT, expense_category TEXT, vendor_name TEXT, amount REAL, recurring_flag INTEGER, FOREIGN KEY(company_id) REFERENCES companies(company_id));
+CREATE TABLE cash_balances (balance_id INTEGER PRIMARY KEY, company_id INTEGER, date TEXT, opening_balance REAL, closing_balance REAL, FOREIGN KEY(company_id) REFERENCES companies(company_id));
+CREATE TABLE customer_metrics (metric_id INTEGER PRIMARY KEY, customer_id INTEGER, total_orders INTEGER, total_revenue REAL, last_order_date TEXT, avg_order_value REAL, repeat_flag INTEGER, churn_risk_score REAL, FOREIGN KEY(customer_id) REFERENCES customers(customer_id));

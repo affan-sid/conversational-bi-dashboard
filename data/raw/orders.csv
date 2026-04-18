@@ -1,0 +1,1421 @@
+order_id,company_id,customer_id,order_date,total_amount,discount_amount,channel,status
+1,1,57,2025-10-01,75.0,0.0,WhatsApp,completed
+2,1,89,2025-10-01,57.0,0.0,Marketplace,completed
+3,1,40,2025-10-01,124.2,13.8,Website,completed
+4,1,114,2025-10-01,184.3,9.7,Sales Rep,completed
+5,1,4,2025-10-01,82.0,0.0,Website,completed
+6,1,14,2025-10-01,96.0,0.0,Website,completed
+7,1,59,2025-10-01,79.0,0.0,Website,completed
+8,1,99,2025-10-01,35.0,0.0,Website,completed
+9,1,4,2025-10-02,28.0,0.0,Website,completed
+10,1,77,2025-10-02,140.0,0.0,Website,completed
+11,1,50,2025-10-02,18.0,0.0,Sales Rep,completed
+12,1,119,2025-10-02,181.8,20.2,Sales Rep,completed
+13,1,41,2025-10-02,127.0,0.0,WhatsApp,completed
+14,1,54,2025-10-02,99.0,0.0,WhatsApp,completed
+15,1,107,2025-10-02,70.0,0.0,Website,completed
+16,1,87,2025-10-03,136.0,0.0,Website,completed
+17,1,105,2025-10-03,32.0,0.0,Marketplace,completed
+18,1,6,2025-10-03,61.0,0.0,Website,completed
+19,1,25,2025-10-03,64.0,0.0,WhatsApp,completed
+20,1,1,2025-10-03,137.7,15.3,Sales Rep,completed
+21,1,32,2025-10-03,36.0,0.0,Marketplace,completed
+22,1,72,2025-10-04,162.9,18.1,WhatsApp,completed
+23,1,111,2025-10-04,22.0,0.0,Website,completed
+24,1,100,2025-10-04,50.0,0.0,Website,completed
+25,1,31,2025-10-04,76.0,0.0,Website,completed
+26,1,91,2025-10-04,18.0,0.0,Website,completed
+27,1,27,2025-10-04,110.2,5.8,Sales Rep,completed
+28,1,62,2025-10-04,71.0,0.0,Website,completed
+29,1,78,2025-10-04,18.0,0.0,Sales Rep,completed
+30,1,44,2025-10-04,98.8,5.2,WhatsApp,completed
+31,1,11,2025-10-05,25.0,0.0,WhatsApp,completed
+32,1,42,2025-10-05,114.0,6.0,Website,completed
+33,1,107,2025-10-05,108.0,12.0,Website,completed
+34,1,6,2025-10-05,50.0,0.0,Sales Rep,completed
+35,1,31,2025-10-06,100.0,0.0,Website,completed
+36,1,22,2025-10-06,60.0,0.0,WhatsApp,completed
+37,1,40,2025-10-06,22.0,0.0,WhatsApp,completed
+38,1,76,2025-10-06,84.0,0.0,WhatsApp,completed
+39,1,77,2025-10-06,81.0,0.0,Sales Rep,completed
+40,1,2,2025-10-07,56.0,0.0,Sales Rep,completed
+41,1,107,2025-10-07,133.0,7.0,Website,completed
+42,1,79,2025-10-07,54.0,0.0,Sales Rep,completed
+43,1,76,2025-10-07,97.85,5.15,Website,completed
+44,1,73,2025-10-07,28.0,0.0,WhatsApp,completed
+45,1,28,2025-10-07,70.0,0.0,Website,completed
+46,1,36,2025-10-07,64.0,0.0,WhatsApp,completed
+47,1,63,2025-10-07,22.0,0.0,WhatsApp,completed
+48,1,102,2025-10-07,32.0,0.0,Website,completed
+49,1,75,2025-10-08,44.0,0.0,Website,completed
+50,1,46,2025-10-08,50.0,0.0,WhatsApp,completed
+51,1,41,2025-10-08,54.0,0.0,Website,completed
+52,1,93,2025-10-08,57.0,0.0,WhatsApp,completed
+53,1,39,2025-10-08,50.0,0.0,Website,completed
+54,1,90,2025-10-08,72.0,0.0,Marketplace,completed
+55,1,57,2025-10-08,18.0,0.0,Website,completed
+56,1,9,2025-10-08,89.0,0.0,Website,completed
+57,1,16,2025-10-09,96.9,5.1,WhatsApp,completed
+58,1,39,2025-10-09,35.0,0.0,Sales Rep,returned
+59,1,95,2025-10-09,53.0,0.0,Website,completed
+60,1,10,2025-10-09,46.0,0.0,Website,completed
+61,1,37,2025-10-09,152.95,8.05,WhatsApp,completed
+62,1,15,2025-10-10,114.3,12.7,Website,completed
+63,1,118,2025-10-10,84.0,0.0,Website,completed
+64,1,64,2025-10-10,108.0,12.0,Website,completed
+65,1,76,2025-10-10,98.0,0.0,Marketplace,returned
+66,1,61,2025-10-10,35.0,0.0,Website,completed
+67,1,105,2025-10-10,28.0,0.0,Website,completed
+68,1,14,2025-10-10,114.0,6.0,Sales Rep,completed
+69,1,12,2025-10-10,96.0,0.0,Website,completed
+70,1,25,2025-10-10,36.0,0.0,Website,completed
+71,1,27,2025-10-10,22.0,0.0,Website,completed
+72,1,4,2025-10-10,32.0,0.0,Marketplace,completed
+73,1,2,2025-10-10,127.3,6.7,WhatsApp,completed
+74,1,66,2025-10-10,18.0,0.0,WhatsApp,completed
+75,1,118,2025-10-11,25.0,0.0,WhatsApp,completed
+76,1,102,2025-10-11,53.0,0.0,Sales Rep,completed
+77,1,76,2025-10-11,104.5,5.5,WhatsApp,completed
+78,1,120,2025-10-11,71.0,0.0,Website,completed
+79,1,6,2025-10-11,72.0,0.0,Website,completed
+80,1,76,2025-10-12,110.0,0.0,Website,completed
+81,1,53,2025-10-12,28.0,0.0,Sales Rep,completed
+82,1,89,2025-10-12,66.0,0.0,Website,completed
+83,1,49,2025-10-12,114.95,6.05,Marketplace,completed
+84,1,30,2025-10-12,44.0,0.0,WhatsApp,completed
+85,1,13,2025-10-12,75.0,0.0,Website,completed
+86,1,102,2025-10-13,71.0,0.0,Website,completed
+87,1,75,2025-10-13,56.0,0.0,Website,completed
+88,1,116,2025-10-13,57.0,0.0,Sales Rep,completed
+89,1,76,2025-10-13,46.0,0.0,Website,completed
+90,1,62,2025-10-14,106.4,5.6,Website,completed
+91,1,3,2025-10-14,94.5,10.5,Marketplace,completed
+92,1,7,2025-10-14,88.0,0.0,Marketplace,completed
+93,1,82,2025-10-14,126.0,14.0,Website,completed
+94,1,6,2025-10-14,54.0,0.0,Website,completed
+95,1,96,2025-10-14,63.0,0.0,Website,completed
+96,1,62,2025-10-15,146.7,16.3,Marketplace,completed
+97,1,87,2025-10-15,81.0,0.0,Marketplace,completed
+98,1,69,2025-10-15,98.0,0.0,Website,completed
+99,1,48,2025-10-15,35.0,0.0,Website,completed
+100,1,79,2025-10-15,72.0,0.0,Website,completed
+101,1,6,2025-10-15,25.0,0.0,Marketplace,completed
+102,1,69,2025-10-15,92.0,0.0,Website,completed
+103,1,20,2025-10-15,110.7,12.3,Sales Rep,completed
+104,1,48,2025-10-15,28.0,0.0,Website,completed
+105,1,88,2025-10-16,97.0,0.0,Website,completed
+106,1,109,2025-10-16,44.0,0.0,Sales Rep,completed
+107,1,3,2025-10-16,219.0,0.0,Website,completed
+108,1,43,2025-10-16,144.0,0.0,Sales Rep,completed
+109,1,15,2025-10-16,64.0,0.0,WhatsApp,completed
+110,1,3,2025-10-16,95.0,0.0,Website,completed
+111,1,100,2025-10-16,96.0,0.0,Website,completed
+112,1,6,2025-10-16,74.0,0.0,WhatsApp,completed
+113,1,62,2025-10-16,66.0,0.0,Sales Rep,completed
+114,1,10,2025-10-16,32.0,0.0,Sales Rep,completed
+115,1,82,2025-10-16,35.0,0.0,WhatsApp,completed
+116,1,13,2025-10-17,124.45,6.55,Sales Rep,completed
+117,1,44,2025-10-17,46.0,0.0,Sales Rep,completed
+118,1,20,2025-10-17,25.0,0.0,WhatsApp,completed
+119,1,13,2025-10-17,50.0,0.0,WhatsApp,completed
+120,1,72,2025-10-18,66.0,0.0,WhatsApp,completed
+121,1,55,2025-10-18,85.0,0.0,Sales Rep,completed
+122,1,62,2025-10-18,100.7,5.3,Website,completed
+123,1,109,2025-10-18,114.3,12.7,WhatsApp,completed
+124,1,35,2025-10-18,94.0,0.0,Website,completed
+125,1,73,2025-10-18,72.0,0.0,WhatsApp,completed
+126,1,54,2025-10-18,56.0,0.0,Website,completed
+127,1,7,2025-10-19,25.0,0.0,Website,completed
+128,1,85,2025-10-19,64.0,0.0,Website,completed
+129,1,15,2025-10-19,53.0,0.0,Website,completed
+130,1,29,2025-10-19,84.0,0.0,Website,completed
+131,1,99,2025-10-19,25.0,0.0,Website,completed
+132,1,56,2025-10-19,171.0,0.0,Website,completed
+133,1,51,2025-10-20,75.0,0.0,Sales Rep,completed
+134,1,74,2025-10-20,128.0,0.0,Website,completed
+135,1,103,2025-10-20,53.0,0.0,Marketplace,completed
+136,1,56,2025-10-20,56.0,0.0,WhatsApp,completed
+137,1,29,2025-10-20,123.5,6.5,Website,completed
+138,1,45,2025-10-20,57.0,0.0,WhatsApp,completed
+139,1,84,2025-10-21,71.0,0.0,Website,completed
+140,1,119,2025-10-21,108.3,5.7,Sales Rep,completed
+141,1,76,2025-10-21,18.0,0.0,Website,completed
+142,1,48,2025-10-21,131.0,0.0,Sales Rep,completed
+143,1,58,2025-10-22,35.0,0.0,Marketplace,completed
+144,1,20,2025-10-22,53.0,0.0,Marketplace,completed
+145,1,32,2025-10-22,124.45,6.55,WhatsApp,returned
+146,1,53,2025-10-22,44.0,0.0,Sales Rep,completed
+147,1,9,2025-10-22,56.0,0.0,Website,completed
+148,1,112,2025-10-23,148.2,7.8,Website,completed
+149,1,17,2025-10-23,36.0,0.0,WhatsApp,completed
+150,1,43,2025-10-23,92.0,0.0,Sales Rep,completed
+151,1,66,2025-10-23,32.0,0.0,Website,completed
+152,1,99,2025-10-24,25.0,0.0,Website,completed
+153,1,101,2025-10-24,130.5,14.5,Website,completed
+154,1,17,2025-10-24,44.0,0.0,WhatsApp,completed
+155,1,57,2025-10-25,88.0,0.0,Website,completed
+156,1,58,2025-10-25,121.6,6.4,Website,completed
+157,1,100,2025-10-25,145.35,7.65,Website,completed
+158,1,71,2025-10-25,53.0,0.0,Marketplace,completed
+159,1,58,2025-10-25,96.0,0.0,Marketplace,completed
+160,1,114,2025-10-25,35.0,0.0,Website,completed
+161,1,50,2025-10-25,75.0,0.0,Marketplace,completed
+162,1,84,2025-10-26,36.0,0.0,Website,completed
+163,1,18,2025-10-26,91.0,0.0,Sales Rep,completed
+164,1,71,2025-10-26,28.0,0.0,Marketplace,completed
+165,1,16,2025-10-26,93.0,0.0,Website,completed
+166,1,77,2025-10-26,54.0,0.0,Website,completed
+167,1,46,2025-10-26,121.5,13.5,Website,completed
+168,1,65,2025-10-27,22.0,0.0,WhatsApp,completed
+169,1,48,2025-10-27,108.0,12.0,Website,completed
+170,1,95,2025-10-27,84.0,0.0,Sales Rep,completed
+171,1,23,2025-10-28,111.15,5.85,Sales Rep,completed
+172,1,26,2025-10-28,28.0,0.0,Website,completed
+173,1,105,2025-10-28,88.0,0.0,Website,completed
+174,1,111,2025-10-28,96.9,5.1,WhatsApp,completed
+175,1,44,2025-10-28,35.0,0.0,Marketplace,completed
+176,1,11,2025-10-28,67.0,0.0,WhatsApp,completed
+177,1,58,2025-10-29,82.0,0.0,WhatsApp,completed
+178,1,46,2025-10-29,72.0,0.0,WhatsApp,completed
+179,1,66,2025-10-29,97.85,5.15,Sales Rep,completed
+180,1,47,2025-10-29,84.0,0.0,Website,completed
+181,1,98,2025-10-29,56.0,0.0,Website,completed
+182,1,32,2025-10-29,35.0,0.0,Marketplace,completed
+183,1,72,2025-10-30,130.15,6.85,Website,completed
+184,1,26,2025-10-30,22.0,0.0,Website,completed
+185,1,12,2025-10-30,75.0,0.0,Sales Rep,completed
+186,1,21,2025-10-30,168.0,0.0,WhatsApp,completed
+187,1,31,2025-10-30,108.0,12.0,Sales Rep,completed
+188,1,114,2025-10-30,126.35,6.65,Website,completed
+189,1,83,2025-10-30,99.0,0.0,Website,completed
+190,1,17,2025-10-30,25.0,0.0,Website,completed
+191,1,120,2025-10-31,135.0,15.0,WhatsApp,completed
+192,1,39,2025-10-31,79.0,0.0,WhatsApp,completed
+193,1,93,2025-10-31,125.1,13.9,Marketplace,completed
+194,1,27,2025-10-31,150.1,7.9,Sales Rep,completed
+195,1,32,2025-10-31,50.0,0.0,Sales Rep,completed
+196,1,21,2025-10-31,35.0,0.0,Website,completed
+197,1,111,2025-11-01,78.0,0.0,WhatsApp,completed
+198,1,16,2025-11-01,84.0,0.0,Website,completed
+199,1,111,2025-11-01,190.0,10.0,WhatsApp,completed
+200,1,64,2025-11-01,18.0,0.0,Sales Rep,completed
+201,1,31,2025-11-01,36.0,0.0,Website,completed
+202,1,108,2025-11-01,43.0,0.0,WhatsApp,completed
+203,1,47,2025-11-01,70.0,0.0,Sales Rep,completed
+204,1,47,2025-11-01,144.9,16.1,WhatsApp,completed
+205,1,16,2025-11-01,56.0,0.0,Website,completed
+206,1,78,2025-11-02,64.0,0.0,Website,completed
+207,1,103,2025-11-02,99.0,0.0,Website,completed
+208,1,21,2025-11-02,63.0,0.0,Website,completed
+209,1,63,2025-11-02,129.6,14.4,WhatsApp,completed
+210,1,40,2025-11-02,148.5,16.5,Sales Rep,completed
+211,1,74,2025-11-02,70.0,0.0,Website,completed
+212,1,80,2025-11-02,114.0,0.0,Sales Rep,completed
+213,1,3,2025-11-03,32.0,0.0,Website,completed
+214,1,100,2025-11-03,69.0,0.0,WhatsApp,completed
+215,1,72,2025-11-03,60.0,0.0,Website,completed
+216,1,70,2025-11-03,72.0,0.0,Website,completed
+217,1,32,2025-11-03,99.0,11.0,Website,completed
+218,1,120,2025-11-03,70.0,0.0,Marketplace,completed
+219,1,49,2025-11-03,32.0,0.0,Sales Rep,completed
+220,1,37,2025-11-03,111.6,12.4,Marketplace,completed
+221,1,79,2025-11-04,35.0,0.0,WhatsApp,completed
+222,1,30,2025-11-04,89.0,0.0,Website,completed
+223,1,119,2025-11-04,90.0,0.0,Website,completed
+224,1,8,2025-11-04,130.0,0.0,Marketplace,completed
+225,1,120,2025-11-04,18.0,0.0,Marketplace,returned
+226,1,96,2025-11-04,112.5,12.5,Marketplace,completed
+227,1,70,2025-11-04,35.0,0.0,Website,completed
+228,1,25,2025-11-05,72.0,0.0,Sales Rep,completed
+229,1,44,2025-11-05,190.95,10.05,Sales Rep,completed
+230,1,66,2025-11-05,32.0,0.0,Website,completed
+231,1,120,2025-11-05,106.4,5.6,Website,completed
+232,1,75,2025-11-05,54.0,0.0,WhatsApp,completed
+233,1,40,2025-11-05,153.0,0.0,Website,completed
+234,1,20,2025-11-06,22.0,0.0,Website,returned
+235,1,61,2025-11-06,124.45,6.55,Sales Rep,completed
+236,1,68,2025-11-06,99.0,11.0,WhatsApp,completed
+237,1,20,2025-11-06,22.0,0.0,Website,completed
+238,1,75,2025-11-06,25.0,0.0,Website,completed
+239,1,66,2025-11-06,72.0,0.0,Website,completed
+240,1,105,2025-11-06,18.0,0.0,Website,completed
+241,1,9,2025-11-06,111.6,12.4,Website,completed
+242,1,83,2025-11-07,211.0,0.0,Marketplace,completed
+243,1,84,2025-11-07,103.0,0.0,Sales Rep,completed
+244,1,39,2025-11-07,54.0,0.0,Website,completed
+245,1,32,2025-11-07,44.0,0.0,Website,completed
+246,1,5,2025-11-07,57.0,0.0,Sales Rep,completed
+247,1,5,2025-11-07,93.0,0.0,Website,completed
+248,1,100,2025-11-07,44.0,0.0,Website,completed
+249,1,74,2025-11-07,84.0,0.0,WhatsApp,completed
+250,1,85,2025-11-07,94.5,10.5,Website,completed
+251,1,55,2025-11-08,44.0,0.0,WhatsApp,completed
+252,1,101,2025-11-08,28.0,0.0,Website,completed
+253,1,97,2025-11-08,22.0,0.0,Website,completed
+254,1,60,2025-11-08,89.0,0.0,Marketplace,completed
+255,1,11,2025-11-08,66.0,0.0,Marketplace,completed
+256,1,7,2025-11-08,125.1,13.9,Website,completed
+257,1,72,2025-11-08,205.2,10.8,Website,completed
+258,1,118,2025-11-08,64.0,0.0,Website,completed
+259,1,100,2025-11-08,94.0,0.0,Website,completed
+260,1,60,2025-11-08,84.0,0.0,Website,returned
+261,1,48,2025-11-09,159.6,8.4,Website,completed
+262,1,38,2025-11-09,32.0,0.0,Website,completed
+263,1,84,2025-11-09,62.0,0.0,Marketplace,completed
+264,1,46,2025-11-09,140.0,0.0,Website,completed
+265,1,68,2025-11-09,118.8,13.2,Website,completed
+266,1,20,2025-11-09,70.0,0.0,Website,completed
+267,1,85,2025-11-10,47.0,0.0,Website,completed
+268,1,37,2025-11-10,121.0,0.0,Website,completed
+269,1,25,2025-11-10,18.0,0.0,WhatsApp,completed
+270,1,52,2025-11-10,131.0,0.0,Website,completed
+271,1,12,2025-11-10,22.0,0.0,Website,completed
+272,1,22,2025-11-10,226.8,25.2,Website,completed
+273,1,118,2025-11-10,123.3,13.7,Website,completed
+274,1,73,2025-11-10,149.0,0.0,WhatsApp,completed
+275,1,39,2025-11-10,88.0,0.0,Website,completed
+276,1,18,2025-11-10,88.0,0.0,Sales Rep,completed
+277,1,7,2025-11-10,70.0,0.0,Website,completed
+278,1,77,2025-11-10,56.0,0.0,Website,completed
+279,1,58,2025-11-11,113.4,12.6,Website,completed
+280,1,10,2025-11-11,76.0,0.0,Website,completed
+281,1,14,2025-11-11,28.0,0.0,Website,completed
+282,1,12,2025-11-11,43.0,0.0,Website,completed
+283,1,12,2025-11-11,107.0,0.0,WhatsApp,completed
+284,1,74,2025-11-11,28.0,0.0,Website,completed
+285,1,56,2025-11-12,121.6,6.4,Website,completed
+286,1,77,2025-11-12,75.0,0.0,WhatsApp,completed
+287,1,43,2025-11-12,226.0,0.0,Sales Rep,completed
+288,1,39,2025-11-12,28.0,0.0,Website,completed
+289,1,51,2025-11-12,71.0,0.0,Marketplace,completed
+290,1,36,2025-11-12,35.0,0.0,Sales Rep,completed
+291,1,70,2025-11-12,22.0,0.0,Website,completed
+292,1,91,2025-11-13,68.0,0.0,Website,completed
+293,1,39,2025-11-13,68.0,0.0,Website,completed
+294,1,75,2025-11-13,123.3,13.7,Website,completed
+295,1,77,2025-11-13,78.0,0.0,WhatsApp,completed
+296,1,73,2025-11-13,106.4,5.6,Marketplace,completed
+297,1,14,2025-11-13,108.3,5.7,Website,completed
+298,1,48,2025-11-13,67.0,0.0,Website,completed
+299,1,14,2025-11-13,22.0,0.0,Website,completed
+300,1,27,2025-11-14,44.0,0.0,Website,completed
+301,1,41,2025-11-14,106.0,0.0,Website,completed
+302,1,120,2025-11-14,32.0,0.0,Marketplace,completed
+303,1,55,2025-11-14,32.0,0.0,Marketplace,completed
+304,1,85,2025-11-14,82.0,0.0,Website,completed
+305,1,91,2025-11-14,130.0,0.0,Website,completed
+306,1,47,2025-11-14,18.0,0.0,Website,completed
+307,1,82,2025-11-15,25.0,0.0,Website,completed
+308,1,109,2025-11-15,119.7,6.3,Website,completed
+309,1,16,2025-11-15,32.0,0.0,Website,completed
+310,1,54,2025-11-15,36.0,0.0,WhatsApp,completed
+311,1,89,2025-11-15,32.0,0.0,Marketplace,completed
+312,1,18,2025-11-15,53.0,0.0,Website,completed
+313,1,50,2025-11-15,22.0,0.0,Marketplace,completed
+314,1,91,2025-11-15,50.0,0.0,Sales Rep,completed
+315,1,29,2025-11-15,100.0,0.0,Website,completed
+316,1,64,2025-11-15,99.75,5.25,Website,completed
+317,1,98,2025-11-16,135.0,0.0,WhatsApp,completed
+318,1,57,2025-11-16,152.1,16.9,Sales Rep,completed
+319,1,81,2025-11-16,89.0,0.0,Website,completed
+320,1,77,2025-11-16,119.7,13.3,Website,completed
+321,1,105,2025-11-17,103.0,0.0,Website,completed
+322,1,32,2025-11-17,22.0,0.0,Website,completed
+323,1,19,2025-11-17,18.0,0.0,WhatsApp,completed
+324,1,102,2025-11-17,50.0,0.0,Sales Rep,completed
+325,1,75,2025-11-17,80.0,0.0,Website,completed
+326,1,109,2025-11-17,54.0,0.0,Website,completed
+327,1,64,2025-11-17,35.0,0.0,Website,completed
+328,1,115,2025-11-18,18.0,0.0,WhatsApp,completed
+329,1,119,2025-11-18,18.0,0.0,Sales Rep,completed
+330,1,89,2025-11-18,28.0,0.0,Marketplace,completed
+331,1,47,2025-11-18,142.5,7.5,Website,completed
+332,1,84,2025-11-18,25.0,0.0,Website,completed
+333,1,29,2025-11-18,84.0,0.0,Website,completed
+334,1,111,2025-11-18,18.0,0.0,Website,completed
+335,1,104,2025-11-18,109.8,12.2,Website,completed
+336,1,2,2025-11-18,64.0,0.0,WhatsApp,completed
+337,1,20,2025-11-18,32.0,0.0,Marketplace,completed
+338,1,13,2025-11-19,46.0,0.0,Website,completed
+339,1,36,2025-11-19,127.0,0.0,WhatsApp,completed
+340,1,109,2025-11-19,35.0,0.0,Sales Rep,completed
+341,1,96,2025-11-19,50.0,0.0,Website,completed
+342,1,82,2025-11-19,113.4,12.6,WhatsApp,completed
+343,1,99,2025-11-20,32.0,0.0,Website,completed
+344,1,8,2025-11-20,22.0,0.0,Marketplace,completed
+345,1,54,2025-11-20,57.0,0.0,Website,completed
+346,1,11,2025-11-20,91.0,0.0,Website,completed
+347,1,107,2025-11-20,36.0,0.0,WhatsApp,completed
+348,1,109,2025-11-20,105.0,0.0,Website,completed
+349,1,2,2025-11-21,28.0,0.0,WhatsApp,completed
+350,1,101,2025-11-21,44.0,0.0,Sales Rep,completed
+351,1,35,2025-11-21,120.6,13.4,WhatsApp,completed
+352,1,10,2025-11-21,35.0,0.0,Website,completed
+353,1,115,2025-11-22,35.0,0.0,WhatsApp,completed
+354,1,110,2025-11-22,54.0,0.0,Sales Rep,completed
+355,1,23,2025-11-22,40.0,0.0,Marketplace,completed
+356,1,118,2025-11-22,28.0,0.0,WhatsApp,completed
+357,1,87,2025-11-22,43.0,0.0,Marketplace,completed
+358,1,37,2025-11-22,18.0,0.0,Sales Rep,completed
+359,1,26,2025-11-22,104.0,0.0,Website,completed
+360,1,94,2025-11-22,75.0,0.0,Marketplace,completed
+361,1,4,2025-11-22,81.0,0.0,Website,completed
+362,1,109,2025-11-23,32.0,0.0,WhatsApp,completed
+363,1,8,2025-11-23,75.0,0.0,Marketplace,completed
+364,1,115,2025-11-23,92.7,10.3,Sales Rep,completed
+365,1,73,2025-11-23,28.0,0.0,Website,completed
+366,1,41,2025-11-23,50.0,0.0,Marketplace,completed
+367,1,26,2025-11-23,25.0,0.0,Website,completed
+368,1,60,2025-11-23,32.0,0.0,Website,completed
+369,1,60,2025-11-23,22.0,0.0,Website,completed
+370,1,91,2025-11-23,60.0,0.0,WhatsApp,completed
+371,1,46,2025-11-23,32.0,0.0,Website,completed
+372,1,96,2025-11-24,32.0,0.0,WhatsApp,completed
+373,1,8,2025-11-24,18.0,0.0,Sales Rep,returned
+374,1,81,2025-11-24,109.8,12.2,Marketplace,completed
+375,1,57,2025-11-24,53.0,0.0,Sales Rep,completed
+376,1,22,2025-11-24,43.0,0.0,Marketplace,completed
+377,1,46,2025-11-24,32.0,0.0,Website,completed
+378,1,80,2025-11-25,35.0,0.0,WhatsApp,completed
+379,1,12,2025-11-25,35.0,0.0,Website,completed
+380,1,103,2025-11-25,22.0,0.0,Website,completed
+381,1,70,2025-11-25,46.0,0.0,Sales Rep,completed
+382,1,77,2025-11-25,61.0,0.0,Website,completed
+383,1,30,2025-11-25,189.0,0.0,Marketplace,completed
+384,1,98,2025-11-25,166.0,0.0,Marketplace,completed
+385,1,23,2025-11-25,98.0,0.0,Website,completed
+386,1,73,2025-11-25,18.0,0.0,WhatsApp,completed
+387,1,8,2025-11-26,103.0,0.0,Website,completed
+388,1,44,2025-11-26,78.0,0.0,WhatsApp,completed
+389,1,118,2025-11-26,97.85,5.15,Website,completed
+390,1,76,2025-11-26,64.0,0.0,Website,completed
+391,1,56,2025-11-26,160.55,8.45,Sales Rep,completed
+392,1,29,2025-11-26,44.0,0.0,WhatsApp,completed
+393,1,17,2025-11-26,126.9,14.1,Website,completed
+394,1,5,2025-11-26,96.9,5.1,Website,completed
+395,1,19,2025-11-27,28.0,0.0,Website,completed
+396,1,114,2025-11-27,50.0,0.0,Marketplace,completed
+397,1,32,2025-11-27,47.0,0.0,WhatsApp,completed
+398,1,54,2025-11-27,18.0,0.0,Marketplace,completed
+399,1,49,2025-11-27,121.0,0.0,Website,completed
+400,1,41,2025-11-27,18.0,0.0,Website,completed
+401,1,10,2025-11-27,133.0,7.0,Website,completed
+402,1,91,2025-11-27,18.0,0.0,Website,completed
+403,1,25,2025-11-28,85.0,0.0,Website,completed
+404,1,71,2025-11-28,18.0,0.0,Sales Rep,completed
+405,1,106,2025-11-28,25.0,0.0,WhatsApp,completed
+406,1,82,2025-11-28,82.0,0.0,Website,completed
+407,1,34,2025-11-28,18.0,0.0,Website,completed
+408,1,58,2025-11-28,56.0,0.0,Website,completed
+409,1,20,2025-11-28,84.0,0.0,Sales Rep,completed
+410,1,53,2025-11-28,53.0,0.0,Marketplace,completed
+411,1,111,2025-11-28,28.0,0.0,Marketplace,completed
+412,1,116,2025-11-29,114.0,0.0,Sales Rep,completed
+413,1,97,2025-11-29,96.0,0.0,Website,completed
+414,1,17,2025-11-29,106.2,11.8,Website,completed
+415,1,118,2025-11-29,133.0,0.0,Sales Rep,completed
+416,1,101,2025-11-29,61.0,0.0,WhatsApp,completed
+417,1,75,2025-11-29,250.8,13.2,Sales Rep,completed
+418,1,50,2025-11-29,32.0,0.0,WhatsApp,completed
+419,1,19,2025-11-29,54.0,0.0,WhatsApp,completed
+420,1,96,2025-11-30,84.0,0.0,Website,completed
+421,1,39,2025-11-30,146.3,7.7,Website,completed
+422,1,35,2025-11-30,18.0,0.0,WhatsApp,completed
+423,1,106,2025-11-30,53.0,0.0,Website,completed
+424,1,40,2025-11-30,57.0,0.0,WhatsApp,completed
+425,1,107,2025-11-30,75.0,0.0,Website,completed
+426,1,91,2025-11-30,36.0,0.0,Website,completed
+427,1,16,2025-12-01,18.0,0.0,WhatsApp,completed
+428,1,112,2025-12-01,56.0,0.0,Website,completed
+429,1,89,2025-12-01,70.0,0.0,Website,completed
+430,1,28,2025-12-01,82.0,0.0,Sales Rep,completed
+431,1,99,2025-12-01,64.0,0.0,WhatsApp,completed
+432,1,2,2025-12-01,168.0,0.0,Website,completed
+433,1,60,2025-12-01,128.25,6.75,Website,completed
+434,1,72,2025-12-01,25.0,0.0,WhatsApp,completed
+435,1,44,2025-12-01,151.2,16.8,Marketplace,completed
+436,1,52,2025-12-01,100.7,5.3,WhatsApp,completed
+437,1,52,2025-12-01,99.0,0.0,Website,completed
+438,1,88,2025-12-01,255.0,0.0,Website,completed
+439,1,95,2025-12-02,92.0,0.0,Website,completed
+440,1,29,2025-12-02,50.0,0.0,WhatsApp,completed
+441,1,109,2025-12-02,90.9,10.1,Website,completed
+442,1,16,2025-12-02,75.0,0.0,Sales Rep,completed
+443,1,20,2025-12-02,99.75,5.25,Website,completed
+444,1,19,2025-12-02,64.0,0.0,Website,completed
+445,1,82,2025-12-02,64.0,0.0,Website,completed
+446,1,21,2025-12-02,35.0,0.0,Website,completed
+447,1,55,2025-12-02,25.0,0.0,Website,completed
+448,1,94,2025-12-02,35.0,0.0,Website,completed
+449,1,87,2025-12-03,28.0,0.0,Website,completed
+450,1,14,2025-12-03,25.0,0.0,Website,completed
+451,1,38,2025-12-03,108.3,5.7,Website,completed
+452,1,97,2025-12-03,150.0,0.0,Website,completed
+453,1,76,2025-12-03,93.0,0.0,Website,completed
+454,1,69,2025-12-03,50.0,0.0,WhatsApp,completed
+455,1,3,2025-12-03,25.0,0.0,Website,completed
+456,1,61,2025-12-03,53.0,0.0,WhatsApp,completed
+457,1,67,2025-12-03,25.0,0.0,Website,completed
+458,1,80,2025-12-03,64.0,0.0,Website,completed
+459,1,100,2025-12-03,22.0,0.0,Website,completed
+460,1,21,2025-12-03,18.0,0.0,Website,completed
+461,1,117,2025-12-04,50.0,0.0,Website,completed
+462,1,10,2025-12-04,32.0,0.0,WhatsApp,completed
+463,1,38,2025-12-04,81.0,0.0,Website,completed
+464,1,55,2025-12-04,119.0,0.0,WhatsApp,completed
+465,1,43,2025-12-04,47.0,0.0,Website,completed
+466,1,15,2025-12-04,36.0,0.0,Website,completed
+467,1,62,2025-12-04,82.0,0.0,Sales Rep,completed
+468,1,109,2025-12-04,53.0,0.0,Website,completed
+469,1,46,2025-12-04,116.0,0.0,WhatsApp,completed
+470,1,9,2025-12-04,102.6,11.4,Website,completed
+471,1,29,2025-12-04,70.0,0.0,Marketplace,completed
+472,1,80,2025-12-04,56.0,0.0,Website,completed
+473,1,83,2025-12-04,99.0,11.0,Website,completed
+474,1,109,2025-12-05,18.0,0.0,Website,completed
+475,1,43,2025-12-05,22.0,0.0,Marketplace,completed
+476,1,105,2025-12-05,79.0,0.0,Website,completed
+477,1,16,2025-12-05,18.0,0.0,Marketplace,completed
+478,1,72,2025-12-05,144.9,16.1,Website,completed
+479,1,86,2025-12-05,68.0,0.0,Website,completed
+480,1,77,2025-12-05,72.0,0.0,Website,completed
+481,1,44,2025-12-05,57.0,0.0,Website,completed
+482,1,115,2025-12-05,58.0,0.0,Website,completed
+483,1,25,2025-12-05,64.0,0.0,Website,completed
+484,1,119,2025-12-06,18.0,0.0,WhatsApp,completed
+485,1,76,2025-12-06,70.0,0.0,Marketplace,completed
+486,1,71,2025-12-06,70.0,0.0,Marketplace,completed
+487,1,117,2025-12-06,82.0,0.0,Website,completed
+488,1,113,2025-12-06,105.0,0.0,Website,completed
+489,1,36,2025-12-06,32.0,0.0,Website,completed
+490,1,78,2025-12-06,22.0,0.0,WhatsApp,completed
+491,1,41,2025-12-06,86.0,0.0,WhatsApp,completed
+492,1,45,2025-12-06,91.8,10.2,Marketplace,completed
+493,1,15,2025-12-06,98.0,0.0,Sales Rep,completed
+494,1,69,2025-12-06,60.0,0.0,Website,completed
+495,1,86,2025-12-06,50.0,0.0,Website,completed
+496,1,101,2025-12-07,18.0,0.0,Website,completed
+497,1,112,2025-12-07,44.0,0.0,WhatsApp,completed
+498,1,31,2025-12-07,91.0,0.0,Website,completed
+499,1,101,2025-12-07,103.55,5.45,Marketplace,completed
+500,1,107,2025-12-07,98.0,0.0,Website,completed
+501,1,100,2025-12-07,22.0,0.0,WhatsApp,completed
+502,1,23,2025-12-07,56.0,0.0,WhatsApp,completed
+503,1,17,2025-12-07,36.0,0.0,Website,completed
+504,1,20,2025-12-07,90.9,10.1,Website,completed
+505,1,71,2025-12-07,115.2,12.8,Website,completed
+506,1,9,2025-12-07,93.0,0.0,Sales Rep,completed
+507,1,85,2025-12-07,35.0,0.0,Website,completed
+508,1,84,2025-12-08,44.0,0.0,Website,completed
+509,1,80,2025-12-08,90.0,0.0,Website,completed
+510,1,67,2025-12-08,84.0,0.0,Sales Rep,completed
+511,1,25,2025-12-08,35.0,0.0,Website,completed
+512,1,81,2025-12-08,84.0,0.0,Website,completed
+513,1,107,2025-12-08,69.0,0.0,WhatsApp,completed
+514,1,59,2025-12-08,64.0,0.0,WhatsApp,completed
+515,1,72,2025-12-08,93.0,0.0,Website,completed
+516,1,87,2025-12-08,123.5,6.5,Website,completed
+517,1,119,2025-12-08,104.5,5.5,Website,completed
+518,1,51,2025-12-08,32.0,0.0,Sales Rep,completed
+519,1,51,2025-12-08,22.0,0.0,Sales Rep,completed
+520,1,87,2025-12-08,125.0,0.0,Sales Rep,completed
+521,1,74,2025-12-08,190.0,0.0,WhatsApp,completed
+522,1,21,2025-12-09,25.0,0.0,Website,completed
+523,1,103,2025-12-09,88.0,0.0,WhatsApp,completed
+524,1,86,2025-12-09,74.0,0.0,Website,completed
+525,1,31,2025-12-09,134.0,0.0,Website,completed
+526,1,73,2025-12-09,107.35,5.65,WhatsApp,completed
+527,1,36,2025-12-09,62.0,0.0,Sales Rep,completed
+528,1,63,2025-12-09,104.4,11.6,WhatsApp,completed
+529,1,114,2025-12-09,107.35,5.65,WhatsApp,completed
+530,1,70,2025-12-09,104.4,11.6,Sales Rep,completed
+531,1,94,2025-12-09,43.0,0.0,Sales Rep,completed
+532,1,79,2025-12-10,32.0,0.0,WhatsApp,completed
+533,1,73,2025-12-10,74.0,0.0,WhatsApp,completed
+534,1,30,2025-12-10,32.0,0.0,Website,completed
+535,1,102,2025-12-10,25.0,0.0,Website,completed
+536,1,84,2025-12-10,100.0,0.0,Website,completed
+537,1,49,2025-12-10,165.0,0.0,WhatsApp,completed
+538,1,67,2025-12-10,54.0,0.0,Website,completed
+539,1,1,2025-12-10,25.0,0.0,Website,completed
+540,1,36,2025-12-10,66.0,0.0,Website,completed
+541,1,85,2025-12-10,62.0,0.0,Website,completed
+542,1,83,2025-12-10,70.0,0.0,Sales Rep,completed
+543,1,18,2025-12-11,57.0,0.0,WhatsApp,completed
+544,1,52,2025-12-11,44.0,0.0,WhatsApp,completed
+545,1,106,2025-12-11,54.0,0.0,Website,completed
+546,1,22,2025-12-11,105.0,0.0,Website,completed
+547,1,80,2025-12-11,74.0,0.0,WhatsApp,completed
+548,1,49,2025-12-11,70.0,0.0,Website,completed
+549,1,106,2025-12-11,70.0,0.0,Website,completed
+550,1,113,2025-12-11,36.0,0.0,Sales Rep,completed
+551,1,116,2025-12-11,75.0,0.0,WhatsApp,completed
+552,1,30,2025-12-11,170.1,18.9,Marketplace,completed
+553,1,74,2025-12-11,96.0,0.0,Website,completed
+554,1,11,2025-12-11,32.0,0.0,Website,completed
+555,1,96,2025-12-11,25.0,0.0,Sales Rep,completed
+556,1,27,2025-12-11,32.0,0.0,WhatsApp,completed
+557,1,75,2025-12-11,56.0,0.0,Website,completed
+558,1,27,2025-12-12,56.0,0.0,Website,completed
+559,1,62,2025-12-12,22.0,0.0,Website,completed
+560,1,18,2025-12-12,50.0,0.0,Sales Rep,completed
+561,1,101,2025-12-12,122.0,0.0,Website,completed
+562,1,103,2025-12-12,101.7,11.3,Website,completed
+563,1,50,2025-12-12,98.0,0.0,Marketplace,completed
+564,1,23,2025-12-12,66.0,0.0,WhatsApp,completed
+565,1,67,2025-12-12,127.3,6.7,Website,completed
+566,1,31,2025-12-12,56.0,0.0,WhatsApp,completed
+567,1,46,2025-12-12,50.0,0.0,WhatsApp,completed
+568,1,9,2025-12-12,116.85,6.15,Marketplace,completed
+569,1,29,2025-12-12,104.4,11.6,WhatsApp,completed
+570,1,38,2025-12-13,138.6,15.4,Website,completed
+571,1,57,2025-12-13,110.0,0.0,Marketplace,completed
+572,1,62,2025-12-13,112.1,5.9,Website,completed
+573,1,67,2025-12-13,28.0,0.0,Website,completed
+574,1,87,2025-12-13,50.0,0.0,WhatsApp,completed
+575,1,74,2025-12-13,82.0,0.0,Website,completed
+576,1,31,2025-12-13,96.0,0.0,Sales Rep,completed
+577,1,46,2025-12-13,87.0,0.0,Website,completed
+578,1,62,2025-12-13,103.55,5.45,Website,completed
+579,1,29,2025-12-13,76.0,0.0,Sales Rep,completed
+580,1,100,2025-12-14,64.0,0.0,Website,completed
+581,1,27,2025-12-14,28.0,0.0,Website,completed
+582,1,34,2025-12-14,60.0,0.0,Website,completed
+583,1,90,2025-12-14,18.0,0.0,Sales Rep,completed
+584,1,17,2025-12-14,115.9,6.1,Marketplace,completed
+585,1,26,2025-12-14,25.0,0.0,Website,completed
+586,1,64,2025-12-14,98.0,0.0,Website,completed
+587,1,72,2025-12-14,32.0,0.0,Sales Rep,completed
+588,1,105,2025-12-15,22.0,0.0,Website,completed
+589,1,47,2025-12-15,53.0,0.0,Website,completed
+590,1,87,2025-12-15,92.0,0.0,Marketplace,completed
+591,1,46,2025-12-15,43.0,0.0,Website,completed
+592,1,81,2025-12-15,92.0,0.0,Marketplace,completed
+593,1,109,2025-12-15,28.0,0.0,Marketplace,completed
+594,1,38,2025-12-15,36.0,0.0,WhatsApp,completed
+595,1,47,2025-12-15,32.0,0.0,WhatsApp,completed
+596,1,3,2025-12-15,44.0,0.0,Website,completed
+597,1,11,2025-12-15,18.0,0.0,Website,completed
+598,1,4,2025-12-15,141.0,0.0,Sales Rep,completed
+599,1,32,2025-12-15,105.0,0.0,WhatsApp,completed
+600,1,5,2025-12-15,18.0,0.0,WhatsApp,completed
+601,1,112,2025-12-15,22.0,0.0,Website,completed
+602,1,96,2025-12-16,57.0,0.0,WhatsApp,completed
+603,1,70,2025-12-16,18.0,0.0,Website,completed
+604,1,39,2025-12-16,60.0,0.0,Website,completed
+605,1,89,2025-12-16,50.0,0.0,Marketplace,completed
+606,1,103,2025-12-16,28.0,0.0,Website,completed
+607,1,113,2025-12-16,44.0,0.0,WhatsApp,completed
+608,1,107,2025-12-16,32.0,0.0,Website,completed
+609,1,103,2025-12-16,119.0,0.0,Marketplace,completed
+610,1,24,2025-12-17,18.0,0.0,Website,completed
+611,1,80,2025-12-17,35.0,0.0,Website,completed
+612,1,14,2025-12-17,25.0,0.0,Website,completed
+613,1,20,2025-12-17,72.0,0.0,Website,completed
+614,1,60,2025-12-17,32.0,0.0,WhatsApp,completed
+615,1,100,2025-12-17,84.0,0.0,Website,completed
+616,1,107,2025-12-17,106.0,0.0,Website,completed
+617,1,59,2025-12-17,98.8,5.2,WhatsApp,completed
+618,1,21,2025-12-17,88.0,0.0,WhatsApp,completed
+619,1,15,2025-12-18,56.0,0.0,Website,completed
+620,1,51,2025-12-18,22.0,0.0,Sales Rep,completed
+621,1,77,2025-12-18,18.0,0.0,Website,completed
+622,1,80,2025-12-18,47.0,0.0,Website,completed
+623,1,69,2025-12-18,70.0,0.0,Sales Rep,completed
+624,1,97,2025-12-18,43.0,0.0,Website,completed
+625,1,116,2025-12-18,53.0,0.0,Website,completed
+626,1,45,2025-12-18,89.0,0.0,Website,completed
+627,1,34,2025-12-18,111.6,12.4,Website,completed
+628,1,110,2025-12-18,50.0,0.0,Website,completed
+629,1,69,2025-12-18,91.8,10.2,Sales Rep,completed
+630,1,42,2025-12-18,32.0,0.0,Website,completed
+631,1,5,2025-12-18,70.0,0.0,Website,completed
+632,1,50,2025-12-19,78.0,0.0,WhatsApp,completed
+633,1,10,2025-12-19,93.0,0.0,Website,completed
+634,1,72,2025-12-19,91.0,0.0,WhatsApp,completed
+635,1,6,2025-12-19,128.0,0.0,WhatsApp,completed
+636,1,13,2025-12-19,70.0,0.0,WhatsApp,completed
+637,1,73,2025-12-19,86.0,0.0,WhatsApp,completed
+638,1,87,2025-12-19,94.0,0.0,Website,completed
+639,1,77,2025-12-19,84.0,0.0,Website,completed
+640,1,53,2025-12-19,91.8,10.2,Sales Rep,completed
+641,1,119,2025-12-19,18.0,0.0,WhatsApp,completed
+642,1,5,2025-12-19,53.0,0.0,Marketplace,completed
+643,1,106,2025-12-20,89.0,0.0,Marketplace,completed
+644,1,34,2025-12-20,28.0,0.0,Website,completed
+645,1,52,2025-12-20,56.0,0.0,WhatsApp,completed
+646,1,23,2025-12-20,85.0,0.0,Website,completed
+647,1,104,2025-12-20,28.0,0.0,WhatsApp,completed
+648,1,105,2025-12-20,64.0,0.0,Website,completed
+649,1,109,2025-12-20,43.0,0.0,WhatsApp,completed
+650,1,70,2025-12-20,155.8,8.2,WhatsApp,completed
+651,1,97,2025-12-20,56.0,0.0,WhatsApp,completed
+652,1,19,2025-12-20,60.0,0.0,Website,completed
+653,1,65,2025-12-20,53.0,0.0,Website,completed
+654,1,74,2025-12-21,76.0,0.0,Website,completed
+655,1,42,2025-12-21,18.0,0.0,WhatsApp,completed
+656,1,45,2025-12-21,167.2,8.8,Website,completed
+657,1,80,2025-12-21,88.0,0.0,Website,completed
+658,1,11,2025-12-21,133.95,7.05,Website,completed
+659,1,3,2025-12-21,35.0,0.0,Website,completed
+660,1,34,2025-12-21,112.0,0.0,Website,completed
+661,1,8,2025-12-21,68.0,0.0,Website,completed
+662,1,50,2025-12-21,131.1,6.9,WhatsApp,completed
+663,1,66,2025-12-21,35.0,0.0,Marketplace,completed
+664,1,59,2025-12-22,35.0,0.0,WhatsApp,completed
+665,1,63,2025-12-22,28.0,0.0,Website,completed
+666,1,39,2025-12-22,159.0,0.0,Website,completed
+667,1,72,2025-12-22,36.0,0.0,Marketplace,completed
+668,1,12,2025-12-22,86.0,0.0,WhatsApp,completed
+669,1,55,2025-12-22,35.0,0.0,Marketplace,completed
+670,1,84,2025-12-22,148.0,0.0,Website,completed
+671,1,56,2025-12-22,99.75,5.25,Marketplace,completed
+672,1,9,2025-12-22,84.0,0.0,WhatsApp,completed
+673,1,19,2025-12-22,151.2,16.8,WhatsApp,completed
+674,1,36,2025-12-22,50.0,0.0,Website,completed
+675,1,79,2025-12-23,67.0,0.0,WhatsApp,completed
+676,1,11,2025-12-23,88.0,0.0,WhatsApp,completed
+677,1,110,2025-12-23,32.0,0.0,Website,completed
+678,1,98,2025-12-23,214.2,23.8,Marketplace,completed
+679,1,63,2025-12-23,144.4,7.6,WhatsApp,completed
+680,1,79,2025-12-23,47.0,0.0,Marketplace,completed
+681,1,106,2025-12-23,35.0,0.0,Sales Rep,completed
+682,1,95,2025-12-23,57.0,0.0,Website,completed
+683,1,39,2025-12-23,56.0,0.0,Sales Rep,completed
+684,1,7,2025-12-23,22.0,0.0,WhatsApp,completed
+685,1,93,2025-12-23,57.0,0.0,Website,completed
+686,1,58,2025-12-23,143.0,0.0,Website,completed
+687,1,15,2025-12-24,22.0,0.0,WhatsApp,completed
+688,1,102,2025-12-24,35.0,0.0,Marketplace,completed
+689,1,99,2025-12-24,105.45,5.55,Website,completed
+690,1,94,2025-12-24,125.4,6.6,Sales Rep,completed
+691,1,2,2025-12-24,99.0,11.0,Website,completed
+692,1,85,2025-12-24,35.0,0.0,Website,completed
+693,1,113,2025-12-24,57.0,0.0,Website,completed
+694,1,45,2025-12-24,63.0,0.0,Website,completed
+695,1,14,2025-12-24,108.3,5.7,Website,completed
+696,1,96,2025-12-24,28.0,0.0,WhatsApp,completed
+697,1,115,2025-12-25,35.0,0.0,Website,completed
+698,1,61,2025-12-25,35.0,0.0,Website,completed
+699,1,27,2025-12-25,88.0,0.0,WhatsApp,completed
+700,1,68,2025-12-25,100.7,5.3,Marketplace,completed
+701,1,68,2025-12-25,97.0,0.0,WhatsApp,completed
+702,1,24,2025-12-25,32.0,0.0,Sales Rep,completed
+703,1,4,2025-12-25,154.85,8.15,Website,completed
+704,1,45,2025-12-25,64.0,0.0,WhatsApp,completed
+705,1,33,2025-12-25,53.0,0.0,Sales Rep,completed
+706,1,4,2025-12-26,91.8,10.2,Sales Rep,completed
+707,1,18,2025-12-26,120.6,13.4,Website,completed
+708,1,39,2025-12-26,82.0,0.0,WhatsApp,completed
+709,1,118,2025-12-26,205.2,22.8,Sales Rep,completed
+710,1,78,2025-12-26,118.75,6.25,Website,completed
+711,1,58,2025-12-26,57.0,0.0,Sales Rep,completed
+712,1,26,2025-12-26,54.0,0.0,Marketplace,completed
+713,1,20,2025-12-26,98.0,0.0,Website,completed
+714,1,112,2025-12-27,86.0,0.0,Website,returned
+715,1,92,2025-12-27,50.0,0.0,Sales Rep,completed
+716,1,77,2025-12-27,151.0,0.0,Sales Rep,completed
+717,1,42,2025-12-27,43.0,0.0,Website,completed
+718,1,15,2025-12-27,67.0,0.0,Website,completed
+719,1,19,2025-12-27,96.3,10.7,Marketplace,completed
+720,1,57,2025-12-27,65.0,0.0,Website,completed
+721,1,77,2025-12-27,53.0,0.0,Sales Rep,completed
+722,1,26,2025-12-27,110.7,12.3,WhatsApp,completed
+723,1,60,2025-12-27,40.0,0.0,Website,completed
+724,1,111,2025-12-27,64.0,0.0,Sales Rep,completed
+725,1,86,2025-12-27,18.0,0.0,Website,completed
+726,1,60,2025-12-28,35.0,0.0,Sales Rep,completed
+727,1,14,2025-12-28,70.0,0.0,Website,completed
+728,1,102,2025-12-28,67.0,0.0,Website,completed
+729,1,62,2025-12-28,88.0,0.0,Website,completed
+730,1,101,2025-12-28,22.0,0.0,Website,completed
+731,1,120,2025-12-28,35.0,0.0,WhatsApp,completed
+732,1,72,2025-12-28,18.0,0.0,Website,completed
+733,1,14,2025-12-28,74.0,0.0,WhatsApp,completed
+734,1,28,2025-12-29,90.9,10.1,Sales Rep,completed
+735,1,74,2025-12-29,221.35,11.65,Website,completed
+736,1,12,2025-12-29,116.0,0.0,WhatsApp,completed
+737,1,1,2025-12-29,84.0,0.0,WhatsApp,completed
+738,1,31,2025-12-29,40.0,0.0,Website,completed
+739,1,28,2025-12-29,54.0,0.0,WhatsApp,completed
+740,1,47,2025-12-29,114.95,6.05,Sales Rep,completed
+741,1,85,2025-12-29,66.0,0.0,Website,returned
+742,1,111,2025-12-29,53.0,0.0,Website,completed
+743,1,71,2025-12-29,36.0,0.0,Sales Rep,completed
+744,1,74,2025-12-29,120.0,0.0,Website,completed
+745,1,91,2025-12-30,141.0,0.0,Website,completed
+746,1,32,2025-12-30,183.0,0.0,Website,completed
+747,1,61,2025-12-30,100.0,0.0,Website,completed
+748,1,38,2025-12-30,85.0,0.0,Website,completed
+749,1,7,2025-12-30,53.0,0.0,WhatsApp,completed
+750,1,10,2025-12-30,28.0,0.0,Sales Rep,completed
+751,1,33,2025-12-30,70.0,0.0,Website,completed
+752,1,85,2025-12-30,22.0,0.0,Website,completed
+753,1,24,2025-12-30,100.0,0.0,Sales Rep,completed
+754,1,77,2025-12-30,36.0,0.0,Marketplace,completed
+755,1,31,2025-12-30,70.0,0.0,WhatsApp,completed
+756,1,45,2025-12-30,57.0,0.0,Website,completed
+757,1,61,2025-12-30,40.0,0.0,WhatsApp,completed
+758,1,112,2025-12-31,128.0,0.0,Website,completed
+759,1,13,2025-12-31,81.0,0.0,Marketplace,completed
+760,1,84,2025-12-31,99.0,0.0,WhatsApp,completed
+761,1,87,2025-12-31,91.0,0.0,WhatsApp,completed
+762,1,13,2025-12-31,22.0,0.0,Website,completed
+763,1,25,2025-12-31,70.0,0.0,Website,completed
+764,1,107,2025-12-31,25.0,0.0,Website,completed
+765,1,78,2025-12-31,127.0,0.0,Website,completed
+766,1,82,2025-12-31,78.0,0.0,Website,returned
+767,1,36,2025-12-31,25.0,0.0,Sales Rep,completed
+768,1,9,2026-01-01,50.0,0.0,Website,completed
+769,1,56,2026-01-01,100.0,0.0,Website,completed
+770,1,100,2026-01-01,22.0,0.0,Website,completed
+771,1,5,2026-01-01,88.0,0.0,WhatsApp,completed
+772,1,99,2026-01-01,60.0,0.0,Website,completed
+773,1,89,2026-01-01,78.0,0.0,Sales Rep,completed
+774,1,81,2026-01-01,28.0,0.0,Marketplace,completed
+775,1,59,2026-01-01,35.0,0.0,Sales Rep,completed
+776,1,50,2026-01-02,50.0,0.0,WhatsApp,completed
+777,1,46,2026-01-02,32.0,0.0,Website,completed
+778,1,25,2026-01-02,18.0,0.0,Website,returned
+779,1,70,2026-01-02,107.35,5.65,WhatsApp,completed
+780,1,16,2026-01-02,92.0,0.0,Website,completed
+781,1,119,2026-01-02,25.0,0.0,Website,completed
+782,1,118,2026-01-02,146.0,0.0,WhatsApp,completed
+783,1,76,2026-01-03,70.0,0.0,Website,completed
+784,1,29,2026-01-03,44.0,0.0,Website,completed
+785,1,42,2026-01-03,114.0,6.0,Website,completed
+786,1,9,2026-01-03,22.0,0.0,Website,completed
+787,1,22,2026-01-03,50.0,0.0,Website,completed
+788,1,81,2026-01-03,18.0,0.0,WhatsApp,completed
+789,1,1,2026-01-03,92.0,0.0,Website,completed
+790,1,61,2026-01-04,89.0,0.0,WhatsApp,completed
+791,1,79,2026-01-04,114.0,6.0,WhatsApp,completed
+792,1,54,2026-01-04,126.0,14.0,Website,completed
+793,1,47,2026-01-04,50.0,0.0,Sales Rep,returned
+794,1,102,2026-01-04,131.1,6.9,Website,completed
+795,1,27,2026-01-04,43.0,0.0,Website,completed
+796,1,69,2026-01-04,25.0,0.0,Website,completed
+797,1,31,2026-01-04,64.0,0.0,WhatsApp,completed
+798,1,15,2026-01-05,102.6,11.4,Website,completed
+799,1,63,2026-01-05,35.0,0.0,Website,completed
+800,1,50,2026-01-05,112.0,0.0,Website,completed
+801,1,43,2026-01-05,32.0,0.0,Website,completed
+802,1,60,2026-01-05,56.0,0.0,Website,completed
+803,1,102,2026-01-05,133.0,0.0,Sales Rep,completed
+804,1,76,2026-01-05,36.0,0.0,Website,completed
+805,1,32,2026-01-05,94.5,10.5,Website,completed
+806,1,115,2026-01-05,36.0,0.0,Website,returned
+807,1,65,2026-01-06,66.0,0.0,Website,completed
+808,1,58,2026-01-06,84.0,0.0,Website,completed
+809,1,38,2026-01-06,22.0,0.0,Website,returned
+810,1,91,2026-01-06,96.9,5.1,Website,completed
+811,1,24,2026-01-06,22.0,0.0,Sales Rep,completed
+812,1,81,2026-01-06,25.0,0.0,Website,completed
+813,1,97,2026-01-06,89.0,0.0,Website,completed
+814,1,117,2026-01-07,28.0,0.0,WhatsApp,completed
+815,1,6,2026-01-07,85.0,0.0,Website,completed
+816,1,43,2026-01-07,94.5,10.5,Website,completed
+817,1,27,2026-01-07,28.0,0.0,Sales Rep,completed
+818,1,55,2026-01-07,18.0,0.0,Website,completed
+819,1,107,2026-01-07,63.0,0.0,Website,completed
+820,1,87,2026-01-07,75.0,0.0,Marketplace,completed
+821,1,10,2026-01-07,86.0,0.0,Website,completed
+822,1,81,2026-01-07,50.0,0.0,Website,completed
+823,1,83,2026-01-07,96.0,0.0,Website,completed
+824,1,67,2026-01-08,44.0,0.0,WhatsApp,completed
+825,1,63,2026-01-08,40.0,0.0,WhatsApp,completed
+826,1,102,2026-01-08,112.0,0.0,Website,completed
+827,1,19,2026-01-08,64.0,0.0,Website,completed
+828,1,37,2026-01-08,54.0,0.0,Website,completed
+829,1,41,2026-01-08,64.0,0.0,WhatsApp,completed
+830,1,5,2026-01-08,18.0,0.0,WhatsApp,completed
+831,1,118,2026-01-09,117.0,13.0,Website,completed
+832,1,65,2026-01-09,100.8,11.2,Website,completed
+833,1,86,2026-01-09,130.5,14.5,Website,completed
+834,1,15,2026-01-09,46.0,0.0,Website,completed
+835,1,83,2026-01-09,60.0,0.0,Website,completed
+836,1,58,2026-01-09,133.2,14.8,WhatsApp,completed
+837,1,47,2026-01-09,18.0,0.0,Website,completed
+838,1,37,2026-01-09,35.0,0.0,Website,completed
+839,1,94,2026-01-09,18.0,0.0,Sales Rep,completed
+840,1,104,2026-01-10,118.0,0.0,WhatsApp,completed
+841,1,27,2026-01-10,127.3,6.7,Website,returned
+842,1,12,2026-01-10,64.0,0.0,Website,completed
+843,1,91,2026-01-10,18.0,0.0,WhatsApp,completed
+844,1,63,2026-01-10,74.0,0.0,Website,completed
+845,1,4,2026-01-10,66.0,0.0,Sales Rep,completed
+846,1,61,2026-01-10,32.0,0.0,Website,completed
+847,1,89,2026-01-10,61.0,0.0,WhatsApp,completed
+848,1,62,2026-01-10,68.0,0.0,WhatsApp,completed
+849,1,75,2026-01-11,98.8,5.2,Website,completed
+850,1,7,2026-01-11,148.2,7.8,Website,completed
+851,1,112,2026-01-11,72.0,0.0,Website,completed
+852,1,106,2026-01-11,18.0,0.0,Website,completed
+853,1,118,2026-01-11,96.0,0.0,Marketplace,completed
+854,1,102,2026-01-11,114.0,0.0,Sales Rep,completed
+855,1,54,2026-01-11,61.0,0.0,Website,completed
+856,1,18,2026-01-11,88.0,0.0,Sales Rep,completed
+857,1,105,2026-01-11,54.0,0.0,Website,completed
+858,1,11,2026-01-12,50.0,0.0,Website,completed
+859,1,97,2026-01-12,22.0,0.0,Website,completed
+860,1,8,2026-01-12,56.0,0.0,Website,completed
+861,1,97,2026-01-12,67.0,0.0,Website,completed
+862,1,12,2026-01-12,35.0,0.0,Website,completed
+863,1,21,2026-01-12,101.0,0.0,Sales Rep,completed
+864,1,68,2026-01-12,35.0,0.0,Website,completed
+865,1,93,2026-01-12,58.0,0.0,Website,completed
+866,1,24,2026-01-13,35.0,0.0,Sales Rep,returned
+867,1,15,2026-01-13,35.0,0.0,Sales Rep,completed
+868,1,98,2026-01-13,53.0,0.0,Website,completed
+869,1,59,2026-01-14,136.0,0.0,WhatsApp,completed
+870,1,115,2026-01-14,153.0,0.0,Sales Rep,completed
+871,1,51,2026-01-14,32.0,0.0,Website,completed
+872,1,89,2026-01-14,198.55,10.45,WhatsApp,completed
+873,1,16,2026-01-14,44.0,0.0,Website,completed
+874,1,76,2026-01-14,74.0,0.0,Website,completed
+875,1,52,2026-01-14,18.0,0.0,Marketplace,completed
+876,1,33,2026-01-14,132.0,0.0,Website,completed
+877,1,49,2026-01-14,35.0,0.0,WhatsApp,completed
+878,1,10,2026-01-14,18.0,0.0,WhatsApp,completed
+879,1,34,2026-01-15,166.0,0.0,Website,completed
+880,1,50,2026-01-15,25.0,0.0,Website,completed
+881,1,72,2026-01-15,103.0,0.0,WhatsApp,completed
+882,1,73,2026-01-15,89.0,0.0,WhatsApp,completed
+883,1,65,2026-01-15,100.7,5.3,Website,completed
+884,1,42,2026-01-15,28.0,0.0,Website,completed
+885,1,95,2026-01-15,112.1,5.9,WhatsApp,completed
+886,1,45,2026-01-16,56.0,0.0,Website,completed
+887,1,117,2026-01-16,32.0,0.0,WhatsApp,completed
+888,1,42,2026-01-16,99.75,5.25,Website,completed
+889,1,3,2026-01-16,75.0,0.0,WhatsApp,completed
+890,1,89,2026-01-16,50.0,0.0,WhatsApp,completed
+891,1,56,2026-01-16,178.6,9.4,Website,completed
+892,1,12,2026-01-17,81.0,0.0,WhatsApp,completed
+893,1,55,2026-01-17,107.1,11.9,Website,completed
+894,1,41,2026-01-17,53.0,0.0,Website,completed
+895,1,91,2026-01-17,88.0,0.0,Website,completed
+896,1,96,2026-01-17,141.0,0.0,Marketplace,completed
+897,1,67,2026-01-17,44.0,0.0,Website,completed
+898,1,39,2026-01-17,75.0,0.0,Sales Rep,completed
+899,1,88,2026-01-17,32.0,0.0,WhatsApp,completed
+900,1,103,2026-01-17,58.0,0.0,Sales Rep,completed
+901,1,21,2026-01-18,119.7,13.3,Website,completed
+902,1,63,2026-01-18,200.45,10.55,Sales Rep,completed
+903,1,86,2026-01-18,171.9,19.1,WhatsApp,completed
+904,1,86,2026-01-18,114.95,6.05,Sales Rep,completed
+905,1,107,2026-01-18,50.0,0.0,WhatsApp,completed
+906,1,53,2026-01-19,56.0,0.0,Website,completed
+907,1,15,2026-01-19,92.0,0.0,Website,completed
+908,1,106,2026-01-19,99.9,11.1,Website,completed
+909,1,47,2026-01-19,86.0,0.0,Marketplace,completed
+910,1,51,2026-01-19,32.0,0.0,Marketplace,completed
+911,1,111,2026-01-19,62.0,0.0,Sales Rep,completed
+912,1,11,2026-01-19,54.0,0.0,Sales Rep,completed
+913,1,43,2026-01-19,60.0,0.0,WhatsApp,completed
+914,1,78,2026-01-20,22.0,0.0,WhatsApp,completed
+915,1,7,2026-01-20,22.0,0.0,WhatsApp,completed
+916,1,52,2026-01-20,89.0,0.0,Website,completed
+917,1,99,2026-01-20,62.0,0.0,Sales Rep,completed
+918,1,62,2026-01-20,99.75,5.25,Sales Rep,completed
+919,1,26,2026-01-20,54.0,0.0,Website,completed
+920,1,114,2026-01-20,70.0,0.0,WhatsApp,completed
+921,1,81,2026-01-20,56.0,0.0,Website,completed
+922,1,22,2026-01-20,137.7,15.3,Website,completed
+923,1,56,2026-01-21,43.0,0.0,Sales Rep,completed
+924,1,111,2026-01-21,50.0,0.0,Sales Rep,completed
+925,1,28,2026-01-21,50.0,0.0,Marketplace,completed
+926,1,38,2026-01-21,32.0,0.0,Marketplace,completed
+927,1,88,2026-01-21,106.4,5.6,WhatsApp,completed
+928,1,88,2026-01-21,35.0,0.0,Website,completed
+929,1,13,2026-01-21,71.0,0.0,WhatsApp,completed
+930,1,51,2026-01-21,148.2,7.8,WhatsApp,completed
+931,1,17,2026-01-21,28.0,0.0,Website,completed
+932,1,6,2026-01-21,123.5,6.5,Marketplace,completed
+933,1,67,2026-01-22,36.0,0.0,Website,completed
+934,1,20,2026-01-22,43.0,0.0,WhatsApp,completed
+935,1,24,2026-01-22,147.0,0.0,Website,completed
+936,1,57,2026-01-22,18.0,0.0,Website,completed
+937,1,93,2026-01-22,28.0,0.0,Sales Rep,completed
+938,1,22,2026-01-22,162.0,0.0,WhatsApp,completed
+939,1,68,2026-01-22,147.6,16.4,Sales Rep,completed
+940,1,16,2026-01-22,165.3,8.7,Website,completed
+941,1,81,2026-01-22,50.0,0.0,Marketplace,completed
+942,1,58,2026-01-22,67.0,0.0,Website,completed
+943,1,8,2026-01-23,43.0,0.0,WhatsApp,completed
+944,1,99,2026-01-23,138.0,0.0,Sales Rep,completed
+945,1,39,2026-01-23,98.0,0.0,Website,completed
+946,1,107,2026-01-23,18.0,0.0,Website,completed
+947,1,73,2026-01-23,56.0,0.0,WhatsApp,completed
+948,1,56,2026-01-23,100.0,0.0,WhatsApp,completed
+949,1,120,2026-01-23,82.0,0.0,Website,completed
+950,1,62,2026-01-24,60.0,0.0,Website,returned
+951,1,7,2026-01-24,53.0,0.0,WhatsApp,completed
+952,1,93,2026-01-24,50.0,0.0,WhatsApp,completed
+953,1,3,2026-01-24,96.0,0.0,Website,completed
+954,1,6,2026-01-24,70.0,0.0,Website,completed
+955,1,97,2026-01-24,32.0,0.0,WhatsApp,completed
+956,1,11,2026-01-24,65.0,0.0,WhatsApp,completed
+957,1,112,2026-01-25,138.6,15.4,WhatsApp,completed
+958,1,87,2026-01-25,57.0,0.0,Marketplace,completed
+959,1,105,2026-01-25,113.4,12.6,Website,completed
+960,1,25,2026-01-25,18.0,0.0,Website,completed
+961,1,22,2026-01-25,18.0,0.0,Marketplace,completed
+962,1,111,2026-01-26,18.0,0.0,Website,completed
+963,1,2,2026-01-26,54.0,0.0,Website,completed
+964,1,95,2026-01-26,117.9,13.1,WhatsApp,completed
+965,1,116,2026-01-26,60.0,0.0,Sales Rep,completed
+966,1,9,2026-01-26,71.0,0.0,Website,completed
+967,1,93,2026-01-26,64.0,0.0,Website,completed
+968,1,88,2026-01-26,40.0,0.0,Website,completed
+969,1,92,2026-01-26,155.8,8.2,Website,completed
+970,1,62,2026-01-27,93.0,0.0,Website,completed
+971,1,31,2026-01-27,28.0,0.0,Website,completed
+972,1,21,2026-01-27,81.0,0.0,Website,completed
+973,1,16,2026-01-27,202.5,22.5,WhatsApp,completed
+974,1,86,2026-01-27,191.0,0.0,Website,completed
+975,1,106,2026-01-27,75.0,0.0,WhatsApp,completed
+976,1,117,2026-01-27,88.0,0.0,Website,completed
+977,1,83,2026-01-27,32.0,0.0,Website,completed
+978,1,54,2026-01-28,46.0,0.0,Sales Rep,completed
+979,1,35,2026-01-28,22.0,0.0,Website,completed
+980,1,97,2026-01-28,18.0,0.0,Sales Rep,completed
+981,1,53,2026-01-28,94.0,0.0,Sales Rep,completed
+982,1,99,2026-01-28,110.2,5.8,Website,completed
+983,1,98,2026-01-28,35.0,0.0,Website,completed
+984,1,81,2026-01-28,202.5,22.5,Marketplace,completed
+985,1,2,2026-01-29,50.0,0.0,Sales Rep,completed
+986,1,70,2026-01-29,84.0,0.0,WhatsApp,completed
+987,1,101,2026-01-29,137.7,15.3,WhatsApp,completed
+988,1,70,2026-01-29,98.0,0.0,Website,completed
+989,1,4,2026-01-29,56.0,0.0,Sales Rep,completed
+990,1,65,2026-01-29,22.0,0.0,Website,completed
+991,1,16,2026-01-29,56.0,0.0,Website,completed
+992,1,1,2026-01-29,122.4,13.6,Website,returned
+993,1,69,2026-01-30,44.0,0.0,Sales Rep,completed
+994,1,92,2026-01-30,22.0,0.0,WhatsApp,completed
+995,1,42,2026-01-30,43.0,0.0,Website,completed
+996,1,53,2026-01-30,93.6,10.4,Website,completed
+997,1,34,2026-01-31,107.1,11.9,WhatsApp,completed
+998,1,59,2026-01-31,135.85,7.15,Website,completed
+999,1,118,2026-01-31,25.0,0.0,Marketplace,completed
+1000,1,38,2026-01-31,28.0,0.0,Website,completed
+1001,1,63,2026-01-31,79.0,0.0,Website,completed
+1002,1,37,2026-01-31,25.0,0.0,Website,completed
+1003,1,9,2026-02-01,133.95,7.05,Sales Rep,completed
+1004,1,107,2026-02-01,106.0,0.0,WhatsApp,completed
+1005,1,111,2026-02-01,89.0,0.0,WhatsApp,completed
+1006,1,44,2026-02-01,154.8,17.2,Website,completed
+1007,1,40,2026-02-01,91.8,10.2,WhatsApp,completed
+1008,1,67,2026-02-01,150.3,16.7,Website,completed
+1009,1,11,2026-02-02,25.0,0.0,Sales Rep,completed
+1010,1,120,2026-02-02,35.0,0.0,Website,completed
+1011,1,33,2026-02-02,92.0,0.0,Website,completed
+1012,1,20,2026-02-02,140.0,0.0,Website,completed
+1013,1,4,2026-02-02,32.0,0.0,WhatsApp,completed
+1014,1,42,2026-02-02,134.1,14.9,Website,completed
+1015,1,50,2026-02-02,35.0,0.0,Marketplace,completed
+1016,1,62,2026-02-03,118.75,6.25,Website,completed
+1017,1,73,2026-02-03,120.0,0.0,Website,completed
+1018,1,69,2026-02-03,146.7,16.3,Marketplace,completed
+1019,1,38,2026-02-03,18.0,0.0,WhatsApp,completed
+1020,1,45,2026-02-04,53.0,0.0,Sales Rep,completed
+1021,1,9,2026-02-04,64.0,0.0,Website,completed
+1022,1,36,2026-02-04,129.6,14.4,Sales Rep,completed
+1023,1,58,2026-02-04,32.0,0.0,Website,completed
+1024,1,77,2026-02-04,50.0,0.0,Website,completed
+1025,1,1,2026-02-04,44.0,0.0,Marketplace,completed
+1026,1,98,2026-02-05,176.0,0.0,Website,completed
+1027,1,46,2026-02-05,150.0,0.0,Marketplace,completed
+1028,1,16,2026-02-05,64.0,0.0,Website,completed
+1029,1,98,2026-02-05,75.0,0.0,Website,completed
+1030,1,81,2026-02-05,72.0,0.0,Website,completed
+1031,1,5,2026-02-05,101.65,5.35,Website,completed
+1032,1,15,2026-02-05,35.0,0.0,Sales Rep,completed
+1033,1,95,2026-02-05,60.0,0.0,WhatsApp,completed
+1034,1,34,2026-02-05,199.8,22.2,Marketplace,completed
+1035,1,72,2026-02-06,66.0,0.0,Sales Rep,completed
+1036,1,7,2026-02-06,46.0,0.0,Sales Rep,completed
+1037,1,64,2026-02-06,141.55,7.45,Website,completed
+1038,1,25,2026-02-06,120.0,0.0,Website,completed
+1039,1,118,2026-02-06,44.0,0.0,Website,completed
+1040,1,4,2026-02-07,94.0,0.0,Website,completed
+1041,1,61,2026-02-07,28.0,0.0,Website,completed
+1042,1,31,2026-02-07,68.0,0.0,Marketplace,completed
+1043,1,8,2026-02-07,116.1,12.9,Marketplace,completed
+1044,1,81,2026-02-07,25.0,0.0,Website,completed
+1045,1,49,2026-02-07,70.0,0.0,Website,completed
+1046,1,60,2026-02-08,53.0,0.0,Sales Rep,completed
+1047,1,25,2026-02-08,123.3,13.7,Website,completed
+1048,1,33,2026-02-08,54.0,0.0,Website,completed
+1049,1,17,2026-02-08,82.0,0.0,Website,completed
+1050,1,48,2026-02-09,96.3,10.7,Marketplace,completed
+1051,1,110,2026-02-09,129.2,6.8,Website,completed
+1052,1,77,2026-02-09,63.0,0.0,WhatsApp,completed
+1053,1,14,2026-02-09,96.0,0.0,Website,completed
+1054,1,82,2026-02-09,129.2,6.8,Website,completed
+1055,1,52,2026-02-10,25.0,0.0,Website,returned
+1056,1,72,2026-02-10,99.75,5.25,Website,completed
+1057,1,6,2026-02-10,96.0,0.0,Marketplace,completed
+1058,1,93,2026-02-10,32.0,0.0,Website,completed
+1059,1,108,2026-02-10,112.1,5.9,Website,completed
+1060,1,120,2026-02-10,56.0,0.0,Website,completed
+1061,1,68,2026-02-10,167.0,0.0,Marketplace,returned
+1062,1,69,2026-02-11,117.0,13.0,Website,completed
+1063,1,25,2026-02-11,32.0,0.0,Sales Rep,completed
+1064,1,102,2026-02-11,53.0,0.0,Website,completed
+1065,1,61,2026-02-11,36.0,0.0,Sales Rep,completed
+1066,1,64,2026-02-12,88.0,0.0,Website,completed
+1067,1,35,2026-02-12,97.0,0.0,WhatsApp,completed
+1068,1,58,2026-02-12,36.0,0.0,Sales Rep,completed
+1069,1,120,2026-02-12,25.0,0.0,Sales Rep,completed
+1070,1,67,2026-02-12,35.0,0.0,Website,completed
+1071,1,58,2026-02-13,50.0,0.0,Website,completed
+1072,1,30,2026-02-13,186.0,0.0,Website,completed
+1073,1,47,2026-02-13,28.0,0.0,Website,completed
+1074,1,96,2026-02-13,44.0,0.0,Sales Rep,completed
+1075,1,92,2026-02-14,28.0,0.0,WhatsApp,completed
+1076,1,45,2026-02-14,70.0,0.0,Sales Rep,completed
+1077,1,2,2026-02-14,68.0,0.0,Website,completed
+1078,1,27,2026-02-14,40.0,0.0,Website,completed
+1079,1,109,2026-02-14,68.0,0.0,Website,completed
+1080,1,48,2026-02-14,22.0,0.0,Website,completed
+1081,1,104,2026-02-14,36.0,0.0,WhatsApp,completed
+1082,1,52,2026-02-14,35.0,0.0,Sales Rep,completed
+1083,1,101,2026-02-14,148.5,16.5,Website,completed
+1084,1,50,2026-02-15,46.0,0.0,Website,completed
+1085,1,71,2026-02-15,114.95,6.05,Website,completed
+1086,1,37,2026-02-15,43.0,0.0,Website,completed
+1087,1,42,2026-02-15,25.0,0.0,Sales Rep,completed
+1088,1,54,2026-02-15,168.0,0.0,Website,completed
+1089,1,78,2026-02-15,44.0,0.0,WhatsApp,completed
+1090,1,36,2026-02-15,36.0,0.0,Website,returned
+1091,1,32,2026-02-15,126.35,6.65,Website,completed
+1092,1,45,2026-02-15,105.0,0.0,WhatsApp,completed
+1093,1,80,2026-02-16,162.0,0.0,WhatsApp,completed
+1094,1,36,2026-02-16,96.3,10.7,Sales Rep,completed
+1095,1,16,2026-02-16,28.0,0.0,Marketplace,completed
+1096,1,22,2026-02-16,50.0,0.0,Website,completed
+1097,1,87,2026-02-16,50.0,0.0,WhatsApp,completed
+1098,1,91,2026-02-17,40.0,0.0,Marketplace,completed
+1099,1,32,2026-02-17,84.0,0.0,WhatsApp,completed
+1100,1,22,2026-02-17,25.0,0.0,Sales Rep,completed
+1101,1,51,2026-02-17,28.0,0.0,Website,completed
+1102,1,46,2026-02-17,198.0,22.0,Website,completed
+1103,1,85,2026-02-17,28.0,0.0,WhatsApp,completed
+1104,1,77,2026-02-17,124.0,0.0,Website,completed
+1105,1,44,2026-02-18,50.0,0.0,Sales Rep,completed
+1106,1,107,2026-02-19,35.0,0.0,WhatsApp,completed
+1107,1,42,2026-02-19,123.0,0.0,Website,completed
+1108,1,14,2026-02-19,28.0,0.0,Website,completed
+1109,1,28,2026-02-19,57.0,0.0,Website,completed
+1110,1,28,2026-02-19,50.0,0.0,Website,completed
+1111,1,102,2026-02-19,50.0,0.0,Marketplace,completed
+1112,1,81,2026-02-19,127.8,14.2,WhatsApp,completed
+1113,1,62,2026-02-19,94.0,0.0,Website,completed
+1114,1,3,2026-02-19,22.0,0.0,WhatsApp,completed
+1115,1,18,2026-02-20,64.0,0.0,Website,completed
+1116,1,31,2026-02-20,127.8,14.2,Marketplace,completed
+1117,1,102,2026-02-20,25.0,0.0,Marketplace,completed
+1118,1,94,2026-02-20,130.0,0.0,Website,completed
+1119,1,78,2026-02-20,22.0,0.0,Sales Rep,completed
+1120,1,112,2026-02-20,96.0,0.0,Website,completed
+1121,1,17,2026-02-21,54.0,0.0,Website,completed
+1122,1,60,2026-02-21,64.0,0.0,Website,completed
+1123,1,39,2026-02-21,100.0,0.0,Website,completed
+1124,1,51,2026-02-21,70.0,0.0,Website,completed
+1125,1,98,2026-02-21,18.0,0.0,Website,completed
+1126,1,11,2026-02-21,99.0,0.0,Sales Rep,completed
+1127,1,60,2026-02-21,68.0,0.0,Website,completed
+1128,1,1,2026-02-22,108.0,12.0,Website,completed
+1129,1,48,2026-02-22,184.0,0.0,Website,completed
+1130,1,25,2026-02-22,50.0,0.0,Sales Rep,completed
+1131,1,89,2026-02-22,36.0,0.0,Website,completed
+1132,1,32,2026-02-22,44.0,0.0,Website,completed
+1133,1,90,2026-02-22,86.0,0.0,WhatsApp,completed
+1134,1,85,2026-02-22,58.0,0.0,Sales Rep,completed
+1135,1,116,2026-02-22,104.5,5.5,Website,completed
+1136,1,76,2026-02-23,129.0,0.0,Website,completed
+1137,1,35,2026-02-23,28.0,0.0,WhatsApp,completed
+1138,1,22,2026-02-23,22.0,0.0,Sales Rep,completed
+1139,1,54,2026-02-23,28.0,0.0,WhatsApp,completed
+1140,1,18,2026-02-23,85.0,0.0,Website,completed
+1141,1,98,2026-02-23,108.3,5.7,Website,returned
+1142,1,16,2026-02-23,58.0,0.0,Website,completed
+1143,1,8,2026-02-23,69.0,0.0,Website,completed
+1144,1,49,2026-02-23,80.0,0.0,WhatsApp,returned
+1145,1,44,2026-02-23,78.0,0.0,Website,completed
+1146,1,59,2026-02-24,132.05,6.95,Sales Rep,completed
+1147,1,90,2026-02-24,44.0,0.0,Sales Rep,completed
+1148,1,61,2026-02-24,88.0,0.0,Website,completed
+1149,1,105,2026-02-24,86.0,0.0,Website,completed
+1150,1,102,2026-02-24,65.0,0.0,Website,completed
+1151,1,67,2026-02-24,57.0,0.0,Sales Rep,completed
+1152,1,107,2026-02-25,75.0,0.0,WhatsApp,completed
+1153,1,22,2026-02-25,72.0,0.0,Sales Rep,completed
+1154,1,4,2026-02-25,205.2,22.8,Website,completed
+1155,1,18,2026-02-25,22.0,0.0,Marketplace,completed
+1156,1,29,2026-02-25,78.0,0.0,Marketplace,completed
+1157,1,95,2026-02-25,50.0,0.0,WhatsApp,completed
+1158,1,12,2026-02-25,89.0,0.0,Website,completed
+1159,1,95,2026-02-26,40.0,0.0,Website,completed
+1160,1,87,2026-02-26,67.0,0.0,Marketplace,completed
+1161,1,110,2026-02-26,108.0,12.0,Website,completed
+1162,1,5,2026-02-26,96.0,0.0,WhatsApp,completed
+1163,1,49,2026-02-26,22.0,0.0,Website,completed
+1164,1,94,2026-02-27,82.0,0.0,Marketplace,completed
+1165,1,105,2026-02-27,81.0,0.0,WhatsApp,completed
+1166,1,51,2026-02-27,66.0,0.0,Website,completed
+1167,1,90,2026-02-27,105.0,0.0,Sales Rep,completed
+1168,1,109,2026-02-27,67.0,0.0,Marketplace,completed
+1169,1,115,2026-02-27,97.0,0.0,Website,completed
+1170,1,14,2026-02-27,36.0,0.0,WhatsApp,returned
+1171,1,22,2026-02-27,248.0,0.0,Marketplace,completed
+1172,1,5,2026-02-28,126.0,14.0,Website,completed
+1173,1,96,2026-02-28,107.1,11.9,Website,completed
+1174,1,49,2026-02-28,25.0,0.0,Website,completed
+1175,1,16,2026-02-28,114.0,6.0,Website,completed
+1176,1,89,2026-02-28,72.0,0.0,WhatsApp,completed
+1177,1,90,2026-03-01,50.0,0.0,Website,completed
+1178,1,111,2026-03-01,68.0,0.0,Sales Rep,completed
+1179,1,104,2026-03-01,95.0,0.0,Website,completed
+1180,1,85,2026-03-01,139.0,0.0,Sales Rep,completed
+1181,1,6,2026-03-01,35.0,0.0,Website,completed
+1182,1,97,2026-03-01,151.2,16.8,Website,completed
+1183,1,1,2026-03-01,81.0,0.0,Website,completed
+1184,1,78,2026-03-02,25.0,0.0,Website,completed
+1185,1,25,2026-03-02,64.0,0.0,Website,completed
+1186,1,28,2026-03-02,43.0,0.0,WhatsApp,completed
+1187,1,84,2026-03-02,56.0,0.0,Marketplace,completed
+1188,1,89,2026-03-02,108.0,12.0,Website,completed
+1189,1,106,2026-03-02,100.0,0.0,Website,completed
+1190,1,32,2026-03-02,35.0,0.0,Website,completed
+1191,1,43,2026-03-02,28.0,0.0,WhatsApp,completed
+1192,1,103,2026-03-02,32.0,0.0,Website,completed
+1193,1,14,2026-03-02,107.1,11.9,Sales Rep,completed
+1194,1,45,2026-03-02,123.5,6.5,WhatsApp,completed
+1195,1,24,2026-03-02,75.0,0.0,Website,completed
+1196,1,66,2026-03-02,70.0,0.0,WhatsApp,completed
+1197,1,7,2026-03-02,64.0,0.0,Marketplace,completed
+1198,1,54,2026-03-03,137.0,0.0,WhatsApp,completed
+1199,1,40,2026-03-03,84.0,0.0,WhatsApp,completed
+1200,1,82,2026-03-03,142.0,0.0,Website,completed
+1201,1,55,2026-03-03,18.0,0.0,WhatsApp,completed
+1202,1,87,2026-03-03,35.0,0.0,Sales Rep,completed
+1203,1,55,2026-03-04,44.0,0.0,WhatsApp,completed
+1204,1,118,2026-03-04,153.0,17.0,Sales Rep,completed
+1205,1,120,2026-03-04,25.0,0.0,Sales Rep,completed
+1206,1,18,2026-03-04,18.0,0.0,Website,completed
+1207,1,15,2026-03-04,53.0,0.0,Website,completed
+1208,1,28,2026-03-04,84.0,0.0,Website,completed
+1209,1,83,2026-03-04,96.0,0.0,Website,completed
+1210,1,46,2026-03-04,46.0,0.0,Website,completed
+1211,1,26,2026-03-05,75.0,0.0,Website,completed
+1212,1,1,2026-03-05,18.0,0.0,Website,completed
+1213,1,47,2026-03-05,68.0,0.0,Website,completed
+1214,1,18,2026-03-05,22.0,0.0,Website,completed
+1215,1,25,2026-03-05,84.0,0.0,Website,completed
+1216,1,21,2026-03-05,89.0,0.0,WhatsApp,completed
+1217,1,17,2026-03-05,85.0,0.0,Website,completed
+1218,1,20,2026-03-05,81.0,0.0,Website,completed
+1219,1,37,2026-03-06,64.0,0.0,Website,completed
+1220,1,24,2026-03-06,126.0,14.0,Website,completed
+1221,1,94,2026-03-06,89.0,0.0,Website,completed
+1222,1,25,2026-03-06,47.0,0.0,Marketplace,completed
+1223,1,90,2026-03-06,18.0,0.0,WhatsApp,completed
+1224,1,55,2026-03-06,84.0,0.0,WhatsApp,completed
+1225,1,92,2026-03-06,25.0,0.0,Website,completed
+1226,1,85,2026-03-06,35.0,0.0,WhatsApp,completed
+1227,1,24,2026-03-06,25.0,0.0,Website,completed
+1228,1,2,2026-03-06,56.0,0.0,WhatsApp,completed
+1229,1,47,2026-03-06,60.0,0.0,WhatsApp,completed
+1230,1,114,2026-03-07,205.0,0.0,Website,completed
+1231,1,25,2026-03-07,70.0,0.0,WhatsApp,completed
+1232,1,39,2026-03-07,22.0,0.0,WhatsApp,returned
+1233,1,17,2026-03-07,133.0,7.0,Website,completed
+1234,1,58,2026-03-07,18.0,0.0,WhatsApp,completed
+1235,1,120,2026-03-07,56.0,0.0,Marketplace,completed
+1236,1,17,2026-03-07,22.0,0.0,Website,completed
+1237,1,105,2026-03-07,112.1,5.9,Website,completed
+1238,1,1,2026-03-08,71.0,0.0,Website,completed
+1239,1,34,2026-03-08,60.0,0.0,Website,completed
+1240,1,31,2026-03-08,204.0,0.0,Website,completed
+1241,1,69,2026-03-08,72.0,0.0,Website,completed
+1242,1,71,2026-03-08,92.7,10.3,Website,completed
+1243,1,36,2026-03-08,108.0,12.0,Website,completed
+1244,1,33,2026-03-08,50.0,0.0,Sales Rep,completed
+1245,1,81,2026-03-09,64.0,0.0,Sales Rep,completed
+1246,1,56,2026-03-09,32.0,0.0,Website,completed
+1247,1,105,2026-03-09,22.0,0.0,Sales Rep,completed
+1248,1,37,2026-03-09,36.0,0.0,Website,completed
+1249,1,25,2026-03-09,88.0,0.0,Website,completed
+1250,1,13,2026-03-09,60.0,0.0,WhatsApp,completed
+1251,1,15,2026-03-09,57.0,0.0,Sales Rep,completed
+1252,1,2,2026-03-10,133.0,0.0,Sales Rep,completed
+1253,1,62,2026-03-10,50.0,0.0,Sales Rep,completed
+1254,1,70,2026-03-10,25.0,0.0,WhatsApp,completed
+1255,1,38,2026-03-10,75.0,0.0,Website,completed
+1256,1,4,2026-03-10,28.0,0.0,Website,completed
+1257,1,113,2026-03-10,43.0,0.0,WhatsApp,completed
+1258,1,14,2026-03-10,28.0,0.0,Marketplace,completed
+1259,1,119,2026-03-10,32.0,0.0,Marketplace,completed
+1260,1,68,2026-03-10,44.0,0.0,Website,completed
+1261,1,80,2026-03-10,36.0,0.0,Sales Rep,completed
+1262,1,120,2026-03-11,82.0,0.0,Website,completed
+1263,1,19,2026-03-11,43.0,0.0,Website,completed
+1264,1,94,2026-03-11,100.7,5.3,Website,completed
+1265,1,78,2026-03-11,54.0,0.0,Sales Rep,completed
+1266,1,69,2026-03-11,61.0,0.0,Website,completed
+1267,1,74,2026-03-11,25.0,0.0,Sales Rep,completed
+1268,1,1,2026-03-11,72.0,0.0,Website,completed
+1269,1,118,2026-03-11,32.0,0.0,Website,completed
+1270,1,19,2026-03-11,108.9,12.1,Sales Rep,completed
+1271,1,91,2026-03-11,46.0,0.0,Website,completed
+1272,1,77,2026-03-12,25.0,0.0,Sales Rep,completed
+1273,1,2,2026-03-12,32.0,0.0,WhatsApp,completed
+1274,1,18,2026-03-12,36.0,0.0,WhatsApp,completed
+1275,1,57,2026-03-12,32.0,0.0,Sales Rep,completed
+1276,1,83,2026-03-12,105.45,5.55,Website,completed
+1277,1,71,2026-03-12,60.0,0.0,WhatsApp,completed
+1278,1,12,2026-03-13,32.0,0.0,Website,completed
+1279,1,8,2026-03-13,162.45,8.55,Website,completed
+1280,1,62,2026-03-13,146.0,0.0,Website,completed
+1281,1,35,2026-03-13,53.0,0.0,Website,completed
+1282,1,14,2026-03-13,120.0,0.0,Website,completed
+1283,1,31,2026-03-13,53.0,0.0,Website,completed
+1284,1,40,2026-03-13,18.0,0.0,Website,completed
+1285,1,46,2026-03-14,54.0,0.0,Marketplace,completed
+1286,1,65,2026-03-14,70.0,0.0,Website,completed
+1287,1,62,2026-03-14,64.0,0.0,WhatsApp,completed
+1288,1,11,2026-03-14,86.0,0.0,Sales Rep,completed
+1289,1,65,2026-03-14,74.0,0.0,Website,completed
+1290,1,47,2026-03-14,44.0,0.0,WhatsApp,completed
+1291,1,50,2026-03-14,99.0,0.0,Website,returned
+1292,1,104,2026-03-14,25.0,0.0,Website,completed
+1293,1,59,2026-03-15,56.0,0.0,Website,completed
+1294,1,46,2026-03-15,140.6,7.4,Website,completed
+1295,1,84,2026-03-15,146.7,16.3,Marketplace,completed
+1296,1,17,2026-03-15,50.0,0.0,Website,completed
+1297,1,58,2026-03-15,95.0,0.0,Website,completed
+1298,1,106,2026-03-15,18.0,0.0,WhatsApp,completed
+1299,1,52,2026-03-15,148.2,7.8,Sales Rep,completed
+1300,1,14,2026-03-15,72.0,0.0,Website,completed
+1301,1,78,2026-03-15,28.0,0.0,Website,completed
+1302,1,70,2026-03-15,98.0,0.0,Website,completed
+1303,1,47,2026-03-16,96.0,0.0,Sales Rep,completed
+1304,1,98,2026-03-16,57.0,0.0,WhatsApp,completed
+1305,1,39,2026-03-16,64.0,0.0,Sales Rep,completed
+1306,1,34,2026-03-16,81.0,0.0,Website,completed
+1307,1,61,2026-03-16,176.0,0.0,Website,completed
+1308,1,10,2026-03-17,88.0,0.0,WhatsApp,completed
+1309,1,94,2026-03-17,96.0,0.0,WhatsApp,completed
+1310,1,120,2026-03-17,22.0,0.0,Website,completed
+1311,1,67,2026-03-17,93.0,0.0,WhatsApp,returned
+1312,1,90,2026-03-17,28.0,0.0,Website,completed
+1313,1,25,2026-03-17,28.0,0.0,Marketplace,completed
+1314,1,115,2026-03-17,36.0,0.0,Website,completed
+1315,1,59,2026-03-17,107.0,0.0,Website,completed
+1316,1,59,2026-03-17,89.0,0.0,Website,completed
+1317,1,89,2026-03-17,97.0,0.0,WhatsApp,completed
+1318,1,84,2026-03-17,44.0,0.0,Website,completed
+1319,1,119,2026-03-17,97.85,5.15,Website,completed
+1320,1,110,2026-03-18,75.0,0.0,Website,completed
+1321,1,37,2026-03-18,36.0,0.0,Website,completed
+1322,1,1,2026-03-18,64.0,0.0,Marketplace,completed
+1323,1,108,2026-03-18,240.0,0.0,Sales Rep,completed
+1324,1,72,2026-03-18,123.5,6.5,Marketplace,completed
+1325,1,94,2026-03-18,102.6,11.4,Website,completed
+1326,1,16,2026-03-18,94.0,0.0,WhatsApp,completed
+1327,1,42,2026-03-19,44.0,0.0,Website,completed
+1328,1,20,2026-03-19,150.3,16.7,Website,completed
+1329,1,81,2026-03-19,104.4,11.6,Sales Rep,completed
+1330,1,100,2026-03-19,25.0,0.0,Sales Rep,completed
+1331,1,120,2026-03-19,109.25,5.75,Website,completed
+1332,1,115,2026-03-19,68.0,0.0,Website,completed
+1333,1,53,2026-03-19,22.0,0.0,Website,completed
+1334,1,114,2026-03-19,60.0,0.0,Website,completed
+1335,1,5,2026-03-20,70.0,0.0,Website,completed
+1336,1,1,2026-03-20,117.0,0.0,Website,completed
+1337,1,111,2026-03-20,32.0,0.0,Website,completed
+1338,1,94,2026-03-20,121.6,6.4,WhatsApp,completed
+1339,1,91,2026-03-20,40.0,0.0,WhatsApp,completed
+1340,1,25,2026-03-20,104.4,11.6,Website,completed
+1341,1,40,2026-03-21,62.0,0.0,Website,completed
+1342,1,105,2026-03-21,64.0,0.0,Website,completed
+1343,1,48,2026-03-21,100.0,0.0,Sales Rep,completed
+1344,1,33,2026-03-21,57.0,0.0,WhatsApp,completed
+1345,1,24,2026-03-21,32.0,0.0,Sales Rep,completed
+1346,1,85,2026-03-21,25.0,0.0,Website,completed
+1347,1,2,2026-03-21,88.0,0.0,WhatsApp,completed
+1348,1,14,2026-03-22,123.0,0.0,WhatsApp,completed
+1349,1,26,2026-03-22,28.0,0.0,Website,completed
+1350,1,16,2026-03-22,67.0,0.0,Website,completed
+1351,1,101,2026-03-22,78.0,0.0,Sales Rep,returned
+1352,1,44,2026-03-22,36.0,0.0,WhatsApp,completed
+1353,1,36,2026-03-22,28.0,0.0,Website,completed
+1354,1,7,2026-03-23,88.0,0.0,Website,completed
+1355,1,16,2026-03-23,32.0,0.0,Sales Rep,completed
+1356,1,2,2026-03-23,129.2,6.8,Website,returned
+1357,1,105,2026-03-23,124.45,6.55,Marketplace,returned
+1358,1,89,2026-03-23,96.0,0.0,WhatsApp,completed
+1359,1,75,2026-03-23,104.5,5.5,Website,completed
+1360,1,85,2026-03-23,82.0,0.0,Website,completed
+1361,1,107,2026-03-24,57.0,0.0,Sales Rep,completed
+1362,1,28,2026-03-24,50.0,0.0,Website,completed
+1363,1,76,2026-03-24,56.0,0.0,Sales Rep,completed
+1364,1,84,2026-03-24,218.5,11.5,Website,completed
+1365,1,25,2026-03-24,99.0,11.0,Website,completed
+1366,1,15,2026-03-24,25.0,0.0,Website,completed
+1367,1,68,2026-03-24,71.0,0.0,Website,completed
+1368,1,43,2026-03-24,22.0,0.0,Website,completed
+1369,1,119,2026-03-25,35.0,0.0,Website,completed
+1370,1,78,2026-03-25,120.0,0.0,Website,completed
+1371,1,115,2026-03-25,25.0,0.0,Website,completed
+1372,1,113,2026-03-25,25.0,0.0,WhatsApp,completed
+1373,1,106,2026-03-25,32.0,0.0,Sales Rep,completed
+1374,1,37,2026-03-25,32.0,0.0,WhatsApp,completed
+1375,1,40,2026-03-26,22.0,0.0,Sales Rep,completed
+1376,1,24,2026-03-26,75.0,0.0,Website,completed
+1377,1,10,2026-03-26,100.8,11.2,Website,completed
+1378,1,1,2026-03-26,50.0,0.0,Website,completed
+1379,1,38,2026-03-26,64.0,0.0,Sales Rep,completed
+1380,1,13,2026-03-26,22.0,0.0,Website,completed
+1381,1,70,2026-03-26,75.0,0.0,Website,completed
+1382,1,39,2026-03-26,71.0,0.0,WhatsApp,completed
+1383,1,94,2026-03-27,64.0,0.0,WhatsApp,completed
+1384,1,19,2026-03-27,58.0,0.0,Website,completed
+1385,1,25,2026-03-27,84.0,0.0,Marketplace,completed
+1386,1,87,2026-03-27,148.5,16.5,Website,completed
+1387,1,54,2026-03-27,35.0,0.0,Marketplace,completed
+1388,1,44,2026-03-27,139.65,7.35,Sales Rep,completed
+1389,1,88,2026-03-28,54.0,0.0,Website,completed
+1390,1,103,2026-03-28,35.0,0.0,Website,completed
+1391,1,63,2026-03-28,47.0,0.0,Website,completed
+1392,1,37,2026-03-28,144.4,7.6,Sales Rep,completed
+1393,1,75,2026-03-28,28.0,0.0,Marketplace,completed
+1394,1,87,2026-03-28,107.35,5.65,WhatsApp,completed
+1395,1,103,2026-03-28,32.0,0.0,WhatsApp,completed
+1396,1,26,2026-03-28,40.0,0.0,Website,completed
+1397,1,113,2026-03-28,78.0,0.0,Sales Rep,completed
+1398,1,46,2026-03-29,18.0,0.0,Website,completed
+1399,1,117,2026-03-29,64.0,0.0,WhatsApp,completed
+1400,1,39,2026-03-29,35.0,0.0,Sales Rep,completed
+1401,1,73,2026-03-29,82.0,0.0,Sales Rep,completed
+1402,1,98,2026-03-29,25.0,0.0,Sales Rep,completed
+1403,1,84,2026-03-29,124.0,0.0,Website,completed
+1404,1,95,2026-03-29,86.0,0.0,WhatsApp,completed
+1405,1,64,2026-03-29,120.0,0.0,Website,completed
+1406,1,26,2026-03-30,60.0,0.0,Website,completed
+1407,1,61,2026-03-30,25.0,0.0,Website,completed
+1408,1,62,2026-03-30,144.9,16.1,Marketplace,completed
+1409,1,79,2026-03-30,96.0,0.0,Website,completed
+1410,1,85,2026-03-30,50.0,0.0,Website,completed
+1411,1,13,2026-03-30,58.0,0.0,Marketplace,completed
+1412,1,54,2026-03-30,50.0,0.0,Sales Rep,completed
+1413,1,2,2026-03-30,120.65,6.35,WhatsApp,completed
+1414,1,18,2026-03-30,32.0,0.0,Website,completed
+1415,1,110,2026-03-31,92.7,10.3,Sales Rep,completed
+1416,1,44,2026-03-31,22.0,0.0,Website,completed
+1417,1,51,2026-03-31,36.0,0.0,Website,completed
+1418,1,24,2026-03-31,63.0,0.0,WhatsApp,completed
+1419,1,75,2026-03-31,25.0,0.0,Website,completed
+1420,1,94,2026-03-31,22.0,0.0,Website,completed
