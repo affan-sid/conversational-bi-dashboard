@@ -1,0 +1,5 @@
+campaign_id,company_id,campaign_name,platform,start_date,end_date,budget
+1,1,Google Search - Bottles,Google Ads,2025-10-01,2026-03-31,18000
+2,1,Meta Retargeting,Meta Ads,2025-10-01,2026-03-31,12000
+3,1,LinkedIn B2B Push,LinkedIn Ads,2025-11-01,2026-03-31,9000
+4,1,Email Promo Series,Email,2025-10-15,2026-03-31,2500

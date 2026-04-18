@@ -1,0 +1,622 @@
+transaction_id,company_id,date,type,category,amount,payment_method,source_id,description
+1,1,2025-10-01,income,Sales,732.5,Cash,1,Daily sales revenue
+2,1,2025-10-01,expense,Rent,4200.0,Bank Transfer,2,Rent payment
+3,1,2025-10-01,expense,Utilities,137.0,Bank Transfer,2,Utilities payment
+4,1,2025-10-01,expense,Shipping,58.21,Bank Transfer,2,Shipping payment
+5,1,2025-10-01,expense,Marketing,345.42,Bank Transfer,3,Marketing payment
+6,1,2025-10-02,income,Sales,663.8,Bank Transfer,1,Daily sales revenue
+7,1,2025-10-02,expense,Shipping,44.86,Card,2,Shipping payment
+8,1,2025-10-02,expense,Marketing,336.79,Card,3,Marketing payment
+9,1,2025-10-03,income,Sales,466.7,Card,1,Daily sales revenue
+10,1,2025-10-03,expense,Shipping,34.49,Bank Transfer,2,Shipping payment
+11,1,2025-10-03,expense,Marketing,147.7,Bank Transfer,3,Marketing payment
+12,1,2025-10-04,income,Sales,626.9,Card,1,Daily sales revenue
+13,1,2025-10-04,expense,Shipping,54.48,Card,2,Shipping payment
+14,1,2025-10-04,expense,Marketing,234.15,Card,3,Marketing payment
+15,1,2025-10-05,income,Sales,297.0,Card,1,Daily sales revenue
+16,1,2025-10-05,expense,Software,950.0,Card,2,Software payment
+17,1,2025-10-05,expense,Shipping,20.94,Bank Transfer,2,Shipping payment
+18,1,2025-10-05,expense,Marketing,363.6,Card,3,Marketing payment
+19,1,2025-10-06,income,Sales,347.0,Bank Transfer,1,Daily sales revenue
+20,1,2025-10-06,expense,Shipping,29.37,Bank Transfer,2,Shipping payment
+21,1,2025-10-06,expense,Marketing,279.74,Card,3,Marketing payment
+22,1,2025-10-07,income,Sales,556.85,Card,1,Daily sales revenue
+23,1,2025-10-07,expense,Shipping,39.3,Bank Transfer,2,Shipping payment
+24,1,2025-10-07,expense,Marketing,258.4,Bank Transfer,3,Marketing payment
+25,1,2025-10-08,income,Sales,434.0,Card,1,Daily sales revenue
+26,1,2025-10-08,expense,Utilities,138.0,Bank Transfer,2,Utilities payment
+27,1,2025-10-08,expense,Shipping,35.73,Bank Transfer,2,Shipping payment
+28,1,2025-10-08,expense,Marketing,460.44,Bank Transfer,3,Marketing payment
+29,1,2025-10-09,income,Sales,348.85,Cash,1,Daily sales revenue
+30,1,2025-10-09,expense,Shipping,26.38,Card,2,Shipping payment
+31,1,2025-10-09,expense,Supplies,301.71,Card,2,Supplies payment
+32,1,2025-10-09,expense,Marketing,318.06,Card,3,Marketing payment
+33,1,2025-10-10,income,Sales,814.6,Bank Transfer,1,Daily sales revenue
+34,1,2025-10-10,expense,Shipping,57.87,Bank Transfer,2,Shipping payment
+35,1,2025-10-10,expense,Marketing,471.25,Card,3,Marketing payment
+36,1,2025-10-11,income,Sales,325.5,Bank Transfer,1,Daily sales revenue
+37,1,2025-10-11,expense,Shipping,23.76,Bank Transfer,2,Shipping payment
+38,1,2025-10-11,expense,Marketing,228.02,Bank Transfer,3,Marketing payment
+39,1,2025-10-12,income,Sales,437.95,Bank Transfer,1,Daily sales revenue
+40,1,2025-10-12,expense,Shipping,30.61,Card,2,Shipping payment
+41,1,2025-10-12,expense,Marketing,202.97,Bank Transfer,3,Marketing payment
+42,1,2025-10-13,income,Sales,230.0,Card,1,Daily sales revenue
+43,1,2025-10-13,expense,Shipping,19.06,Card,2,Shipping payment
+44,1,2025-10-13,expense,Marketing,276.13,Card,3,Marketing payment
+45,1,2025-10-14,income,Sales,531.9,Bank Transfer,1,Daily sales revenue
+46,1,2025-10-14,expense,Shipping,35.43,Bank Transfer,2,Shipping payment
+47,1,2025-10-14,expense,Supplies,106.06,Bank Transfer,2,Supplies payment
+48,1,2025-10-14,expense,Marketing,406.78,Card,3,Marketing payment
+49,1,2025-10-15,income,Sales,688.4,Cash,1,Daily sales revenue
+50,1,2025-10-15,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+51,1,2025-10-15,expense,Utilities,144.0,Card,2,Utilities payment
+52,1,2025-10-15,expense,Shipping,49.93,Card,2,Shipping payment
+53,1,2025-10-15,expense,Marketing,240.3,Bank Transfer,3,Marketing payment
+54,1,2025-10-16,income,Sales,966.0,Card,1,Daily sales revenue
+55,1,2025-10-16,expense,Shipping,86.68,Bank Transfer,2,Shipping payment
+56,1,2025-10-16,expense,Marketing,156.93,Card,3,Marketing payment
+57,1,2025-10-17,income,Sales,245.45,Cash,1,Daily sales revenue
+58,1,2025-10-17,expense,Shipping,18.28,Bank Transfer,2,Shipping payment
+59,1,2025-10-17,expense,Supplies,334.15,Card,2,Supplies payment
+60,1,2025-10-17,expense,Marketing,307.93,Bank Transfer,3,Marketing payment
+61,1,2025-10-18,income,Sales,588.0,Card,1,Daily sales revenue
+62,1,2025-10-18,expense,Shipping,47.09,Card,2,Shipping payment
+63,1,2025-10-18,expense,Marketing,295.31,Card,3,Marketing payment
+64,1,2025-10-19,income,Sales,422.0,Bank Transfer,1,Daily sales revenue
+65,1,2025-10-19,expense,Shipping,37.42,Card,2,Shipping payment
+66,1,2025-10-19,expense,Marketing,199.19,Card,3,Marketing payment
+67,1,2025-10-20,income,Sales,492.5,Cash,1,Daily sales revenue
+68,1,2025-10-20,expense,Shipping,31.85,Card,2,Shipping payment
+69,1,2025-10-20,expense,Marketing,324.55,Bank Transfer,3,Marketing payment
+70,1,2025-10-21,income,Sales,328.3,Card,1,Daily sales revenue
+71,1,2025-10-21,expense,Shipping,27.72,Card,2,Shipping payment
+72,1,2025-10-21,expense,Marketing,267.53,Card,3,Marketing payment
+73,1,2025-10-22,income,Sales,188.0,Cash,1,Daily sales revenue
+74,1,2025-10-22,expense,Utilities,158.0,Card,2,Utilities payment
+75,1,2025-10-22,expense,Shipping,14.09,Bank Transfer,2,Shipping payment
+76,1,2025-10-22,expense,Marketing,300.01,Card,3,Marketing payment
+77,1,2025-10-23,income,Sales,308.2,Bank Transfer,1,Daily sales revenue
+78,1,2025-10-23,expense,Shipping,19.48,Bank Transfer,2,Shipping payment
+79,1,2025-10-23,expense,Supplies,211.81,Bank Transfer,2,Supplies payment
+80,1,2025-10-23,expense,Marketing,340.97,Card,3,Marketing payment
+81,1,2025-10-24,income,Sales,199.5,Card,1,Daily sales revenue
+82,1,2025-10-24,expense,Shipping,17.51,Card,2,Shipping payment
+83,1,2025-10-24,expense,Marketing,172.01,Card,3,Marketing payment
+84,1,2025-10-25,income,Sales,613.95,Cash,1,Daily sales revenue
+85,1,2025-10-25,expense,Shipping,44.2,Card,2,Shipping payment
+86,1,2025-10-25,expense,Marketing,314.32,Bank Transfer,3,Marketing payment
+87,1,2025-10-26,income,Sales,423.5,Card,1,Daily sales revenue
+88,1,2025-10-26,expense,Shipping,27.47,Bank Transfer,2,Shipping payment
+89,1,2025-10-26,expense,Marketing,219.35,Card,3,Marketing payment
+90,1,2025-10-27,income,Sales,214.0,Card,1,Daily sales revenue
+91,1,2025-10-27,expense,Shipping,15.64,Bank Transfer,2,Shipping payment
+92,1,2025-10-27,expense,Marketing,307.43,Card,3,Marketing payment
+93,1,2025-10-28,income,Sales,426.05,Bank Transfer,1,Daily sales revenue
+94,1,2025-10-28,expense,Shipping,38.07,Card,2,Shipping payment
+95,1,2025-10-28,expense,Marketing,228.44,Bank Transfer,3,Marketing payment
+96,1,2025-10-29,income,Sales,426.85,Bank Transfer,1,Daily sales revenue
+97,1,2025-10-29,expense,Utilities,150.0,Card,2,Utilities payment
+98,1,2025-10-29,expense,Shipping,31.84,Bank Transfer,2,Shipping payment
+99,1,2025-10-29,expense,Marketing,350.41,Card,3,Marketing payment
+100,1,2025-10-30,income,Sales,753.5,Bank Transfer,1,Daily sales revenue
+101,1,2025-10-30,expense,Shipping,64.41,Bank Transfer,2,Shipping payment
+102,1,2025-10-30,expense,Marketing,214.11,Card,3,Marketing payment
+103,1,2025-10-31,income,Sales,574.2,Card,1,Daily sales revenue
+104,1,2025-10-31,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+105,1,2025-10-31,expense,Shipping,44.75,Bank Transfer,2,Shipping payment
+106,1,2025-10-31,expense,Marketing,407.58,Bank Transfer,3,Marketing payment
+107,1,2025-11-01,income,Sales,719.9,Card,1,Daily sales revenue
+108,1,2025-11-01,expense,Rent,4200.0,Card,2,Rent payment
+109,1,2025-11-01,expense,Shipping,60.39,Bank Transfer,2,Shipping payment
+110,1,2025-11-01,expense,Supplies,370.19,Bank Transfer,2,Supplies payment
+111,1,2025-11-01,expense,Marketing,342.05,Bank Transfer,3,Marketing payment
+112,1,2025-11-02,income,Sales,688.1,Card,1,Daily sales revenue
+113,1,2025-11-02,expense,Shipping,51.01,Card,2,Shipping payment
+114,1,2025-11-02,expense,Supplies,245.71,Card,2,Supplies payment
+115,1,2025-11-02,expense,Marketing,467.47,Bank Transfer,3,Marketing payment
+116,1,2025-11-03,income,Sales,545.6,Card,1,Daily sales revenue
+117,1,2025-11-03,expense,Shipping,35.44,Bank Transfer,2,Shipping payment
+118,1,2025-11-03,expense,Marketing,413.77,Bank Transfer,3,Marketing payment
+119,1,2025-11-04,income,Sales,491.5,Cash,1,Daily sales revenue
+120,1,2025-11-04,expense,Shipping,30.7,Bank Transfer,2,Shipping payment
+121,1,2025-11-04,expense,Supplies,100.11,Bank Transfer,2,Supplies payment
+122,1,2025-11-04,expense,Marketing,315.84,Card,3,Marketing payment
+123,1,2025-11-05,income,Sales,608.35,Bank Transfer,1,Daily sales revenue
+124,1,2025-11-05,expense,Software,950.0,Bank Transfer,2,Software payment
+125,1,2025-11-05,expense,Utilities,133.0,Card,2,Utilities payment
+126,1,2025-11-05,expense,Shipping,41.38,Bank Transfer,2,Shipping payment
+127,1,2025-11-05,expense,Marketing,320.02,Bank Transfer,3,Marketing payment
+128,1,2025-11-06,income,Sales,472.05,Bank Transfer,1,Daily sales revenue
+129,1,2025-11-06,expense,Shipping,36.91,Bank Transfer,2,Shipping payment
+130,1,2025-11-06,expense,Marketing,401.49,Card,3,Marketing payment
+131,1,2025-11-07,income,Sales,784.5,Cash,1,Daily sales revenue
+132,1,2025-11-07,expense,Shipping,52.34,Card,2,Shipping payment
+133,1,2025-11-07,expense,Marketing,291.11,Card,3,Marketing payment
+134,1,2025-11-08,income,Sales,737.3,Cash,1,Daily sales revenue
+135,1,2025-11-08,expense,Shipping,47.84,Card,2,Shipping payment
+136,1,2025-11-08,expense,Marketing,515.47,Card,3,Marketing payment
+137,1,2025-11-09,income,Sales,582.4,Cash,1,Daily sales revenue
+138,1,2025-11-09,expense,Shipping,40.3,Card,2,Shipping payment
+139,1,2025-11-09,expense,Marketing,453.9,Card,3,Marketing payment
+140,1,2025-11-10,income,Sales,1140.1,Card,1,Daily sales revenue
+141,1,2025-11-10,expense,Shipping,95.57,Card,2,Shipping payment
+142,1,2025-11-10,expense,Marketing,483.18,Bank Transfer,3,Marketing payment
+143,1,2025-11-11,income,Sales,395.4,Card,1,Daily sales revenue
+144,1,2025-11-11,expense,Shipping,29.2,Bank Transfer,2,Shipping payment
+145,1,2025-11-11,expense,Marketing,347.08,Bank Transfer,3,Marketing payment
+146,1,2025-11-12,income,Sales,578.6,Card,1,Daily sales revenue
+147,1,2025-11-12,expense,Utilities,195.0,Bank Transfer,2,Utilities payment
+148,1,2025-11-12,expense,Shipping,49.91,Bank Transfer,2,Shipping payment
+149,1,2025-11-12,expense,Supplies,599.11,Bank Transfer,2,Supplies payment
+150,1,2025-11-12,expense,Marketing,419.94,Card,3,Marketing payment
+151,1,2025-11-13,income,Sales,641.0,Bank Transfer,1,Daily sales revenue
+152,1,2025-11-13,expense,Shipping,51.68,Card,2,Shipping payment
+153,1,2025-11-13,expense,Marketing,332.34,Card,3,Marketing payment
+154,1,2025-11-14,income,Sales,444.0,Bank Transfer,1,Daily sales revenue
+155,1,2025-11-14,expense,Shipping,28.27,Card,2,Shipping payment
+156,1,2025-11-14,expense,Marketing,401.56,Bank Transfer,3,Marketing payment
+157,1,2025-11-15,income,Sales,569.45,Bank Transfer,1,Daily sales revenue
+158,1,2025-11-15,expense,Payroll,11500.0,Card,2,Payroll payment
+159,1,2025-11-15,expense,Shipping,45.38,Bank Transfer,2,Shipping payment
+160,1,2025-11-15,expense,Marketing,357.14,Card,3,Marketing payment
+161,1,2025-11-16,income,Sales,495.8,Card,1,Daily sales revenue
+162,1,2025-11-16,expense,Shipping,30.48,Card,2,Shipping payment
+163,1,2025-11-16,expense,Marketing,283.79,Card,3,Marketing payment
+164,1,2025-11-17,income,Sales,362.0,Card,1,Daily sales revenue
+165,1,2025-11-17,expense,Shipping,30.54,Card,2,Shipping payment
+166,1,2025-11-17,expense,Marketing,248.82,Card,3,Marketing payment
+167,1,2025-11-18,income,Sales,539.3,Bank Transfer,1,Daily sales revenue
+168,1,2025-11-18,expense,Shipping,34.51,Card,2,Shipping payment
+169,1,2025-11-18,expense,Marketing,411.94,Card,3,Marketing payment
+170,1,2025-11-19,income,Sales,371.4,Cash,1,Daily sales revenue
+171,1,2025-11-19,expense,Utilities,231.0,Card,2,Utilities payment
+172,1,2025-11-19,expense,Shipping,30.08,Card,2,Shipping payment
+173,1,2025-11-19,expense,Supplies,491.6,Bank Transfer,2,Supplies payment
+174,1,2025-11-19,expense,Marketing,345.44,Card,3,Marketing payment
+175,1,2025-11-20,income,Sales,343.0,Bank Transfer,1,Daily sales revenue
+176,1,2025-11-20,expense,Shipping,22.1,Bank Transfer,2,Shipping payment
+177,1,2025-11-20,expense,Marketing,290.83,Card,3,Marketing payment
+178,1,2025-11-21,income,Sales,227.6,Bank Transfer,1,Daily sales revenue
+179,1,2025-11-21,expense,Shipping,19.85,Card,2,Shipping payment
+180,1,2025-11-21,expense,Marketing,371.67,Bank Transfer,3,Marketing payment
+181,1,2025-11-22,income,Sales,478.0,Card,1,Daily sales revenue
+182,1,2025-11-22,expense,Shipping,37.74,Card,2,Shipping payment
+183,1,2025-11-22,expense,Marketing,509.7,Card,3,Marketing payment
+184,1,2025-11-23,income,Sales,448.7,Card,1,Daily sales revenue
+185,1,2025-11-23,expense,Shipping,28.33,Bank Transfer,2,Shipping payment
+186,1,2025-11-23,expense,Marketing,379.41,Bank Transfer,3,Marketing payment
+187,1,2025-11-24,income,Sales,269.8,Card,1,Daily sales revenue
+188,1,2025-11-24,expense,Shipping,18.88,Card,2,Shipping payment
+189,1,2025-11-24,expense,Marketing,343.89,Card,3,Marketing payment
+190,1,2025-11-25,income,Sales,670.0,Cash,1,Daily sales revenue
+191,1,2025-11-25,expense,Shipping,60.17,Bank Transfer,2,Shipping payment
+192,1,2025-11-25,expense,Marketing,267.62,Card,3,Marketing payment
+193,1,2025-11-26,income,Sales,771.2,Cash,1,Daily sales revenue
+194,1,2025-11-26,expense,Utilities,222.0,Card,2,Utilities payment
+195,1,2025-11-26,expense,Shipping,47.18,Card,2,Shipping payment
+196,1,2025-11-26,expense,Marketing,292.23,Bank Transfer,3,Marketing payment
+197,1,2025-11-27,income,Sales,433.0,Bank Transfer,1,Daily sales revenue
+198,1,2025-11-27,expense,Shipping,30.3,Bank Transfer,2,Shipping payment
+199,1,2025-11-27,expense,Marketing,300.91,Card,3,Marketing payment
+200,1,2025-11-28,income,Sales,449.0,Bank Transfer,1,Daily sales revenue
+201,1,2025-11-28,expense,Shipping,39.45,Bank Transfer,2,Shipping payment
+202,1,2025-11-28,expense,Marketing,379.49,Card,3,Marketing payment
+203,1,2025-11-29,income,Sales,847.0,Cash,1,Daily sales revenue
+204,1,2025-11-29,expense,Shipping,56.48,Bank Transfer,2,Shipping payment
+205,1,2025-11-29,expense,Marketing,421.41,Bank Transfer,3,Marketing payment
+206,1,2025-11-30,income,Sales,469.3,Cash,1,Daily sales revenue
+207,1,2025-11-30,expense,Payroll,11500.0,Card,2,Payroll payment
+208,1,2025-11-30,expense,Shipping,40.89,Bank Transfer,2,Shipping payment
+209,1,2025-11-30,expense,Marketing,295.57,Bank Transfer,3,Marketing payment
+210,1,2025-12-01,income,Sales,1217.15,Card,1,Daily sales revenue
+211,1,2025-12-01,expense,Rent,4200.0,Bank Transfer,2,Rent payment
+212,1,2025-12-01,expense,Shipping,81.13,Card,2,Shipping payment
+213,1,2025-12-01,expense,Marketing,413.68,Bank Transfer,3,Marketing payment
+214,1,2025-12-02,income,Sales,630.65,Bank Transfer,1,Daily sales revenue
+215,1,2025-12-02,expense,Shipping,38.74,Card,2,Shipping payment
+216,1,2025-12-02,expense,Supplies,501.64,Bank Transfer,2,Supplies payment
+217,1,2025-12-02,expense,Marketing,275.86,Card,3,Marketing payment
+218,1,2025-12-03,income,Sales,661.3,Cash,1,Daily sales revenue
+219,1,2025-12-03,expense,Utilities,204.0,Bank Transfer,2,Utilities payment
+220,1,2025-12-03,expense,Shipping,40.69,Card,2,Shipping payment
+221,1,2025-12-03,expense,Marketing,373.96,Bank Transfer,3,Marketing payment
+222,1,2025-12-04,income,Sales,943.6,Card,1,Daily sales revenue
+223,1,2025-12-04,expense,Shipping,82.82,Card,2,Shipping payment
+224,1,2025-12-04,expense,Marketing,383.51,Bank Transfer,3,Marketing payment
+225,1,2025-12-05,income,Sales,600.9,Cash,1,Daily sales revenue
+226,1,2025-12-05,expense,Software,950.0,Card,2,Software payment
+227,1,2025-12-05,expense,Shipping,47.88,Bank Transfer,2,Shipping payment
+228,1,2025-12-05,expense,Supplies,314.75,Card,2,Supplies payment
+229,1,2025-12-05,expense,Marketing,373.14,Bank Transfer,3,Marketing payment
+230,1,2025-12-06,income,Sales,784.8,Card,1,Daily sales revenue
+231,1,2025-12-06,expense,Shipping,50.15,Card,2,Shipping payment
+232,1,2025-12-06,expense,Marketing,327.19,Bank Transfer,3,Marketing payment
+233,1,2025-12-07,income,Sales,802.65,Cash,1,Daily sales revenue
+234,1,2025-12-07,expense,Shipping,55.2,Bank Transfer,2,Shipping payment
+235,1,2025-12-07,expense,Marketing,350.1,Card,3,Marketing payment
+236,1,2025-12-08,income,Sales,1160.0,Card,1,Daily sales revenue
+237,1,2025-12-08,expense,Shipping,94.97,Card,2,Shipping payment
+238,1,2025-12-08,expense,Marketing,342.26,Card,3,Marketing payment
+239,1,2025-12-09,income,Sales,849.5,Cash,1,Daily sales revenue
+240,1,2025-12-09,expense,Shipping,68.59,Bank Transfer,2,Shipping payment
+241,1,2025-12-09,expense,Marketing,483.98,Bank Transfer,3,Marketing payment
+242,1,2025-12-10,income,Sales,705.0,Card,1,Daily sales revenue
+243,1,2025-12-10,expense,Utilities,229.0,Bank Transfer,2,Utilities payment
+244,1,2025-12-10,expense,Shipping,62.12,Card,2,Shipping payment
+245,1,2025-12-10,expense,Marketing,337.13,Bank Transfer,3,Marketing payment
+246,1,2025-12-11,income,Sales,996.1,Card,1,Daily sales revenue
+247,1,2025-12-11,expense,Shipping,82.62,Card,2,Shipping payment
+248,1,2025-12-11,expense,Marketing,258.62,Bank Transfer,3,Marketing payment
+249,1,2025-12-12,income,Sales,970.25,Bank Transfer,1,Daily sales revenue
+250,1,2025-12-12,expense,Shipping,77.66,Bank Transfer,2,Shipping payment
+251,1,2025-12-12,expense,Marketing,424.93,Card,3,Marketing payment
+252,1,2025-12-13,income,Sales,883.25,Card,1,Daily sales revenue
+253,1,2025-12-13,expense,Shipping,62.35,Bank Transfer,2,Shipping payment
+254,1,2025-12-13,expense,Marketing,359.31,Card,3,Marketing payment
+255,1,2025-12-14,income,Sales,440.9,Cash,1,Daily sales revenue
+256,1,2025-12-14,expense,Shipping,26.7,Bank Transfer,2,Shipping payment
+257,1,2025-12-14,expense,Marketing,307.27,Bank Transfer,3,Marketing payment
+258,1,2025-12-15,income,Sales,746.0,Card,1,Daily sales revenue
+259,1,2025-12-15,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+260,1,2025-12-15,expense,Shipping,48.02,Card,2,Shipping payment
+261,1,2025-12-15,expense,Marketing,368.92,Card,3,Marketing payment
+262,1,2025-12-16,income,Sales,408.0,Card,1,Daily sales revenue
+263,1,2025-12-16,expense,Shipping,28.64,Card,2,Shipping payment
+264,1,2025-12-16,expense,Marketing,288.43,Bank Transfer,3,Marketing payment
+265,1,2025-12-17,income,Sales,558.8,Cash,1,Daily sales revenue
+266,1,2025-12-17,expense,Utilities,219.0,Bank Transfer,2,Utilities payment
+267,1,2025-12-17,expense,Shipping,47.14,Card,2,Shipping payment
+268,1,2025-12-17,expense,Marketing,333.2,Bank Transfer,3,Marketing payment
+269,1,2025-12-18,income,Sales,753.4,Cash,1,Daily sales revenue
+270,1,2025-12-18,expense,Shipping,50.33,Card,2,Shipping payment
+271,1,2025-12-18,expense,Marketing,360.39,Card,3,Marketing payment
+272,1,2025-12-19,income,Sales,886.8,Bank Transfer,1,Daily sales revenue
+273,1,2025-12-19,expense,Shipping,61.78,Bank Transfer,2,Shipping payment
+274,1,2025-12-19,expense,Marketing,329.59,Bank Transfer,3,Marketing payment
+275,1,2025-12-20,income,Sales,717.8,Bank Transfer,1,Daily sales revenue
+276,1,2025-12-20,expense,Shipping,47.12,Bank Transfer,2,Shipping payment
+277,1,2025-12-20,expense,Marketing,372.94,Card,3,Marketing payment
+278,1,2025-12-21,income,Sales,864.25,Cash,1,Daily sales revenue
+279,1,2025-12-21,expense,Shipping,60.64,Bank Transfer,2,Shipping payment
+280,1,2025-12-21,expense,Marketing,240.83,Card,3,Marketing payment
+281,1,2025-12-22,income,Sales,911.95,Bank Transfer,1,Daily sales revenue
+282,1,2025-12-22,expense,Shipping,57.05,Bank Transfer,2,Shipping payment
+283,1,2025-12-22,expense,Marketing,580.19,Bank Transfer,3,Marketing payment
+284,1,2025-12-23,income,Sales,962.6,Bank Transfer,1,Daily sales revenue
+285,1,2025-12-23,expense,Shipping,72.03,Card,2,Shipping payment
+286,1,2025-12-23,expense,Marketing,305.49,Bank Transfer,3,Marketing payment
+287,1,2025-12-24,income,Sales,678.15,Cash,1,Daily sales revenue
+288,1,2025-12-24,expense,Utilities,223.0,Card,2,Utilities payment
+289,1,2025-12-24,expense,Shipping,41.35,Bank Transfer,2,Shipping payment
+290,1,2025-12-24,expense,Marketing,396.52,Card,3,Marketing payment
+291,1,2025-12-25,income,Sales,659.55,Cash,1,Daily sales revenue
+292,1,2025-12-25,expense,Shipping,55.84,Bank Transfer,2,Shipping payment
+293,1,2025-12-25,expense,Marketing,369.18,Bank Transfer,3,Marketing payment
+294,1,2025-12-26,income,Sales,827.35,Bank Transfer,1,Daily sales revenue
+295,1,2025-12-26,expense,Shipping,66.14,Card,2,Shipping payment
+296,1,2025-12-26,expense,Marketing,421.18,Card,3,Marketing payment
+297,1,2025-12-27,income,Sales,758.0,Card,1,Daily sales revenue
+298,1,2025-12-27,expense,Shipping,51.86,Bank Transfer,2,Shipping payment
+299,1,2025-12-27,expense,Marketing,403.01,Card,3,Marketing payment
+300,1,2025-12-28,income,Sales,409.0,Card,1,Daily sales revenue
+301,1,2025-12-28,expense,Shipping,30.65,Card,2,Shipping payment
+302,1,2025-12-28,expense,Marketing,374.79,Bank Transfer,3,Marketing payment
+303,1,2025-12-29,income,Sales,930.2,Card,1,Daily sales revenue
+304,1,2025-12-29,expense,Shipping,83.19,Bank Transfer,2,Shipping payment
+305,1,2025-12-29,expense,Marketing,307.84,Bank Transfer,3,Marketing payment
+306,1,2025-12-30,income,Sales,985.0,Cash,1,Daily sales revenue
+307,1,2025-12-30,expense,Shipping,76.92,Card,2,Shipping payment
+308,1,2025-12-30,expense,Marketing,346.01,Bank Transfer,3,Marketing payment
+309,1,2025-12-31,income,Sales,668.0,Card,1,Daily sales revenue
+310,1,2025-12-31,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+311,1,2025-12-31,expense,Utilities,153.0,Bank Transfer,2,Utilities payment
+312,1,2025-12-31,expense,Shipping,55.47,Bank Transfer,2,Shipping payment
+313,1,2025-12-31,expense,Marketing,404.06,Bank Transfer,3,Marketing payment
+314,1,2026-01-01,income,Sales,461.0,Card,1,Daily sales revenue
+315,1,2026-01-01,expense,Rent,4200.0,Bank Transfer,2,Rent payment
+316,1,2026-01-01,expense,Shipping,28.34,Card,2,Shipping payment
+317,1,2026-01-01,expense,Marketing,261.63,Card,3,Marketing payment
+318,1,2026-01-02,income,Sales,452.35,Card,1,Daily sales revenue
+319,1,2026-01-02,expense,Shipping,39.29,Bank Transfer,2,Shipping payment
+320,1,2026-01-02,expense,Marketing,296.95,Card,3,Marketing payment
+321,1,2026-01-03,income,Sales,410.0,Bank Transfer,1,Daily sales revenue
+322,1,2026-01-03,expense,Shipping,25.74,Bank Transfer,2,Shipping payment
+323,1,2026-01-03,expense,Marketing,407.47,Bank Transfer,3,Marketing payment
+324,1,2026-01-04,income,Sales,592.1,Card,1,Daily sales revenue
+325,1,2026-01-04,expense,Shipping,37.2,Bank Transfer,2,Shipping payment
+326,1,2026-01-04,expense,Marketing,331.06,Bank Transfer,3,Marketing payment
+327,1,2026-01-05,income,Sales,601.1,Bank Transfer,1,Daily sales revenue
+328,1,2026-01-05,expense,Software,950.0,Card,2,Software payment
+329,1,2026-01-05,expense,Shipping,36.83,Bank Transfer,2,Shipping payment
+330,1,2026-01-05,expense,Marketing,424.03,Card,3,Marketing payment
+331,1,2026-01-06,income,Sales,382.9,Card,1,Daily sales revenue
+332,1,2026-01-06,expense,Shipping,29.76,Bank Transfer,2,Shipping payment
+333,1,2026-01-06,expense,Marketing,407.04,Bank Transfer,3,Marketing payment
+334,1,2026-01-07,income,Sales,623.5,Bank Transfer,1,Daily sales revenue
+335,1,2026-01-07,expense,Utilities,141.0,Bank Transfer,2,Utilities payment
+336,1,2026-01-07,expense,Shipping,40.87,Bank Transfer,2,Shipping payment
+337,1,2026-01-07,expense,Marketing,320.66,Card,3,Marketing payment
+338,1,2026-01-08,income,Sales,396.0,Card,1,Daily sales revenue
+339,1,2026-01-08,expense,Shipping,32.42,Bank Transfer,2,Shipping payment
+340,1,2026-01-08,expense,Supplies,468.93,Card,2,Supplies payment
+341,1,2026-01-08,expense,Marketing,326.0,Bank Transfer,3,Marketing payment
+342,1,2026-01-09,income,Sales,658.5,Cash,1,Daily sales revenue
+343,1,2026-01-09,expense,Shipping,49.84,Bank Transfer,2,Shipping payment
+344,1,2026-01-09,expense,Marketing,369.08,Card,3,Marketing payment
+345,1,2026-01-10,income,Sales,501.0,Cash,1,Daily sales revenue
+346,1,2026-01-10,expense,Shipping,33.64,Card,2,Shipping payment
+347,1,2026-01-10,expense,Marketing,294.79,Bank Transfer,3,Marketing payment
+348,1,2026-01-11,income,Sales,750.0,Cash,1,Daily sales revenue
+349,1,2026-01-11,expense,Shipping,51.59,Card,2,Shipping payment
+350,1,2026-01-11,expense,Supplies,586.86,Card,2,Supplies payment
+351,1,2026-01-11,expense,Marketing,272.29,Card,3,Marketing payment
+352,1,2026-01-12,income,Sales,424.0,Card,1,Daily sales revenue
+353,1,2026-01-12,expense,Shipping,33.28,Card,2,Shipping payment
+354,1,2026-01-12,expense,Marketing,279.83,Card,3,Marketing payment
+355,1,2026-01-13,income,Sales,88.0,Cash,1,Daily sales revenue
+356,1,2026-01-13,expense,Shipping,6.88,Bank Transfer,2,Shipping payment
+357,1,2026-01-13,expense,Supplies,157.31,Card,2,Supplies payment
+358,1,2026-01-13,expense,Marketing,300.85,Bank Transfer,3,Marketing payment
+359,1,2026-01-14,income,Sales,840.55,Cash,1,Daily sales revenue
+360,1,2026-01-14,expense,Utilities,143.0,Bank Transfer,2,Utilities payment
+361,1,2026-01-14,expense,Shipping,70.97,Bank Transfer,2,Shipping payment
+362,1,2026-01-14,expense,Marketing,321.53,Bank Transfer,3,Marketing payment
+363,1,2026-01-15,income,Sales,623.8,Card,1,Daily sales revenue
+364,1,2026-01-15,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+365,1,2026-01-15,expense,Shipping,56.11,Card,2,Shipping payment
+366,1,2026-01-15,expense,Marketing,395.34,Bank Transfer,3,Marketing payment
+367,1,2026-01-16,income,Sales,491.35,Card,1,Daily sales revenue
+368,1,2026-01-16,expense,Shipping,33.56,Bank Transfer,2,Shipping payment
+369,1,2026-01-16,expense,Supplies,101.41,Bank Transfer,2,Supplies payment
+370,1,2026-01-16,expense,Marketing,273.64,Bank Transfer,3,Marketing payment
+371,1,2026-01-17,income,Sales,679.1,Bank Transfer,1,Daily sales revenue
+372,1,2026-01-17,expense,Shipping,42.92,Bank Transfer,2,Shipping payment
+373,1,2026-01-17,expense,Marketing,332.57,Bank Transfer,3,Marketing payment
+374,1,2026-01-18,income,Sales,657.0,Cash,1,Daily sales revenue
+375,1,2026-01-18,expense,Shipping,52.19,Card,2,Shipping payment
+376,1,2026-01-18,expense,Supplies,284.38,Card,2,Supplies payment
+377,1,2026-01-18,expense,Marketing,500.73,Card,3,Marketing payment
+378,1,2026-01-19,income,Sales,541.9,Bank Transfer,1,Daily sales revenue
+379,1,2026-01-19,expense,Shipping,43.29,Bank Transfer,2,Shipping payment
+380,1,2026-01-19,expense,Marketing,294.31,Bank Transfer,3,Marketing payment
+381,1,2026-01-20,income,Sales,612.45,Bank Transfer,1,Daily sales revenue
+382,1,2026-01-20,expense,Shipping,43.24,Bank Transfer,2,Shipping payment
+383,1,2026-01-20,expense,Marketing,277.68,Card,3,Marketing payment
+384,1,2026-01-21,income,Sales,687.1,Bank Transfer,1,Daily sales revenue
+385,1,2026-01-21,expense,Utilities,155.0,Card,2,Utilities payment
+386,1,2026-01-21,expense,Shipping,50.24,Card,2,Shipping payment
+387,1,2026-01-21,expense,Marketing,460.7,Bank Transfer,3,Marketing payment
+388,1,2026-01-22,income,Sales,863.9,Card,1,Daily sales revenue
+389,1,2026-01-22,expense,Shipping,72.09,Card,2,Shipping payment
+390,1,2026-01-22,expense,Marketing,293.94,Card,3,Marketing payment
+391,1,2026-01-23,income,Sales,535.0,Card,1,Daily sales revenue
+392,1,2026-01-23,expense,Shipping,38.74,Bank Transfer,2,Shipping payment
+393,1,2026-01-23,expense,Marketing,482.38,Card,3,Marketing payment
+394,1,2026-01-24,income,Sales,366.0,Bank Transfer,1,Daily sales revenue
+395,1,2026-01-24,expense,Shipping,23.9,Card,2,Shipping payment
+396,1,2026-01-24,expense,Marketing,427.81,Bank Transfer,3,Marketing payment
+397,1,2026-01-25,income,Sales,345.0,Cash,1,Daily sales revenue
+398,1,2026-01-25,expense,Shipping,25.4,Bank Transfer,2,Shipping payment
+399,1,2026-01-25,expense,Marketing,371.79,Card,3,Marketing payment
+400,1,2026-01-26,income,Sales,580.7,Card,1,Daily sales revenue
+401,1,2026-01-26,expense,Shipping,46.84,Card,2,Shipping payment
+402,1,2026-01-26,expense,Marketing,267.08,Card,3,Marketing payment
+403,1,2026-01-27,income,Sales,790.5,Bank Transfer,1,Daily sales revenue
+404,1,2026-01-27,expense,Shipping,51.24,Bank Transfer,2,Shipping payment
+405,1,2026-01-27,expense,Marketing,287.31,Bank Transfer,3,Marketing payment
+406,1,2026-01-28,income,Sales,527.7,Card,1,Daily sales revenue
+407,1,2026-01-28,expense,Utilities,202.0,Bank Transfer,2,Utilities payment
+408,1,2026-01-28,expense,Shipping,39.35,Bank Transfer,2,Shipping payment
+409,1,2026-01-28,expense,Marketing,440.91,Card,3,Marketing payment
+410,1,2026-01-29,income,Sales,503.7,Cash,1,Daily sales revenue
+411,1,2026-01-29,expense,Shipping,35.83,Bank Transfer,2,Shipping payment
+412,1,2026-01-29,expense,Marketing,381.25,Card,3,Marketing payment
+413,1,2026-01-30,income,Sales,202.6,Cash,1,Daily sales revenue
+414,1,2026-01-30,expense,Shipping,15.3,Card,2,Shipping payment
+415,1,2026-01-30,expense,Marketing,262.89,Bank Transfer,3,Marketing payment
+416,1,2026-01-31,income,Sales,399.95,Card,1,Daily sales revenue
+417,1,2026-01-31,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+418,1,2026-01-31,expense,Shipping,30.8,Card,2,Shipping payment
+419,1,2026-01-31,expense,Marketing,337.29,Card,3,Marketing payment
+420,1,2026-02-01,income,Sales,725.85,Card,1,Daily sales revenue
+421,1,2026-02-01,expense,Rent,4200.0,Bank Transfer,2,Rent payment
+422,1,2026-02-01,expense,Shipping,60.05,Card,2,Shipping payment
+423,1,2026-02-01,expense,Marketing,322.48,Bank Transfer,3,Marketing payment
+424,1,2026-02-02,income,Sales,493.1,Card,1,Daily sales revenue
+425,1,2026-02-02,expense,Shipping,43.77,Card,2,Shipping payment
+426,1,2026-02-02,expense,Marketing,463.46,Card,3,Marketing payment
+427,1,2026-02-03,income,Sales,403.45,Card,1,Daily sales revenue
+428,1,2026-02-03,expense,Shipping,30.03,Card,2,Shipping payment
+429,1,2026-02-03,expense,Marketing,454.64,Card,3,Marketing payment
+430,1,2026-02-04,income,Sales,372.6,Bank Transfer,1,Daily sales revenue
+431,1,2026-02-04,expense,Utilities,209.0,Card,2,Utilities payment
+432,1,2026-02-04,expense,Shipping,31.35,Card,2,Shipping payment
+433,1,2026-02-04,expense,Marketing,437.37,Bank Transfer,3,Marketing payment
+434,1,2026-02-05,income,Sales,933.45,Bank Transfer,1,Daily sales revenue
+435,1,2026-02-05,expense,Software,950.0,Bank Transfer,2,Software payment
+436,1,2026-02-05,expense,Shipping,69.22,Card,2,Shipping payment
+437,1,2026-02-05,expense,Marketing,243.45,Bank Transfer,3,Marketing payment
+438,1,2026-02-06,income,Sales,417.55,Bank Transfer,1,Daily sales revenue
+439,1,2026-02-06,expense,Shipping,29.52,Card,2,Shipping payment
+440,1,2026-02-06,expense,Marketing,489.41,Card,3,Marketing payment
+441,1,2026-02-07,income,Sales,401.1,Card,1,Daily sales revenue
+442,1,2026-02-07,expense,Shipping,29.25,Bank Transfer,2,Shipping payment
+443,1,2026-02-07,expense,Marketing,446.05,Bank Transfer,3,Marketing payment
+444,1,2026-02-08,income,Sales,312.3,Cash,1,Daily sales revenue
+445,1,2026-02-08,expense,Shipping,27.13,Bank Transfer,2,Shipping payment
+446,1,2026-02-08,expense,Marketing,476.91,Bank Transfer,3,Marketing payment
+447,1,2026-02-09,income,Sales,513.7,Bank Transfer,1,Daily sales revenue
+448,1,2026-02-09,expense,Shipping,37.18,Bank Transfer,2,Shipping payment
+449,1,2026-02-09,expense,Marketing,402.67,Bank Transfer,3,Marketing payment
+450,1,2026-02-10,income,Sales,395.85,Cash,1,Daily sales revenue
+451,1,2026-02-10,expense,Shipping,35.51,Bank Transfer,2,Shipping payment
+452,1,2026-02-10,expense,Marketing,342.78,Bank Transfer,3,Marketing payment
+453,1,2026-02-11,income,Sales,238.0,Cash,1,Daily sales revenue
+454,1,2026-02-11,expense,Utilities,147.0,Card,2,Utilities payment
+455,1,2026-02-11,expense,Shipping,15.84,Bank Transfer,2,Shipping payment
+456,1,2026-02-11,expense,Supplies,228.23,Card,2,Supplies payment
+457,1,2026-02-11,expense,Marketing,321.87,Card,3,Marketing payment
+458,1,2026-02-12,income,Sales,281.0,Card,1,Daily sales revenue
+459,1,2026-02-12,expense,Shipping,17.65,Bank Transfer,2,Shipping payment
+460,1,2026-02-12,expense,Marketing,260.29,Bank Transfer,3,Marketing payment
+461,1,2026-02-13,income,Sales,308.0,Bank Transfer,1,Daily sales revenue
+462,1,2026-02-13,expense,Shipping,25.79,Bank Transfer,2,Shipping payment
+463,1,2026-02-13,expense,Marketing,369.48,Bank Transfer,3,Marketing payment
+464,1,2026-02-14,income,Sales,515.5,Bank Transfer,1,Daily sales revenue
+465,1,2026-02-14,expense,Shipping,41.59,Bank Transfer,2,Shipping payment
+466,1,2026-02-14,expense,Marketing,444.44,Card,3,Marketing payment
+467,1,2026-02-15,income,Sales,672.3,Card,1,Daily sales revenue
+468,1,2026-02-15,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+469,1,2026-02-15,expense,Shipping,56.39,Bank Transfer,2,Shipping payment
+470,1,2026-02-15,expense,Marketing,411.59,Bank Transfer,3,Marketing payment
+471,1,2026-02-16,income,Sales,386.3,Cash,1,Daily sales revenue
+472,1,2026-02-16,expense,Shipping,26.4,Card,2,Shipping payment
+473,1,2026-02-16,expense,Marketing,508.91,Card,3,Marketing payment
+474,1,2026-02-17,income,Sales,527.0,Bank Transfer,1,Daily sales revenue
+475,1,2026-02-17,expense,Shipping,40.41,Bank Transfer,2,Shipping payment
+476,1,2026-02-17,expense,Marketing,254.28,Bank Transfer,3,Marketing payment
+477,1,2026-02-18,income,Sales,50.0,Cash,1,Daily sales revenue
+478,1,2026-02-18,expense,Utilities,155.0,Bank Transfer,2,Utilities payment
+479,1,2026-02-18,expense,Shipping,3.29,Bank Transfer,2,Shipping payment
+480,1,2026-02-18,expense,Marketing,400.77,Bank Transfer,3,Marketing payment
+481,1,2026-02-19,income,Sales,586.8,Card,1,Daily sales revenue
+482,1,2026-02-19,expense,Shipping,49.77,Card,2,Shipping payment
+483,1,2026-02-19,expense,Marketing,329.72,Card,3,Marketing payment
+484,1,2026-02-20,income,Sales,464.8,Card,1,Daily sales revenue
+485,1,2026-02-20,expense,Shipping,37.11,Bank Transfer,2,Shipping payment
+486,1,2026-02-20,expense,Marketing,329.83,Bank Transfer,3,Marketing payment
+487,1,2026-02-21,income,Sales,473.0,Card,1,Daily sales revenue
+488,1,2026-02-21,expense,Shipping,38.68,Card,2,Shipping payment
+489,1,2026-02-21,expense,Marketing,331.02,Card,3,Marketing payment
+490,1,2026-02-22,income,Sales,670.5,Cash,1,Daily sales revenue
+491,1,2026-02-22,expense,Shipping,48.92,Bank Transfer,2,Shipping payment
+492,1,2026-02-22,expense,Marketing,348.8,Card,3,Marketing payment
+493,1,2026-02-23,income,Sales,497.0,Bank Transfer,1,Daily sales revenue
+494,1,2026-02-23,expense,Shipping,29.93,Bank Transfer,2,Shipping payment
+495,1,2026-02-23,expense,Marketing,303.86,Card,3,Marketing payment
+496,1,2026-02-24,income,Sales,472.05,Card,1,Daily sales revenue
+497,1,2026-02-24,expense,Shipping,29.52,Bank Transfer,2,Shipping payment
+498,1,2026-02-24,expense,Marketing,376.68,Bank Transfer,3,Marketing payment
+499,1,2026-02-25,income,Sales,591.2,Bank Transfer,1,Daily sales revenue
+500,1,2026-02-25,expense,Utilities,133.0,Bank Transfer,2,Utilities payment
+501,1,2026-02-25,expense,Shipping,43.18,Card,2,Shipping payment
+502,1,2026-02-25,expense,Marketing,454.5,Card,3,Marketing payment
+503,1,2026-02-26,income,Sales,333.0,Bank Transfer,1,Daily sales revenue
+504,1,2026-02-26,expense,Shipping,21.55,Bank Transfer,2,Shipping payment
+505,1,2026-02-26,expense,Marketing,348.17,Card,3,Marketing payment
+506,1,2026-02-27,income,Sales,746.0,Bank Transfer,1,Daily sales revenue
+507,1,2026-02-27,expense,Shipping,48.61,Card,2,Shipping payment
+508,1,2026-02-27,expense,Marketing,374.97,Card,3,Marketing payment
+509,1,2026-02-28,income,Sales,444.1,Bank Transfer,1,Daily sales revenue
+510,1,2026-02-28,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+511,1,2026-02-28,expense,Shipping,30.11,Bank Transfer,2,Shipping payment
+512,1,2026-02-28,expense,Marketing,324.71,Card,3,Marketing payment
+513,1,2026-03-01,income,Sales,619.2,Bank Transfer,1,Daily sales revenue
+514,1,2026-03-01,expense,Rent,4200.0,Bank Transfer,2,Rent payment
+515,1,2026-03-01,expense,Shipping,44.13,Bank Transfer,2,Shipping payment
+516,1,2026-03-01,expense,Marketing,419.09,Bank Transfer,3,Marketing payment
+517,1,2026-03-02,income,Sales,930.6,Card,1,Daily sales revenue
+518,1,2026-03-02,expense,Shipping,62.25,Bank Transfer,2,Shipping payment
+519,1,2026-03-02,expense,Marketing,457.42,Card,3,Marketing payment
+520,1,2026-03-03,income,Sales,416.0,Bank Transfer,1,Daily sales revenue
+521,1,2026-03-03,expense,Shipping,36.31,Bank Transfer,2,Shipping payment
+522,1,2026-03-03,expense,Marketing,390.29,Bank Transfer,3,Marketing payment
+523,1,2026-03-04,income,Sales,519.0,Cash,1,Daily sales revenue
+524,1,2026-03-04,expense,Utilities,143.0,Bank Transfer,2,Utilities payment
+525,1,2026-03-04,expense,Shipping,39.53,Bank Transfer,2,Shipping payment
+526,1,2026-03-04,expense,Marketing,448.86,Bank Transfer,3,Marketing payment
+527,1,2026-03-05,income,Sales,522.0,Cash,1,Daily sales revenue
+528,1,2026-03-05,expense,Software,950.0,Bank Transfer,2,Software payment
+529,1,2026-03-05,expense,Shipping,44.76,Bank Transfer,2,Shipping payment
+530,1,2026-03-05,expense,Marketing,362.37,Bank Transfer,3,Marketing payment
+531,1,2026-03-06,income,Sales,629.0,Bank Transfer,1,Daily sales revenue
+532,1,2026-03-06,expense,Shipping,47.65,Bank Transfer,2,Shipping payment
+533,1,2026-03-06,expense,Supplies,230.57,Bank Transfer,2,Supplies payment
+534,1,2026-03-06,expense,Marketing,293.7,Bank Transfer,3,Marketing payment
+535,1,2026-03-07,income,Sales,616.1,Bank Transfer,1,Daily sales revenue
+536,1,2026-03-07,expense,Shipping,46.03,Bank Transfer,2,Shipping payment
+537,1,2026-03-07,expense,Marketing,298.54,Bank Transfer,3,Marketing payment
+538,1,2026-03-08,income,Sales,657.7,Cash,1,Daily sales revenue
+539,1,2026-03-08,expense,Shipping,52.02,Card,2,Shipping payment
+540,1,2026-03-08,expense,Marketing,273.16,Bank Transfer,3,Marketing payment
+541,1,2026-03-09,income,Sales,359.0,Bank Transfer,1,Daily sales revenue
+542,1,2026-03-09,expense,Shipping,29.3,Card,2,Shipping payment
+543,1,2026-03-09,expense,Marketing,379.47,Card,3,Marketing payment
+544,1,2026-03-10,income,Sales,494.0,Card,1,Daily sales revenue
+545,1,2026-03-10,expense,Shipping,39.74,Card,2,Shipping payment
+546,1,2026-03-10,expense,Marketing,236.63,Bank Transfer,3,Marketing payment
+547,1,2026-03-11,income,Sales,624.6,Card,1,Daily sales revenue
+548,1,2026-03-11,expense,Utilities,217.0,Bank Transfer,2,Utilities payment
+549,1,2026-03-11,expense,Shipping,37.69,Bank Transfer,2,Shipping payment
+550,1,2026-03-11,expense,Supplies,432.44,Bank Transfer,2,Supplies payment
+551,1,2026-03-11,expense,Marketing,269.26,Card,3,Marketing payment
+552,1,2026-03-12,income,Sales,290.45,Card,1,Daily sales revenue
+553,1,2026-03-12,expense,Shipping,24.03,Bank Transfer,2,Shipping payment
+554,1,2026-03-12,expense,Marketing,189.17,Bank Transfer,3,Marketing payment
+555,1,2026-03-13,income,Sales,584.45,Cash,1,Daily sales revenue
+556,1,2026-03-13,expense,Shipping,38.41,Bank Transfer,2,Shipping payment
+557,1,2026-03-13,expense,Marketing,301.23,Card,3,Marketing payment
+558,1,2026-03-14,income,Sales,417.0,Cash,1,Daily sales revenue
+559,1,2026-03-14,expense,Shipping,33.12,Bank Transfer,2,Shipping payment
+560,1,2026-03-14,expense,Supplies,415.42,Bank Transfer,2,Supplies payment
+561,1,2026-03-14,expense,Marketing,295.81,Card,3,Marketing payment
+562,1,2026-03-15,income,Sales,852.5,Bank Transfer,1,Daily sales revenue
+563,1,2026-03-15,expense,Payroll,11500.0,Card,2,Payroll payment
+564,1,2026-03-15,expense,Shipping,60.84,Card,2,Shipping payment
+565,1,2026-03-15,expense,Supplies,557.13,Card,2,Supplies payment
+566,1,2026-03-15,expense,Marketing,320.29,Bank Transfer,3,Marketing payment
+567,1,2026-03-16,income,Sales,474.0,Card,1,Daily sales revenue
+568,1,2026-03-16,expense,Shipping,36.2,Card,2,Shipping payment
+569,1,2026-03-16,expense,Supplies,434.07,Card,2,Supplies payment
+570,1,2026-03-16,expense,Marketing,298.13,Card,3,Marketing payment
+571,1,2026-03-17,income,Sales,732.85,Cash,1,Daily sales revenue
+572,1,2026-03-17,expense,Shipping,63.98,Card,2,Shipping payment
+573,1,2026-03-17,expense,Supplies,187.86,Bank Transfer,2,Supplies payment
+574,1,2026-03-17,expense,Marketing,265.89,Card,3,Marketing payment
+575,1,2026-03-18,income,Sales,735.1,Bank Transfer,1,Daily sales revenue
+576,1,2026-03-18,expense,Utilities,180.0,Bank Transfer,2,Utilities payment
+577,1,2026-03-18,expense,Shipping,45.0,Bank Transfer,2,Shipping payment
+578,1,2026-03-18,expense,Marketing,386.74,Bank Transfer,3,Marketing payment
+579,1,2026-03-19,income,Sales,582.95,Card,1,Daily sales revenue
+580,1,2026-03-19,expense,Shipping,46.56,Card,2,Shipping payment
+581,1,2026-03-19,expense,Marketing,338.07,Card,3,Marketing payment
+582,1,2026-03-20,income,Sales,485.0,Cash,1,Daily sales revenue
+583,1,2026-03-20,expense,Shipping,34.07,Card,2,Shipping payment
+584,1,2026-03-20,expense,Marketing,331.78,Bank Transfer,3,Marketing payment
+585,1,2026-03-21,income,Sales,428.0,Bank Transfer,1,Daily sales revenue
+586,1,2026-03-21,expense,Shipping,30.53,Card,2,Shipping payment
+587,1,2026-03-21,expense,Supplies,306.49,Bank Transfer,2,Supplies payment
+588,1,2026-03-21,expense,Marketing,374.11,Card,3,Marketing payment
+589,1,2026-03-22,income,Sales,282.0,Bank Transfer,1,Daily sales revenue
+590,1,2026-03-22,expense,Shipping,22.51,Bank Transfer,2,Shipping payment
+591,1,2026-03-22,expense,Marketing,402.65,Card,3,Marketing payment
+592,1,2026-03-23,income,Sales,402.5,Cash,1,Daily sales revenue
+593,1,2026-03-23,expense,Shipping,24.66,Card,2,Shipping payment
+594,1,2026-03-23,expense,Marketing,360.39,Bank Transfer,3,Marketing payment
+595,1,2026-03-24,income,Sales,598.5,Bank Transfer,1,Daily sales revenue
+596,1,2026-03-24,expense,Shipping,39.64,Card,2,Shipping payment
+597,1,2026-03-24,expense,Marketing,281.11,Card,3,Marketing payment
+598,1,2026-03-25,income,Sales,269.0,Card,1,Daily sales revenue
+599,1,2026-03-25,expense,Utilities,218.0,Bank Transfer,2,Utilities payment
+600,1,2026-03-25,expense,Shipping,21.18,Bank Transfer,2,Shipping payment
+601,1,2026-03-25,expense,Marketing,380.13,Bank Transfer,3,Marketing payment
+602,1,2026-03-26,income,Sales,479.8,Card,1,Daily sales revenue
+603,1,2026-03-26,expense,Shipping,32.64,Card,2,Shipping payment
+604,1,2026-03-26,expense,Supplies,161.21,Card,2,Supplies payment
+605,1,2026-03-26,expense,Marketing,304.54,Bank Transfer,3,Marketing payment
+606,1,2026-03-27,income,Sales,529.15,Cash,1,Daily sales revenue
+607,1,2026-03-27,expense,Shipping,46.28,Card,2,Shipping payment
+608,1,2026-03-27,expense,Marketing,369.36,Card,3,Marketing payment
+609,1,2026-03-28,income,Sales,565.75,Cash,1,Daily sales revenue
+610,1,2026-03-28,expense,Shipping,36.96,Card,2,Shipping payment
+611,1,2026-03-28,expense,Marketing,416.11,Bank Transfer,3,Marketing payment
+612,1,2026-03-29,income,Sales,554.0,Cash,1,Daily sales revenue
+613,1,2026-03-29,expense,Shipping,36.46,Bank Transfer,2,Shipping payment
+614,1,2026-03-29,expense,Marketing,574.48,Bank Transfer,3,Marketing payment
+615,1,2026-03-30,income,Sales,636.55,Bank Transfer,1,Daily sales revenue
+616,1,2026-03-30,expense,Shipping,43.31,Bank Transfer,2,Shipping payment
+617,1,2026-03-30,expense,Marketing,281.21,Bank Transfer,3,Marketing payment
+618,1,2026-03-31,income,Sales,260.7,Cash,1,Daily sales revenue
+619,1,2026-03-31,expense,Payroll,11500.0,Bank Transfer,2,Payroll payment
+620,1,2026-03-31,expense,Shipping,18.77,Card,2,Shipping payment
+621,1,2026-03-31,expense,Marketing,351.89,Card,3,Marketing payment
