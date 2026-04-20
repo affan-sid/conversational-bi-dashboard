@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from sqlalchemy import text
 from backend.app.services.db import engine
+from backend.app.nlp.text_to_sql import generate_sql, is_safe_sql
+from backend.app.services.query_engine import execute_sql
 
 app = FastAPI()
 
@@ -29,3 +31,17 @@ def top_products():
         result = conn.execute(query).fetchall()
 
     return [{"product_id": r[0], "revenue": float(r[1])} for r in result]
+
+@app.post("/query")
+def query(user_query: str):
+    sql = generate_sql(user_query)
+    if not is_safe_sql(sql):
+        return {"error": "Unsafe query generated"}
+    
+    result = execute_sql(sql)
+
+    return {
+        "query": user_query,
+        "sql": sql,
+        "result": result
+    }
