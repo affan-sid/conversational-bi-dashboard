@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from sqlalchemy import text
 from backend.app.services.db import engine
 from backend.app.nlp.text_to_sql import generate_sql, is_safe_sql
 from backend.app.services.query_engine import execute_sql
+from backend.app.analytics.anomaly_detection import run_all_detectors
 
 app = FastAPI()
 
@@ -31,6 +32,11 @@ def top_products():
         result = conn.execute(query).fetchall()
 
     return [{"product_id": r[0], "revenue": float(r[1])} for r in result]
+
+@app.get("/api/anomalies")
+def get_anomalies(company_id: int = Query(default=1)):
+    return run_all_detectors(company_id=company_id)
+
 
 @app.post("/query")
 def query(user_query: str):
