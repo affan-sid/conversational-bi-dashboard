@@ -4,3 +4,6 @@ pandas
 sqlalchemy
 psycopg2-binary
 openai
+scikit-learn
+scipy
+numpy
