@@ -9,3 +9,5 @@ python-dotenv>=0.21.0
 jupyter>=1.0.0
 matplotlib>=3.5.0
 plotly>=5.10.0
+scikit-learn
+scipy
