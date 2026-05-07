@@ -4,8 +4,10 @@ from backend.app.services.db import engine
 from backend.app.nlp.text_to_sql import generate_sql, is_safe_sql
 from backend.app.services.query_engine import execute_sql
 from backend.app.analytics.anomaly_detection import run_all_detectors
+from backend.app.api import chat
 
 app = FastAPI()
+app.include_router(chat.router, prefix="/api")
 
 @app.get("/")
 def root():
