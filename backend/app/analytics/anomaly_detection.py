@@ -197,11 +197,19 @@ def detect_cashflow_anomalies(company_id: int) -> list:
 
 def run_all_detectors(company_id: int = 1) -> dict:
 
-    anomalies = []
-    anomalies += detect_revenue_anomalies(company_id)
-    anomalies += detect_expense_anomalies(company_id)
-    anomalies += detect_marketing_anomalies(company_id)
-    anomalies += detect_cashflow_anomalies(company_id)
+    try:
+        anomalies = []
+        anomalies += detect_revenue_anomalies(company_id)
+        anomalies += detect_expense_anomalies(company_id)
+        anomalies += detect_marketing_anomalies(company_id)
+        anomalies += detect_cashflow_anomalies(company_id)
+        
+    except Exception as e:
+        return{
+            "summary": {"total": 0, "high": 0, "medium": 0, "low": 0},
+            "anomalies": [],
+            "error": str(e)
+        }
 
     severity_rank = {"high": 0, "medium": 1, "low": 2}
     anomalies.sort(key=lambda x: severity_rank.get(x["severity"], 2))
