@@ -1,10 +1,17 @@
 def explain_result(user_query, result):
-    if "total_revenue" in user_query.lower():
-        value = result["rows"][0][0]
-        return f"Your total revenue is ${value:,.0f}."
 
-    if "top" in user_query.lower() and "product" in user_query.lower():
-        top = result["rows"][0]
-        return f"Your top product is {top[0]} generating ${top[1]:,.0f}."
+    if "revenue" in user_query.lower():
+        revenue = result["rows"][0][0]
+        return f"Total revenue is ${revenue:,.0f}, calculated from completed sales transactions."
 
-    return "Here is your result."
+    if "gross profit" in user_query.lower():
+        gp = result["rows"][0][0]
+        return f"Gross profit is ${gp:,.0f}, derived from revenue minus product costs."
+
+    if "marketing roi" in user_query.lower():
+        return "Marketing ROI compares attributed revenue against campaign spending."
+
+    if "top customer" in user_query.lower():
+        return "Customers are ranked using purchase activity and revenue contribution."
+
+    return "Result generated successfully from the semantic warehouse."

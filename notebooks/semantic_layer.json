@@ -1,0 +1,68 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-05-09T20:43:51.308255",
+  "kpis": {
+    "revenue": {
+      "name": "Total Revenue",
+      "description": "Total sales revenue from all completed orders",
+      "category": "Financial Health",
+      "sql": "SELECT COALESCE(SUM(line_total), 0) as revenue FROM fact_sales WHERE status = 'completed'",
+      "aggregation": "SUM",
+      "unit": "CAD"
+    },
+
+    "gross_profit": {
+      "name": "Gross Profit",
+      "description": "Revenue minus cost of goods sold",
+      "category": "Financial Health",
+      "sql": "SELECT COALESCE(SUM(gross_profit), 0) as gross_profit FROM fact_sales WHERE status = 'completed'",
+      "aggregation": "SUM",
+      "unit": "CAD"
+    },
+
+    "net_profit": {
+      "name": "Net Profit",
+      "description": "Revenue minus all expenses (COGS + operating expenses)",
+      "category": "Financial Health",
+      "sql": "WITH revenue AS ( SELECT COALESCE(SUM(line_total), 0) as total_revenue FROM fact_sales WHERE status = 'completed' ), cogs AS ( SELECT COALESCE(SUM(quantity * cost_price), 0) as total_cogs FROM fact_sales WHERE status = 'completed' ), operating_expenses AS ( SELECT COALESCE(SUM(amount), 0) as total_expenses FROM fact_expenses ) SELECT (total_revenue - total_cogs - total_expenses) as net_profit FROM revenue, cogs, operating_expenses",
+      "aggregation": "COMPOSITE",
+      "unit": "CAD"
+    },
+
+    "cash_runway": {
+      "name": "Cash Runway",
+      "description": "Number of months until cash runs out at current burn rate",
+      "category": "Financial Health",
+      "sql": "WITH monthly_burn AS ( SELECT DATE_TRUNC('month', date) as month, SUM(amount) as monthly_expenses FROM fact_expenses GROUP BY DATE_TRUNC('month', date) ORDER BY month DESC LIMIT 3 ), avg_monthly_burn AS ( SELECT AVG(monthly_expenses) as avg_burn FROM monthly_burn ), current_cash AS ( SELECT SUM(CASE WHEN type = 'inflow' THEN amount ELSE -amount END) as cash_balance FROM fact_cash_flow ) SELECT CASE WHEN avg_burn > 0 THEN cash_balance / avg_burn ELSE 999 END as cash_runway_months FROM current_cash, avg_monthly_burn",
+      "aggregation": "CALCULATED",
+      "unit": "months"
+    },
+
+    "top_products": {
+      "name": "Top Selling Products",
+      "description": "Products ranked by revenue",
+      "category": "Sales Performance",
+      "sql": "SELECT dp.product_name, dp.category, SUM(fs.line_total) as revenue, SUM(fs.quantity) as units_sold FROM fact_sales fs JOIN dim_products dp ON fs.product_id = dp.product_id WHERE fs.status = 'completed' GROUP BY dp.product_id, dp.product_name, dp.category ORDER BY revenue DESC LIMIT 10",
+      "aggregation": "RANKING",
+      "unit": "mixed"
+    },
+
+    "marketing_roi": {
+      "name": "Marketing ROI",
+      "description": "Return on investment for marketing campaigns",
+      "category": "Marketing Efficiency",
+      "sql": "SELECT dc.campaign_name, dc.platform, SUM(fm.spend) as total_spend, SUM(fm.revenue_attributed) as attributed_revenue, ((SUM(fm.revenue_attributed) - SUM(fm.spend)) / SUM(fm.spend)) * 100 as roi_percentage FROM fact_marketing fm JOIN dim_campaigns dc ON fm.campaign_id = dc.campaign_id GROUP BY dc.campaign_id, dc.campaign_name, dc.platform HAVING SUM(fm.spend) > 0 ORDER BY roi_percentage DESC",
+      "aggregation": "RATIO",
+      "unit": "%"
+    },
+
+    "avg_order_value": {
+      "name": "Average Order Value",
+      "description": "Average revenue per completed order",
+      "category": "Operational Efficiency",
+      "sql": "SELECT AVG(line_total) as avg_order_value FROM fact_sales WHERE status = 'completed'",
+      "aggregation": "AVG",
+      "unit": "CAD"
+    }
+  }
+}

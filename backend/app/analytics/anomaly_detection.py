@@ -3,37 +3,80 @@ import pandas as pd
 from sklearn.ensemble import IsolationForest
 from scipy import stats
 from sqlalchemy import text
+
 from backend.app.services.db import engine
 
-# Thresholds
+
+# THRESHOLDS
 _ZSCORE_HIGH = 3.0
 _ZSCORE_MEDIUM = 2.0
 _IF_CONTAMINATION = 0.05
 
 
-# ── DB LOADERS ─────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# DATABASE HELPERS
+# ─────────────────────────────────────────────
 
 def _query_df(sql: str, company_id: int) -> pd.DataFrame:
+
     with engine.connect() as conn:
         df = pd.read_sql(text(sql), conn)
+
     if "company_id" in df.columns:
         df = df[df["company_id"] == company_id]
+
     return df
 
 
-# ── HELPERS ───────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# ANOMALY HELPERS
+# ─────────────────────────────────────────────
 
 def _severity(z: float) -> str:
+
     if z >= _ZSCORE_HIGH:
         return "high"
+
     if z >= _ZSCORE_MEDIUM:
         return "medium"
+
     return "low"
 
 
-def _anomaly(domain, atype, severity, message, date=None,
-             value=None, expected=None, deviation_pct=None,
-             z_score=None, method="zscore", unit=""):
+def _recommendation(domain, atype):
+
+    if "revenue" in atype:
+        return (
+            "Investigate sales trends, campaigns, "
+            "or seasonality changes."
+        )
+
+    if "expense" in atype:
+        return "Check for unusual or one-off expenses."
+
+    if "marketing" in atype:
+        return "Review campaign performance and targeting."
+
+    if "cash" in atype:
+        return "Monitor liquidity and upcoming liabilities."
+
+    return "Further investigation required."
+
+
+def _anomaly(
+    domain,
+    atype,
+    severity,
+    message,
+    date=None,
+    value=None,
+    expected=None,
+    deviation_pct=None,
+    z_score=None,
+    method="zscore",
+    unit=""
+):
+
     return {
         "domain": domain,
         "type": atype,
@@ -50,64 +93,86 @@ def _anomaly(domain, atype, severity, message, date=None,
     }
 
 
-def _recommendation(domain, atype):
-    if "revenue" in atype:
-        return "Investigate sales trends, campaigns, or seasonality changes."
-    if "expense" in atype:
-        return "Check for unusual or one-off expenses."
-    if "marketing" in atype:
-        return "Review campaign performance and targeting."
-    if "cash" in atype:
-        return "Monitor liquidity and upcoming liabilities."
-    return "Further investigation required."
-
-
-def _zscore_scan(series: pd.Series, dates: pd.Series,
-                 domain: str, metric: str, unit: str = "") -> list:
+def _zscore_scan(
+    series: pd.Series,
+    dates: pd.Series,
+    domain: str,
+    metric: str,
+    unit: str = ""
+) -> list:
 
     results = []
+
     if len(series) < 7 or series.std() < 1e-6:
         return results
 
-    z_scores = np.abs(stats.zscore(series.values, nan_policy="omit"))
+    z_scores = np.abs(
+        stats.zscore(series.values, nan_policy="omit")
+    )
+
     mean_val = float(series.mean())
 
     for z, val, date in zip(z_scores, series.values, dates):
+
         if np.isnan(z) or z < _ZSCORE_MEDIUM:
             continue
 
         direction = "spike" if val > mean_val else "drop"
-        dev_pct = ((val - mean_val) / mean_val * 100) if mean_val != 0 else 0
 
-        results.append(_anomaly(
-            domain=domain,
-            atype=f"{metric}_{direction}",
-            severity=_severity(z),
-            message=f"{metric.replace('_',' ').title()} {direction} of {abs(dev_pct):.1f}% on {date}",
-            date=str(date),
-            value=val,
-            expected=mean_val,
-            deviation_pct=dev_pct,
-            z_score=z,
-            unit=unit,
-        ))
+        dev_pct = (
+            ((val - mean_val) / mean_val * 100)
+            if mean_val != 0 else 0
+        )
+
+        results.append(
+            _anomaly(
+                domain=domain,
+                atype=f"{metric}_{direction}",
+                severity=_severity(z),
+                message=(
+                    f"{metric.replace('_', ' ').title()} "
+                    f"{direction} of {abs(dev_pct):.1f}% on {date}"
+                ),
+                date=str(date),
+                value=val,
+                expected=mean_val,
+                deviation_pct=dev_pct,
+                z_score=z,
+                unit=unit,
+            )
+        )
 
     return results
 
 
-# ── DETECTORS ─────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# REVENUE DETECTOR
+# ─────────────────────────────────────────────
 
 def detect_revenue_anomalies(company_id: int) -> list:
-    df = _query_df("SELECT * FROM orders WHERE status='completed'", company_id)
+
+    df = _query_df(
+        """
+        SELECT *
+        FROM fact_sales
+        WHERE status = 'completed'
+        """,
+        company_id
+    )
+
     if df.empty:
         return []
 
     df["order_date"] = pd.to_datetime(df["order_date"])
 
-    daily = df.groupby("order_date")["total_amount"].sum().reset_index()
+    daily = (
+        df.groupby("order_date")["line_total"]
+        .sum()
+        .reset_index()
+    )
 
     return _zscore_scan(
-        daily["total_amount"],
+        daily["line_total"],
         daily["order_date"].dt.strftime("%Y-%m-%d"),
         "sales",
         "daily_revenue",
@@ -115,111 +180,205 @@ def detect_revenue_anomalies(company_id: int) -> list:
     )
 
 
+# ─────────────────────────────────────────────
+# EXPENSE DETECTOR
+# ─────────────────────────────────────────────
+
 def detect_expense_anomalies(company_id: int) -> list:
-    df = _query_df("SELECT * FROM expenses", company_id)
+
+    df = _query_df(
+        "SELECT * FROM fact_expenses",
+        company_id
+    )
+
     if df.empty:
         return []
 
     df["date"] = pd.to_datetime(df["date"])
+
     results = []
 
     for cat, group in df.groupby("expense_category"):
+
         if len(group) < 5:
             continue
 
-        results.extend(_zscore_scan(
-            group["amount"],
-            group["date"].dt.strftime("%Y-%m-%d"),
-            "finance",
-            f"{cat.lower()}_expense",
-            "$"
-        ))
+        results.extend(
+            _zscore_scan(
+                group["amount"],
+                group["date"].dt.strftime("%Y-%m-%d"),
+                "finance",
+                f"{cat.lower()}_expense",
+                "$"
+            )
+        )
 
     return results
 
 
+# ─────────────────────────────────────────────
+# MARKETING DETECTOR
+# ─────────────────────────────────────────────
+
 def detect_marketing_anomalies(company_id: int) -> list:
-    df = _query_df("SELECT * FROM marketing_performance", company_id)
+
+    df = _query_df(
+        "SELECT * FROM fact_marketing",
+        company_id
+    )
+
     if df.empty:
         return []
 
     df["date"] = pd.to_datetime(df["date"])
+
     results = []
 
-    # Rule check
+    # DATA QUALITY RULE
     bad = df[df["conversions"] > df["clicks"]]
-    if not bad.empty:
-        results.append(_anomaly(
-            "marketing",
-            "data_quality_issue",
-            "medium",
-            f"{len(bad)} invalid rows (conversions > clicks)",
-        ))
 
-    # Isolation Forest
-    features = df[["spend", "conversions", "revenue_attributed"]].dropna()
+    if not bad.empty:
+
+        results.append(
+            _anomaly(
+                "marketing",
+                "data_quality_issue",
+                "medium",
+                f"{len(bad)} invalid rows (conversions > clicks)",
+            )
+        )
+
+    # ISOLATION FOREST
+    features = df[
+        [
+            "spend",
+            "conversions",
+            "revenue_attributed"
+        ]
+    ].dropna()
+
     if len(features) >= 20:
-        clf = IsolationForest(contamination=_IF_CONTAMINATION, random_state=42)
+
+        clf = IsolationForest(
+            contamination=_IF_CONTAMINATION,
+            random_state=42
+        )
+
         preds = clf.fit_predict(features)
 
         for idx in np.where(preds == -1)[0]:
+
             row = df.iloc[idx]
-            results.append(_anomaly(
-                "marketing",
-                "pattern_anomaly",
-                "medium",
-                f"Unusual marketing activity on {row['date'].date()}",
-                date=str(row["date"].date()),
-                value=row["spend"]
-            ))
+
+            results.append(
+                _anomaly(
+                    "marketing",
+                    "pattern_anomaly",
+                    "medium",
+                    (
+                        f"Unusual marketing activity "
+                        f"on {row['date'].date()}"
+                    ),
+                    date=str(row["date"].date()),
+                    value=row["spend"]
+                )
+            )
 
     return results
 
 
+# ─────────────────────────────────────────────
+# CASHFLOW DETECTOR
+# ─────────────────────────────────────────────
+
 def detect_cashflow_anomalies(company_id: int) -> list:
-    df = _query_df("SELECT * FROM cash_balances", company_id)
+
+    df = _query_df(
+        "SELECT * FROM fact_cash_flow",
+        company_id
+    )
+
     if df.empty:
         return []
 
     df["date"] = pd.to_datetime(df["date"])
-    df["change"] = df["closing_balance"].diff()
+
+    df = df.sort_values("date")
+
+    daily = (
+        df.groupby("date")["signed_amount"]
+        .sum()
+        .reset_index()
+    )
 
     return _zscore_scan(
-        df["change"].dropna(),
-        df["date"].dt.strftime("%Y-%m-%d")[1:],
+        daily["signed_amount"],
+        daily["date"].dt.strftime("%Y-%m-%d"),
         "finance",
         "cashflow_change",
         "$"
     )
 
 
-# ── MAIN ──────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────
+# MAIN RUNNER
+# ─────────────────────────────────────────────
 
 def run_all_detectors(company_id: int = 1) -> dict:
 
     try:
+
         anomalies = []
+
         anomalies += detect_revenue_anomalies(company_id)
+
         anomalies += detect_expense_anomalies(company_id)
+
         anomalies += detect_marketing_anomalies(company_id)
+
         anomalies += detect_cashflow_anomalies(company_id)
-        
+
     except Exception as e:
-        return{
-            "summary": {"total": 0, "high": 0, "medium": 0, "low": 0},
+
+        return {
+            "summary": {
+                "total": 0,
+                "high": 0,
+                "medium": 0,
+                "low": 0
+            },
             "anomalies": [],
             "error": str(e)
         }
 
-    severity_rank = {"high": 0, "medium": 1, "low": 2}
-    anomalies.sort(key=lambda x: severity_rank.get(x["severity"], 2))
+    severity_rank = {
+        "high": 0,
+        "medium": 1,
+        "low": 2
+    }
+
+    anomalies.sort(
+        key=lambda x: severity_rank.get(
+            x["severity"],
+            2
+        )
+    )
 
     return {
         "summary": {
             "total": len(anomalies),
-            "high": sum(1 for a in anomalies if a["severity"] == "high"),
-            "medium": sum(1 for a in anomalies if a["severity"] == "medium"),
-            "low": sum(1 for a in anomalies if a["severity"] == "low"),
+            "high": sum(
+                1 for a in anomalies
+                if a["severity"] == "high"
+            ),
+            "medium": sum(
+                1 for a in anomalies
+                if a["severity"] == "medium"
+            ),
+            "low": sum(
+                1 for a in anomalies
+                if a["severity"] == "low"
+            ),
         },
         "anomalies": anomalies
     }

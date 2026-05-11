@@ -32,6 +32,7 @@ MANIFEST
 *.manifest
 *.spec
 .DS_Store
+.env
 
 # Installer logs
 pip-log.txt

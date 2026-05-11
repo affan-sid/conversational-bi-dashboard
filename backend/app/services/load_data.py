@@ -1,6 +1,7 @@
 import pandas as pd
 from backend.app.services.db import engine
 
+# FILE NOT REQUIRED ANYMORE
 def load_data():
     products = pd.read_csv("data/raw/products.csv")
     orders = pd.read_csv("data/raw/orders.csv")
