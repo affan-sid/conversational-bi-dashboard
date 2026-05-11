@@ -5,13 +5,11 @@ from backend.app.services.query_engine import execute_sql
 
 def get_revenue_insight():
 
-    sql = KPI_DEFINITIONS["total_revenue"]["sql"]
+    sql = KPI_DEFINITIONS["revenue"]["sql"]
     result = execute_sql(sql)
-
     revenue = result["rows"][0][0]
 
     anomalies = run_all_detectors()
-
     revenue_anomalies = [
         a for a in anomalies["anomalies"]
         if "revenue" in a["type"]
