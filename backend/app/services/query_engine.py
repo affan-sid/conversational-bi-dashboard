@@ -5,7 +5,6 @@ def execute_sql(sql_query: str):
     try:
         with engine.connect() as conn:
             result = conn.execute(text(sql_query))
-            
             rows = result.fetchall()
             columns = result.keys()
 

@@ -32,4 +32,4 @@ CAMPAIGN_ROI_MIN            = 0.0
 
 # ── DEFAULT PERIOD ────────────────────────────────────────────────
 DEFAULT_PERIOD   = "Last 3 months"
-PERIOD_OPTIONS   = ["Last 30 days", "Last 3 months", "Last 6 months", "All time"]
+PERIOD_OPTIONS   = ["Last 7 days", "Last 30 days", "Last 3 months", "Last 6 months", "All time"]

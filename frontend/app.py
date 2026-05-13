@@ -1,48 +1,97 @@
 import streamlit as st
-from api_client import login
+from api_client import login, register
 
-# ── 1. PAGE CONFIG ──────────────────────────────────────
+# ── PAGE CONFIG ──────────────────────────────────────────
 st.set_page_config(
     page_title="BI Dashboard",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# ── 2. AUTH CHECK ───────────────────────────────────────
-if "token" not in st.session_state:
-    st.session_state.token = None
+# ── SESSION STATE DEFAULTS ───────────────────────────────
+if "token"     not in st.session_state: st.session_state.token     = None
+if "user_name" not in st.session_state: st.session_state.user_name = None
+if "page"      not in st.session_state: st.session_state.page      = "landing"
 
-if not st.session_state.token:
-    st.title("Welcome")
-    email    = st.text_input("Email")
-    password = st.text_input("Password", type="password")
-    if st.button("Login"):
-        result = login(email, password)
-        if result:
-            st.session_state.token     = result["token"]
-            st.session_state.user_name = result["user"]["full_name"]
+page = st.session_state.page
+
+# ── LANDING ──────────────────────────────────────────────
+if page == "landing":
+    from pages.landing import show; show()
+
+# ── LOGIN ─────────────────────────────────────────────────
+elif page == "login":
+    st.markdown("<style>[data-testid='stSidebar']{display:none}</style>", unsafe_allow_html=True)
+    from pages.login import show; show()
+
+# ── REGISTER ──────────────────────────────────────────────
+elif page == "register":
+    st.markdown("<style>[data-testid='stSidebar']{display:none}</style>", unsafe_allow_html=True)
+    from pages.register import show; show()
+
+# ── DASHBOARD (requires login) ────────────────────────────
+elif st.session_state.token:
+
+    # ── SIDEBAR ─────────────────────────────────────────
+    with st.sidebar:
+        st.markdown(
+            "<div style='font-family:monospace;font-size:20px;"
+            "color:#C8F135;letter-spacing:3px;padding:8px 0 4px'>BI DASH</div>",
+            unsafe_allow_html=True
+        )
+        st.caption(f"👤 {st.session_state.user_name}")
+        st.markdown("---")
+
+        # ── Home button ──────────────────────────────────
+        if st.button("🏠  Home", use_container_width=True, key="nav_home"):
+            st.session_state.token     = None
+            st.session_state.user_name = None
+            st.session_state.page      = "landing"
             st.rerun()
-        else:
-            st.error("Invalid credentials")
-    st.stop()
 
-# ── 3. DEFINE PAGES ─────────────────────────────────────
-overview       = st.Page("pages/01_overview.py",        title="Overview",          icon="🏠", default=True)
-chat           = st.Page("pages/02_chat.py",            title="Ask a question",    icon="💬")
-finance        = st.Page("pages/03_finance.py",         title="Finance",           icon="💰")
-sales          = st.Page("pages/04_sales_marketing.py", title="Sales & Marketing", icon="📈")
-customers      = st.Page("pages/05_customers.py",       title="Customers",         icon="👥")
-upload         = st.Page("pages/06_upload.py",          title="Upload data",       icon="📁")
+        st.markdown("---")
 
-# ── 4. NAVIGATION + SIDEBAR ─────────────────────────────
-pg = st.navigation([overview, chat, finance, sales, customers, upload])
+        # ── Main nav ─────────────────────────────────────
+        if st.button("📊  Overview",          use_container_width=True, key="nav_overview"):
+            st.session_state.page = "overview";  st.rerun()
+        if st.button("💰  Finance",           use_container_width=True, key="nav_finance"):
+            st.session_state.page = "finance";   st.rerun()
+        if st.button("📈  Sales & Marketing", use_container_width=True, key="nav_sales"):
+            st.session_state.page = "sales";     st.rerun()
+        if st.button("👥  Customers",         use_container_width=True, key="nav_customers"):
+            st.session_state.page = "customers"; st.rerun()
 
-with st.sidebar:
-    st.markdown("### BI Dashboard")
-    st.markdown("---")
-    user = st.session_state.get("user_name", "User")
-    st.caption(f"Logged in as {user}")
-    st.markdown("---")
-    if st.button("Logout"):
-        st.session_state.to
+        st.markdown("---")
+
+        if st.button("💬  Chat",              use_container_width=True, key="nav_chat"):
+            st.session_state.page = "chat";      st.rerun()
+        if st.button("📁  Upload Data",       use_container_width=True, key="nav_upload"):
+            st.session_state.page = "upload";    st.rerun()
+
+        st.markdown("---")
+
+        if st.button("🚪  Logout",            use_container_width=True, key="nav_logout"):
+            st.session_state.token     = None
+            st.session_state.user_name = None
+            st.session_state.page      = "landing"
+            st.rerun()
+
+    # ── PAGE CONTENT ─────────────────────────────────────
+    if   page in ("overview", ) or page not in ["finance","sales","customers","chat","upload"]:
+        from pages.p01_overview  import show; show()
+    elif page == "finance":
+        from pages.p03_finance   import show; show()
+    elif page == "sales":
+        from pages.p04_sales     import show; show()
+    elif page == "customers":
+        from pages.p05_customers import show; show()
+    elif page == "chat":
+        from pages.p02_chat      import show; show()
+    elif page == "upload":
+        from pages.p06_upload    import show; show()
+
+# ── FALLBACK ──────────────────────────────────────────────
+else:
+    st.session_state.page = "landing"
+    st.rerun()
