@@ -1,152 +1,92 @@
-from openai import OpenAI
+import os
 import requests
+from dotenv import load_dotenv
 
-# client = OpenAI()
+load_dotenv()
 
-def generate_sql(user_query: str):
+_GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+_GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions"
+_GROQ_MODEL   = "llama-3.1-8b-instant"
 
-    # UPDATED STAR SCHEMA
-    schema = """
-    Tables:
+_SCHEMA = """
+Tables:
 
-    fact_sales(
-        order_item_id,
-        order_id,
-        product_id,
-        quantity,
-        unit_price,
-        cost_price,
-        line_total,
-        order_date DATE,
-        customer_id,
-        channel,
-        status,
-        gross_profit,
-        profit_margin
-    )
+fact_sales(
+    order_item_id, order_id, product_id, quantity,
+    unit_price, cost_price, line_total,
+    order_date DATE, customer_id, channel,
+    status TEXT -- 'completed' or 'returned',
+    gross_profit
+)
 
-    dim_products(
-        product_id,
-        product_name,
-        category,
-        price,
-        cost,
-        profit_margin
-    )
+dim_products(product_id, product_name, category, price, cost)
 
-    dim_customers(
-        customer_id,
-        company_id,
-        full_name,
-        email,
-        phone,
-        segment,
-        city,
-        country,
-        created_at
-    )
+dim_customers(
+    customer_id, company_id, full_name, email,
+    segment, city, country, created_at
+)
 
-    fact_expenses(
-        expense_id,
-        company_id,
-        date DATE,
-        expense_category,
-        vendor_name,
-        amount,
-        recurring_flag
-    )
+fact_expenses(
+    expense_id, company_id,
+    date TEXT,   -- stored as 'YYYY-MM-DD' text, cast with CAST(date AS DATE)
+    expense_category, vendor_name, amount, recurring_flag
+)
 
-    fact_marketing(
-        campaign_id,
-        date DATE,
-        impressions,
-        clicks,
-        leads,
-        conversions,
-        spend,
-        revenue_attributed,
-        roi,
-        roas
-    )
+fact_marketing(
+    record_id, campaign_id,
+    date TEXT,   -- stored as 'YYYY-MM-DD' text, cast with CAST(date AS DATE)
+    impressions, clicks, leads, conversions,
+    spend, revenue_attributed
+    -- NOTE: there is NO roi or roas column; compute as (revenue_attributed - spend) / spend
+)
 
-    dim_campaigns(
-        campaign_id,
-        campaign_name,
-        platform,
-        budget
-    )
+dim_campaigns(campaign_id, campaign_name, platform, budget)
 
-    fact_cash_flow(
-        company_id,
-        date DATE,
-        type,
-        amount,
-        signed_amount
-    )
-    """
+fact_cash_flow(
+    transaction_id, company_id,
+    date TIMESTAMP,
+    type TEXT, amount, signed_amount
+)
+"""
 
-    prompt = f"""
-    You are a PostgreSQL expert.
 
-    Convert the natural language query into PostgreSQL SQL.
+def generate_sql(user_query: str) -> str:
+    prompt = f"""You are a PostgreSQL expert. Convert the user question to a single PostgreSQL SELECT query.
 
-    Rules:
-    - Only return raw SQL
-    - No markdown
-    - No explanations
-    - No code fences
-    - Use ONLY the provided schema
-    - Prefer fact tables for metrics
-    - Prefer dimension tables for descriptive information
-    - Use PostgreSQL syntax
+Rules:
+- Return ONLY raw SQL, no markdown, no code fences, no explanation
+- Use ONLY columns that exist in the schema below
+- fact_marketing has NO roi or roas column — compute ROI as (revenue_attributed - spend) / NULLIF(spend, 0)
+- fact_expenses.date and fact_marketing.date are TEXT — use CAST(date AS DATE) for date functions
+- Revenue = fact_sales.line_total  |  Expenses = fact_expenses.amount
+- For product names JOIN dim_products ON product_id
+- For campaign names JOIN dim_campaigns ON campaign_id
+- For customer names JOIN dim_customers ON customer_id
+- Limit results to 20 rows unless the query is for a single value
 
-    Important:
-    - Revenue comes from fact_sales.line_total
-    - Expenses come from fact_expenses.amount
-    - Product names come from dim_products
-    - Customer data comes from dim_customers
-    - Marketing data comes from fact_marketing
-    - For category-based queries, join dim_products using product_id
-    - "sales by category" means GROUP BY product category
-    - "top customers" means order by customer revenue or order count
+Schema:
+{_SCHEMA}
 
-    Schema:
-    {schema}
+Question: {user_query}
+SQL:"""
 
-    User Query:
-    {user_query}
-    """
-
-    # GPT VERSION
-    # response = client.chat.completions.create(
-    #     model="gpt-4o-mini",
-    #     messages=[{"role": "user", "content": prompt}],
-    #     temperature=0
-    # )
-    # return response.choices[0].message.content.strip()
-
-    # OLLAMA LOCAL MODEL
-    response = requests.post(
-        "http://localhost:11434/api/chat",
-        json={
-            "model": "llama3.1",
-            "messages": [
-                {"role": "user", "content": prompt}
-            ],
-            "stream": False
-        }
-    )
-
-    data = response.json()
-
-    sql = data["message"]["content"].strip()
-
-    sql = sql.replace("```sql", "").replace("```", "").strip()
-
-    print("Generated SQL:")
-    print(sql)
-
-    return sql
+    try:
+        resp = requests.post(
+            _GROQ_URL,
+            headers={"Authorization": f"Bearer {_GROQ_API_KEY}",
+                     "Content-Type": "application/json"},
+            json={"model": _GROQ_MODEL,
+                  "messages": [{"role": "user", "content": prompt}],
+                  "temperature": 0},
+            timeout=20
+        )
+        sql = resp.json()["choices"][0]["message"]["content"].strip()
+        sql = sql.replace("```sql", "").replace("```", "").strip()
+        print("Generated SQL:", sql[:120])
+        return sql
+    except Exception as e:
+        print(f"Groq SQL generation failed: {e}")
+        return "SELECT 'Could not generate SQL' AS error"
 
 
 def is_safe_sql(sql: str):

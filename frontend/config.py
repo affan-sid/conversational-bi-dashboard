@@ -2,10 +2,10 @@ import os
 
 # ── API CONNECTION ───────────────────────────────────────────────
 # Flip to False once Affan's FastAPI backend is running
-USE_MOCK = True
+USE_MOCK = False
 
 # Update this when Affan deploys the backend
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8001")
 
 # ── APP SETTINGS ─────────────────────────────────────────────────
 APP_TITLE        = "BI Dashboard"

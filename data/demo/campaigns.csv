@@ -1,0 +1,4 @@
+campaign_id,company_id,campaign_name,platform,start_date,end_date,budget
+1,2,Google Tech Ads,Google Ads,2025-10-01,2026-03-31,12000
+2,2,LinkedIn B2B,LinkedIn Ads,2025-10-01,2026-03-31,8000
+3,2,Email Newsletter,Email,2025-10-01,2026-03-31,2000

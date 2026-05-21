@@ -8,16 +8,21 @@ def show():
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     data = get_customers(period)
     if not data: st.error("Could not load customer data."); return
+    if data.get("has_data") is False:
+        st.info("📁 No customer data uploaded yet. Upload your customers CSV to see this dashboard.")
+        if st.button("Go to Upload →", key="cust_upload_btn"):
+            st.session_state.page = "upload"; st.rerun()
+        return
     kpis = data["kpis"]
     c1,c2,c3,c4 = st.columns(4)
     c1.metric("Total Customers", f"{kpis['total_customers']}")
     c2.metric("Active Customers", f"{kpis['active_customers']}")
     c3.metric("Repeat Rate", f"{kpis['repeat_rate']:.1f}%",
               delta="Low" if kpis["repeat_rate"] < 30 else None, delta_color="inverse")
-    c4.metric("Churn Rate", f"{kpis['churn_rate']:.1f}%")
+    c4.metric("Churn Rate", f"{kpis.get('churn_rate', 0):.1f}%")
     c1,c2 = st.columns(2)
-    c1.metric("Avg Customer Lifetime Value", f"{CURRENCY_SYMBOL}{kpis['avg_clv']:,.0f}")
-    c2.metric("New This Period", f"{kpis['new_this_period']}")
+    c1.metric("Avg Customer Lifetime Value", f"{CURRENCY_SYMBOL}{kpis.get('avg_clv', 0):,.0f}")
+    c2.metric("New This Period", f"{kpis.get('new_this_period', 0)}")
     st.markdown("---")
     c_left, c_right = st.columns(2)
     with c_left:
@@ -28,8 +33,11 @@ def show():
             st.caption(f"• {row['segment']}: {row['customers']} customers — {CURRENCY_SYMBOL}{row['revenue']:,}")
     with c_right:
         st.subheader("Customer growth")
-        df_growth = pd.DataFrame(data["growth_trend"]).set_index("month")
-        st.line_chart(df_growth[["new_customers","churned"]])
+        if data.get("growth_trend"):
+            df_growth = pd.DataFrame(data["growth_trend"]).set_index("month")
+            st.line_chart(df_growth[["new_customers","churned"]])
+        else:
+            st.info("No growth trend data available.")
     st.markdown("---")
     st.subheader("Top customers by revenue")
     df_top = pd.DataFrame(data["top_customers"])

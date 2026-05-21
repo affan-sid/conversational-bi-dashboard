@@ -9,47 +9,113 @@ try:
 except ImportError:
     _SHAP_AVAILABLE = False
 
-_OLLAMA_URL = "http://localhost:11434/api/chat"
-_OLLAMA_MODEL = "llama3.1"
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+_GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+_GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions"
+_GROQ_MODEL   = "llama-3.1-8b-instant"
 
 _IF_CONTAMINATION = 0.05
 
 
-def explain_result(user_query, result):
+def explain_result(user_query: str, result: dict) -> str:
+    if not result or result.get("error"):
+        return f"Sorry, I couldn't retrieve that data: {result.get('error', 'unknown error')}."
 
-    if "revenue" in user_query.lower():
-        revenue = result["rows"][0][0]
-        return f"Total revenue is ${revenue:,.0f}, calculated from completed sales transactions."
+    rows = result.get("rows", [])
+    cols = result.get("columns", [])
 
-    if "gross profit" in user_query.lower():
-        gp = result["rows"][0][0]
-        return f"Gross profit is ${gp:,.0f}, derived from revenue minus product costs."
+    if not rows:
+        return "No data found for your query in the current period."
 
-    if "marketing roi" in user_query.lower():
-        return "Marketing ROI compares attributed revenue against campaign spending."
+    q = user_query.lower()
 
-    if "top customer" in user_query.lower():
-        return "Customers are ranked using purchase activity and revenue contribution."
+    # Single-value result (e.g. SUM, COUNT, AVG)
+    if len(rows) == 1 and len(rows[0]) == 1:
+        val = rows[0][0]
+        col = cols[0] if cols else "value"
+        if isinstance(val, float):
+            return f"The {col.replace('_', ' ')} is **${val:,.2f}**."
+        return f"The {col.replace('_', ' ')} is **{val}**."
 
-    return "Result generated successfully from the semantic warehouse."
+    # Multi-row result — build a readable summary
+    n = len(rows)
+    col_labels = [c.replace("_", " ").title() for c in cols]
+
+    # Try to give a context-aware intro
+    # Find the first text column (name) and first numeric column (value)
+    def _first_text(row, cols_list):
+        for i, v in enumerate(row):
+            if isinstance(v, str):
+                return v, cols_list[i] if i < len(cols_list) else ""
+        return str(row[0]), cols_list[0] if cols_list else ""
+
+    def _first_num(row):
+        for v in row:
+            if isinstance(v, (int, float)):
+                return v
+        return None
+
+    top = rows[0]
+    name_val, _ = _first_text(top, cols)
+    num_val = _first_num(top)
+
+    if any(w in q for w in ["best customer", "top customer", "who are"]):
+        intro = f"Your best customer is **{name_val}**"
+        intro += f" with **${num_val:,.0f}** in revenue." if num_val is not None else "."
+        intro += f" Here are the top {min(n, 5)} customers:"
+
+    elif any(w in q for w in ["product", "sell", "best selling"]):
+        intro = f"Your best-selling product is **{name_val}**"
+        intro += f" generating **${num_val:,.0f}** in revenue." if num_val is not None else "."
+        intro += f" Showing top {min(n, 5)} products:"
+
+    elif any(w in q for w in ["campaign", "marketing", "roi", "wasting"]):
+        intro = f"Top campaign: **{name_val}**"
+        intro += f" generating **${num_val:,.0f}**." if num_val is not None else "."
+        intro += f" Showing all {n} campaigns:"
+
+    elif any(w in q for w in ["channel"]):
+        intro = f"The top channel is **{name_val}**"
+        intro += f" generating **${num_val:,.0f}** in revenue." if num_val is not None else "."
+        intro += f" Showing all {n} channels:" if n > 1 else ""
+
+    elif any(w in q for w in ["revenue", "profit", "expense", "cost"]):
+        intro = f"Here are **{n}** result(s):"
+
+    else:
+        intro = f"Found **{n}** result(s) for your query:"
+
+    # Build a bullet-point summary of top rows (max 5)
+    bullets = []
+    for row in rows[:5]:
+        parts = [f"{col_labels[i]}: {('$'+f'{v:,.0f}') if isinstance(v, float) else v}"
+                 for i, v in enumerate(row)]
+        bullets.append("• " + " | ".join(parts))
+
+    return intro + "\n\n" + "\n".join(bullets)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# OLLAMA HELPER
+# GROQ HELPER
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _call_ollama(prompt: str) -> str:
+def _call_groq(prompt: str) -> str:
     try:
         response = requests.post(
-            _OLLAMA_URL,
+            _GROQ_URL,
+            headers={"Authorization": f"Bearer {_GROQ_API_KEY}",
+                     "Content-Type": "application/json"},
             json={
-                "model": _OLLAMA_MODEL,
+                "model": _GROQ_MODEL,
                 "messages": [{"role": "user", "content": prompt}],
-                "stream": False
+                "temperature": 0.3
             },
-            timeout=30
+            timeout=20
         )
-        return response.json()["message"]["content"].strip()
+        return response.json()["choices"][0]["message"]["content"].strip()
     except Exception:
         return ""
 
@@ -147,7 +213,7 @@ Rules:
 - Be specific with numbers if available.
 """
 
-    explanation = _call_ollama(prompt)
+    explanation = _call_groq(prompt)
     if explanation:
         return explanation
 

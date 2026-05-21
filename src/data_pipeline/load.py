@@ -32,7 +32,7 @@ class DataLoader:
         # self.engine = create_engine(self.db_url, echo=False)
         # logger.info(f"Connected to PostgreSQL: {os.getenv('DB_NAME', 'bi_dashboard')}")
         # Use connection without password for local development
-            self.db_url = "postgresql://postgres:1234@localhost:5432/bi_dashboard"
+            self.db_url = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/bi_dashboard")
         
         self.engine = create_engine(self.db_url, echo=False)
         logger.info(f"Connected to PostgreSQL: bi_dashboard")

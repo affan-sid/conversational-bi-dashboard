@@ -7,8 +7,14 @@ def show():
     st.title("Sales & Marketing")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     sales_data = get_sales(period); mkt_data = get_marketing(period)
-    if not sales_data or not mkt_data: st.error("Could not load data."); return
-    sk = sales_data["kpis"]; mk = mkt_data["kpis"]
+    if not sales_data: st.error("Could not load data."); return
+    if sales_data.get("has_data") is False:
+        st.info("📁 No sales data uploaded yet. Upload your sales CSV to see this dashboard.")
+        if st.button("Go to Upload →", key="sales_upload_btn"):
+            st.session_state.page = "upload"; st.rerun()
+        return
+    sk = sales_data["kpis"]
+    mk = mkt_data.get("kpis", {}) if mkt_data and mkt_data.get("has_data") else {}
     st.subheader("Sales")
     c1,c2,c3,c4 = st.columns(4)
     c1.metric("Total Orders", f"{sk['total_orders']:,}")
@@ -31,8 +37,11 @@ def show():
             st.caption(f"• {row['product_name']}: {row['units_sold']:,} units — {CURRENCY_SYMBOL}{row['revenue']:,}")
     st.markdown("---")
     st.subheader("Monthly revenue trend")
-    df_rev = pd.DataFrame(sales_data["monthly_revenue"]).set_index("month")
-    st.line_chart(df_rev["revenue"])
+    if sales_data.get("monthly_revenue"):
+        df_rev = pd.DataFrame(sales_data["monthly_revenue"]).set_index("month")
+        st.line_chart(df_rev["revenue"])
+    else:
+        st.info("No revenue trend data for this period.")
     st.markdown("---")
     st.subheader("Marketing")
     c1,c2,c3,c4 = st.columns(4)
@@ -41,16 +50,23 @@ def show():
     c3.metric("Overall ROI", f"{mk['overall_roi']:.2f}x")
     c4.metric("Cost per Acquisition", f"{CURRENCY_SYMBOL}{mk['cpa']:.2f}")
     st.markdown("---")
+    camp_perf = mkt_data.get("campaign_performance", [])
     c_left, c_right = st.columns(2)
     with c_left:
         st.subheader("Campaign ROI")
-        df_camp = pd.DataFrame(mkt_data["campaign_performance"]).set_index("campaign_name")
-        st.bar_chart(df_camp["roi"])
+        if camp_perf:
+            df_camp = pd.DataFrame(camp_perf).set_index("campaign_name")
+            st.bar_chart(df_camp["roi"])
+        else:
+            st.info("No campaign data available.")
     with c_right:
         st.subheader("Campaign details")
-        df_d = pd.DataFrame(mkt_data["campaign_performance"])
-        df_d["spend"] = df_d["spend"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,}")
-        df_d["revenue"] = df_d["revenue"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,}")
-        df_d["roi"] = df_d["roi"].apply(lambda x: f"{x:.2f}x")
-        df_d.columns = ["Campaign","Spend","Revenue","ROI","Conversions"]
-        st.dataframe(df_d, use_container_width=True, hide_index=True)
+        if camp_perf:
+            df_d = pd.DataFrame(camp_perf)
+            df_d["spend"]   = df_d["spend"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,.0f}")
+            df_d["revenue"] = df_d["revenue"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,.0f}")
+            df_d["roi"]     = df_d["roi"].apply(lambda x: f"{x:.2f}x")
+            df_d.columns = ["Campaign","Spend","Revenue","ROI","Conversions"]
+            st.dataframe(df_d, use_container_width=True, hide_index=True)
+        else:
+            st.info("No campaign data available.")

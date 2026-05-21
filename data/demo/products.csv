@@ -1,0 +1,7 @@
+product_id,company_id,product_name,category,price,cost,active_flag
+1,2,Wireless Earbuds,Electronics,89.99,32.0,1
+2,2,Smart Watch,Electronics,149.99,55.0,1
+3,2,USB-C Hub,Accessories,45.99,12.0,1
+4,2,Laptop Stand,Accessories,39.99,11.0,1
+5,2,Mechanical Keyboard,Peripherals,129.99,48.0,1
+6,2,Webcam HD,Peripherals,79.99,28.0,1

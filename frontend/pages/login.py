@@ -49,9 +49,10 @@ def show():
             with st.spinner("Signing in..."):
                 result = login(email, password)
             if result:
-                st.session_state.token     = result["token"]
-                st.session_state.user_name = result["user"]["full_name"]
-                st.session_state.page      = "overview"
+                st.session_state.token      = result["token"]
+                st.session_state.user_name  = result["user"]["full_name"]
+                st.session_state.company_id = result["user"].get("company_id", 1)
+                st.session_state.page       = "overview"
                 st.rerun()
             else:
                 st.error("Invalid credentials. Please try again.")

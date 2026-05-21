@@ -247,7 +247,7 @@ def get_customers(period="last_3_months"):
 # CHAT
 # ════════════════════════════════════════════════════════════════
 
-def ask_question(question: str, company_id: int = 1):
+def ask_question(question: str):
     if USE_MOCK:
         return {
             "answer":     f"Mock answer for: '{question}'. Connect backend for real AI responses.",
@@ -261,7 +261,7 @@ def ask_question(question: str, company_id: int = 1):
             "confidence": 0.87,
             "charts":     [],
         }
-    return _post("/api/chat", {"question": question, "company_id": company_id})
+    return _post("/api/chat", {"question": question})
 
 
 # ════════════════════════════════════════════════════════════════
