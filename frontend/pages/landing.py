@@ -340,13 +340,7 @@ def show():
           <div class="ld-frame-url">dashboard.local/overview</div>
         </div>
         <div class="ld-frame-body">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-            <div class="ld-live"><div class="ld-live-dot"></div>LIVE</div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;
-            background:rgba(123,92,245,0.15);border:1px solid rgba(123,92,245,0.3);
-            border-radius:10px;padding:3px 10px;color:rgba(123,92,245,0.8);
-            letter-spacing:1px;">SAMPLE DATA</div>
-          </div>
+          <div class="ld-live"><div class="ld-live-dot"></div>LIVE</div>
           <div class="ld-kpis">
             <div class="ld-kpi"><div class="ld-kpi-lbl">Revenue</div><div class="ld-kpi-val">$125K</div><div class="ld-kpi-up">▲ 6%</div></div>
             <div class="ld-kpi"><div class="ld-kpi-lbl">Net Profit</div><div class="ld-kpi-val">$36K</div><div class="ld-kpi-up">▲ 4%</div></div>

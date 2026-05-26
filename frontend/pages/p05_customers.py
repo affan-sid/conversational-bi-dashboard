@@ -1,61 +1,16 @@
 import streamlit as st
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from header_footer import render_header, render_footer, render_empty_state
+from header_footer import render_header, render_footer
 import pandas as pd
 from api_client import get_customers
 from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD
 
 def show():
-    import streamlit as st
-    st.markdown("""
-<style>
-@media (max-width: 480px) {
-    [data-testid="stMainBlockContainer"] { padding: 12px 10px !important; }
-    [data-testid="stMetric"] { min-width: 0 !important; }
-    [data-testid="stMetricValue"] { font-size: 20px !important; }
-    [data-testid="stMetricLabel"] { font-size: 11px !important; }
-    h1 { font-size: 20px !important; }
-    h2 { font-size: 17px !important; }
-    h3 { font-size: 15px !important; }
-    [data-testid="stHorizontalBlock"] { flex-wrap: wrap !important; }
-    [data-testid="stHorizontalBlock"] > div { min-width: 140px !important; flex: 1 !important; }
-}
-@media (max-width: 768px) {
-    [data-testid="stMainBlockContainer"] { padding: 16px 12px !important; }
-    [data-testid="stMetricValue"] { font-size: 22px !important; }
-}
-/* Accessibility — improved text contrast */
-[data-testid="stMetricLabel"] { color: #C8C8D8 !important; font-size: 13px !important; }
-[data-testid="stMetricValue"] { color: #F4F1EB !important; font-weight: 700 !important; }
-[data-testid="stMetricDelta"] { font-size: 12px !important; }
-/* Chart labels contrast */
-.element-container p { color: #C8C8D8 !important; }
-/* Selectbox contrast */
-[data-testid="stSelectbox"] label { color: #C8C8D8 !important; font-size: 13px !important; }
-[data-testid="stSelectbox"] > div > div {
-    background: #1C1A3A !important;
-    border-color: rgba(123,92,245,0.3) !important;
-    color: #F4F1EB !important;
-}
-/* File uploader contrast */
-[data-testid="stFileUploader"] label { color: #C8C8D8 !important; }
-/* Dataframe contrast */
-[data-testid="stDataFrame"] { border: 1px solid rgba(123,92,245,0.15) !important; }
-/* Focus indicators for keyboard navigation */
-button:focus, input:focus, select:focus {
-    outline: 2px solid #7B5CF5 !important;
-    outline-offset: 2px !important;
-}
-</style>
-""", unsafe_allow_html=True)
     render_header("Customers")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     data = get_customers(period)
-    if not data:
-        render_empty_state()
-        return
-    if False: st.error("x customer data."); return
+    if not data: st.error("Could not load customer data."); return
     kpis = data["kpis"]
     c1,c2,c3,c4 = st.columns(4)
     c1.metric("Total Customers", f"{kpis['total_customers']}")
@@ -64,7 +19,7 @@ button:focus, input:focus, select:focus {
               delta="Low" if kpis["repeat_rate"] < 30 else None, delta_color="inverse")
     c4.metric("Churn Rate", f"{kpis['churn_rate']:.1f}%")
     c1,c2 = st.columns(2)
-    c1.metric("Avg Customer Lifetime Value", f"{CURRENCY_SYMBOL}{kpis['avg_clv']:,.2f}")
+    c1.metric("Avg Customer Lifetime Value", f"{CURRENCY_SYMBOL}{kpis['avg_clv']:,.0f}")
     c2.metric("New This Period", f"{kpis['new_this_period']}")
     st.markdown("---")
     c_left, c_right = st.columns(2)
