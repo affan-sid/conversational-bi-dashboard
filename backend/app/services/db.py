@@ -3,4 +3,8 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-engine = create_engine(os.getenv("DATABASE_URL"))
+
+_url = os.getenv("DATABASE_URL", "")
+# Supabase / cloud PostgreSQL requires SSL
+_connect_args = {"sslmode": "require"} if "supabase" in _url else {}
+engine = create_engine(_url, connect_args=_connect_args)
