@@ -13,11 +13,180 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-_GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-_GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions"
-_GROQ_MODEL   = "llama-3.1-8b-instant"
+_OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+_OPENAI_URL     = "https://api.openai.com/v1/chat/completions"
+_OPENAI_MODEL   = "gpt-4o-mini"
 
 _IF_CONTAMINATION = 0.05
+
+
+def _extract_table_name(sql: str) -> str:
+    sql_lower = sql.lower()
+    if "fact_marketing" in sql_lower:
+        return "marketing_performance"
+    elif "fact_sales" in sql_lower:
+        return "transactions"
+    elif "fact_expenses" in sql_lower:
+        return "expenses"
+    elif "customer_metrics" in sql_lower or "dim_customers" in sql_lower:
+        return "customers"
+    elif "fact_cash_flow" in sql_lower:
+        return "cash_flow"
+    return "data"
+
+
+def _rule_based_action(user_query: str, result: dict = None) -> str:
+    """Return a rule-based action suggestion when the LLM is unavailable."""
+    q = user_query.lower()
+    rows = (result or {}).get("rows", [])
+    top_name = str(rows[0][0]) if rows and rows[0] else ""
+
+    if any(w in q for w in ["campaign", "roi", "marketing", "wasting"]):
+        if top_name:
+            return (
+                f"Pause campaign '{top_name}' and run a side-by-side comparison of its cost-per-conversion against your best-performing campaign. "
+                f"If its ROI is below 1.0x, reallocate that entire budget to the campaign delivering the highest return — even a partial shift can meaningfully improve your overall marketing efficiency. "
+                f"Set a 2-week review window to measure whether the reallocation lifts total revenue before committing to a permanent budget change."
+            )
+        return (
+            "Audit every active campaign this week: list each one's total spend alongside the revenue it directly generated, then calculate a simple ROI (revenue ÷ spend). "
+            "Pause any campaign sitting below 1.0x ROI immediately — every dollar spent on a loss-making campaign is a dollar taken away from one that works. "
+            "Redirect that freed budget to your single highest-ROI channel and monitor results over the next two weeks."
+        )
+
+    if any(w in q for w in ["churn", "at risk", "losing customer"]):
+        return (
+            "This week, export your list of at-risk customers and segment them by how much revenue each represents — prioritise the top 20% by value first. "
+            "Send each segment a personalised message: a loyalty discount, an exclusive early-access offer, or a simple check-in call can recover 20–30% of at-risk accounts before they fully lapse. "
+            "Track which outreach method gets the best response rate so you can scale the most effective approach across the broader at-risk list."
+        )
+
+    if any(w in q for w in ["revenue", "profit", "drop", "decline"]):
+        return (
+            "Compare this period's revenue by channel and product against the same period last quarter to pinpoint exactly where the drop occurred. "
+            "Once you've identified the underperforming segment, check whether the cause is lower volume, lower prices, or higher returns — each requires a different fix. "
+            "In parallel, identify your strongest-performing channel and increase its budget or promotional activity to offset the decline while you address the root cause."
+        )
+
+    if any(w in q for w in ["expense", "cost", "spend", "burn"]):
+        return (
+            "Pull up your expense breakdown for the last 30 days and rank every category by total spend — your top three categories likely account for 70–80% of all costs. "
+            "Pick the largest discretionary line item in that top three and negotiate a 10% reduction this month, whether through a supplier discount, a subscription downgrade, or deferred purchasing. "
+            "Small cost reductions compound quickly: a 10% cut on a $5,000/month category saves $6,000 per year and extends your cash runway by weeks."
+        )
+
+    if any(w in q for w in ["cash", "runway"]):
+        return (
+            "Calculate your exact runway today: divide your current cash balance by your average monthly burn rate to get how many months you have left. "
+            "If that number is below three months, immediately contact your top five customers with outstanding invoices and offer a small early-payment discount to accelerate cash collection. "
+            "At the same time, defer all non-essential capital expenditure and review any recurring subscriptions or retainers you can pause — preserving cash now gives you more time to grow revenue rather than scramble for financing."
+        )
+
+    if any(w in q for w in ["customer", "best", "top", "segment"]):
+        if top_name:
+            return (
+                f"Your relationship with '{top_name}' is one of your most valuable assets — protect it proactively rather than reactively. "
+                f"Reach out this week with a personalised thank-you and offer them loyalty pricing, early access to new products, or a dedicated account review call. "
+                f"Customers who feel recognised and valued are significantly less likely to churn, and retaining one high-value customer costs far less than acquiring a replacement."
+            )
+        return (
+            "Identify your top 20% of customers by revenue — this group typically generates 80% of your income and deserves a differentiated experience. "
+            "Create a simple VIP tier: offer them first access to new products, a small loyalty discount, or a quarterly business review call. "
+            "Even a light-touch retention programme for this segment can dramatically reduce churn risk and increase their lifetime value over the next 12 months."
+        )
+
+    if any(w in q for w in ["product", "sell", "selling"]):
+        if top_name:
+            return (
+                f"'{top_name}' is your strongest product — double down on it before competitors do. "
+                f"Review your current inventory levels and ensure you have at least 4–6 weeks of stock on hand, then increase its share of your marketing budget by 20–30% to drive further volume. "
+                f"Also consider whether you can introduce a premium version, a bundle, or a subscription option around this product to increase revenue per customer."
+            )
+        return (
+            "Rank your products by total revenue and identify the top three — these proven sellers should receive the majority of your inventory investment and ad spend. "
+            "For each of the top three, check whether you are consistently in stock, competitively priced, and actively promoted across your key channels. "
+            "Avoid spreading budget evenly across all SKUs; concentrating resources on proven performers delivers far better returns than trying to lift slow-moving products."
+        )
+
+    return (
+        "Review this result against your targets and identify the single biggest gap between where you are and where you want to be. "
+        "Break that gap into one concrete action you can start this week — even a small, focused step moves the metric in the right direction faster than broad, unfocused effort. "
+        "Set a specific review date in 7–14 days to measure whether your action had the intended effect and adjust from there."
+    )
+
+
+def generate_insight(user_query: str, answer_summary: str, result: dict = None, sql: str = "") -> dict:
+    """
+    Call the LLM to produce structured explainability: reason, two evidence items,
+    and a concrete action. Falls back to rule-based suggestions if the LLM is unavailable
+    so that an action is always returned.
+    """
+    table_source = _extract_table_name(sql) if sql else "data"
+
+    data_context = ""
+    if result and result.get("rows") and result.get("columns"):
+        rows = result["rows"]
+        cols = result["columns"]
+        sample = []
+        for row in rows[:3]:
+            sample.append(str(dict(zip(cols, row))))
+        data_context = f"\nActual query result (from {table_source}):\n" + "\n".join(sample)
+
+    prompt = f"""You are a business intelligence assistant for a small business owner.
+
+The owner asked: "{user_query}"
+The data answer is: {answer_summary}{data_context}
+
+Reply using EXACTLY these six labelled lines. Each label must appear once. Do not add any other lines.
+
+REASON: [one sentence explaining WHY this result occurred based on the data]
+EVIDENCE1_SOURCE: [table or data area, e.g. marketing_performance]
+EVIDENCE1_DETAIL: [one specific number or comparison from the data]
+EVIDENCE2_SOURCE: [second data area]
+EVIDENCE2_DETAIL: [second specific data point]
+ACTION: [Write 2-3 full sentences all on this single line. Sentence 1: the specific action to take right now using the actual names/numbers from the data. Sentence 2: why it matters — quantify the impact using figures from the result. Sentence 3: one concrete follow-up step to measure success within 2 weeks.]"""
+
+    raw = _call_groq(prompt)
+    reason = action = ""
+    ev1_source = ev1_detail = ev2_source = ev2_detail = ""
+
+    if raw:
+        action_lines = []
+        in_action = False
+        for line in raw.splitlines():
+            if line.startswith("REASON:"):
+                reason = line[7:].strip()
+                in_action = False
+            elif line.startswith("EVIDENCE1_SOURCE:"):
+                ev1_source = line[17:].strip()
+                in_action = False
+            elif line.startswith("EVIDENCE1_DETAIL:"):
+                ev1_detail = line[17:].strip()
+                in_action = False
+            elif line.startswith("EVIDENCE2_SOURCE:"):
+                ev2_source = line[17:].strip()
+                in_action = False
+            elif line.startswith("EVIDENCE2_DETAIL:"):
+                ev2_detail = line[17:].strip()
+                in_action = False
+            elif line.startswith("ACTION:"):
+                action_lines = [line[7:].strip()]
+                in_action = True
+            elif in_action and line.strip():
+                action_lines.append(line.strip())
+        action = " ".join(action_lines).strip()
+
+    evidence = []
+    if ev1_source and ev1_detail:
+        evidence.append({"source": ev1_source, "detail": ev1_detail})
+    if ev2_source and ev2_detail:
+        evidence.append({"source": ev2_source, "detail": ev2_detail})
+
+    # Use rule-based if LLM returned nothing or a single short sentence (< 200 chars)
+    if not action or len(action) < 200:
+        action = _rule_based_action(user_query, result)
+
+    return {"reason": reason, "evidence": evidence, "action": action}
 
 
 def explain_result(user_query: str, result: dict) -> str:
@@ -99,21 +268,24 @@ def explain_result(user_query: str, result: dict) -> str:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# GROQ HELPER
+# OPENAI HELPER
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _call_groq(prompt: str) -> str:
+    api_key = os.getenv("OPENAI_API_KEY", _OPENAI_API_KEY)
+    if not api_key:
+        return ""
     try:
         response = requests.post(
-            _GROQ_URL,
-            headers={"Authorization": f"Bearer {_GROQ_API_KEY}",
+            _OPENAI_URL,
+            headers={"Authorization": f"Bearer {api_key}",
                      "Content-Type": "application/json"},
             json={
-                "model": _GROQ_MODEL,
+                "model": _OPENAI_MODEL,
                 "messages": [{"role": "user", "content": prompt}],
                 "temperature": 0.3
             },
-            timeout=20
+            timeout=30
         )
         return response.json()["choices"][0]["message"]["content"].strip()
     except Exception:

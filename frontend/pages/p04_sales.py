@@ -1,12 +1,13 @@
 import streamlit as st
 import pandas as pd
 from api_client import get_sales, get_marketing
-from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD
+from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
     st.title("Sales & Marketing")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
-    sales_data = get_sales(period); mkt_data = get_marketing(period)
+    period_api = PERIOD_API_MAP.get(period, "last_3_months")
+    sales_data = get_sales(period_api); mkt_data = get_marketing(period_api)
     if not sales_data: st.error("Could not load data."); return
     if sales_data.get("has_data") is False:
         st.info("📁 No sales data uploaded yet. Upload your sales CSV to see this dashboard.")
@@ -28,13 +29,13 @@ def show():
         df_ch = pd.DataFrame(sales_data["revenue_by_channel"]).set_index("channel")
         st.bar_chart(df_ch["revenue"])
         for row in sales_data["revenue_by_channel"]:
-            st.caption(f"• {row['channel'].title()}: {row['orders']:,} orders — {CURRENCY_SYMBOL}{row['revenue']:,}")
+            st.caption(f"• {row['channel'].title()}: {row['orders']:,} orders — {CURRENCY_SYMBOL}{row['revenue']:,.0f}")
     with c_right:
         st.subheader("Top products")
         df_prod = pd.DataFrame(sales_data["top_products"]).set_index("product_name")
         st.bar_chart(df_prod["revenue"])
         for row in sales_data["top_products"]:
-            st.caption(f"• {row['product_name']}: {row['units_sold']:,} units — {CURRENCY_SYMBOL}{row['revenue']:,}")
+            st.caption(f"• {row['product_name']}: {row['units_sold']:,} units — {CURRENCY_SYMBOL}{row['revenue']:,.0f}")
     st.markdown("---")
     st.subheader("Monthly revenue trend")
     if sales_data.get("monthly_revenue"):

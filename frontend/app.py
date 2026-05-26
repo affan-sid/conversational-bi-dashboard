@@ -30,6 +30,8 @@ elif page == "login":
     from pages.login import show; show()
 
 # ── REGISTER ──────────────────────────────────────────────
+elif page == "forgot_password":
+    from pages.forgot_password import show; show()
 elif page == "register":
     st.markdown("<style>[data-testid='stSidebar']{display:none}</style>", unsafe_allow_html=True)
     from pages.register import show; show()

@@ -10,7 +10,6 @@
       "aggregation": "SUM",
       "unit": "CAD"
     },
-
     "gross_profit": {
       "name": "Gross Profit",
       "description": "Revenue minus cost of goods sold",
@@ -19,7 +18,6 @@
       "aggregation": "SUM",
       "unit": "CAD"
     },
-
     "net_profit": {
       "name": "Net Profit",
       "description": "Revenue minus all expenses (COGS + operating expenses)",
@@ -28,7 +26,6 @@
       "aggregation": "COMPOSITE",
       "unit": "CAD"
     },
-
     "cash_runway": {
       "name": "Cash Runway",
       "description": "Number of months until cash runs out at current burn rate",
@@ -37,7 +34,6 @@
       "aggregation": "CALCULATED",
       "unit": "months"
     },
-
     "top_products": {
       "name": "Top Selling Products",
       "description": "Products ranked by revenue",
@@ -46,7 +42,6 @@
       "aggregation": "RANKING",
       "unit": "mixed"
     },
-
     "marketing_roi": {
       "name": "Marketing ROI",
       "description": "Return on investment for marketing campaigns",
@@ -55,7 +50,6 @@
       "aggregation": "RATIO",
       "unit": "%"
     },
-
     "avg_order_value": {
       "name": "Average Order Value",
       "description": "Average revenue per completed order",
@@ -64,7 +58,6 @@
       "aggregation": "AVG",
       "unit": "CAD"
     },
-
     "revenue_by_segment": {
       "name": "Revenue by Customer Segment",
       "description": "Total revenue broken down by customer segment (Retail, SME, Corporate)",
@@ -73,7 +66,6 @@
       "aggregation": "GROUP",
       "unit": "CAD"
     },
-
     "revenue_by_channel": {
       "name": "Revenue by Sales Channel",
       "description": "Total revenue broken down by sales channel",
@@ -82,7 +74,6 @@
       "aggregation": "GROUP",
       "unit": "CAD"
     },
-
     "revenue_by_city": {
       "name": "Revenue by City",
       "description": "Total revenue and orders broken down by customer city",
@@ -91,7 +82,6 @@
       "aggregation": "GROUP",
       "unit": "CAD"
     },
-
     "expense_breakdown": {
       "name": "Expense Breakdown by Category",
       "description": "Total expenses grouped by category",
@@ -100,7 +90,6 @@
       "aggregation": "GROUP",
       "unit": "CAD"
     },
-
     "top_customers": {
       "name": "Top Customers by Revenue",
       "description": "Customers ranked by total revenue generated",
@@ -109,7 +98,6 @@
       "aggregation": "RANKING",
       "unit": "CAD"
     },
-
     "orders_by_city": {
       "name": "Orders by City",
       "description": "Number of orders and revenue from each city",
@@ -117,6 +105,14 @@
       "sql": "SELECT dc.city, COUNT(DISTINCT fs.order_id) as num_orders, SUM(fs.line_total) as total_revenue FROM fact_sales fs JOIN dim_customers dc ON fs.customer_id = dc.customer_id WHERE fs.status = 'completed' GROUP BY dc.city ORDER BY num_orders DESC",
       "aggregation": "GROUP",
       "unit": "mixed"
+    },
+    "worst_campaign": {
+      "name": "Worst Performing Campaigns",
+      "description": "Campaigns ranked by lowest ROI (wasting money, negative returns)",
+      "category": "Marketing Efficiency",
+      "sql": "SELECT dc.campaign_name, dc.platform, SUM(fm.spend) as total_spend, SUM(fm.revenue_attributed) as attributed_revenue, ((SUM(fm.revenue_attributed) - SUM(fm.spend)) / NULLIF(SUM(fm.spend), 0)) * 100 as roi_percentage FROM fact_marketing fm JOIN dim_campaigns dc ON fm.campaign_id = dc.campaign_id GROUP BY dc.campaign_id, dc.campaign_name, dc.platform HAVING SUM(fm.spend) > 0 ORDER BY roi_percentage ASC",
+      "aggregation": "RANKING",
+      "unit": "%"
     }
   }
 }

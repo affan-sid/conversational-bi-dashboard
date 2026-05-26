@@ -72,6 +72,35 @@ def register(full_name: str, email: str, password: str):
     })
 
 
+def reset_password(email: str, new_password: str):
+    """Returns {success: True} or None. None means email not found."""
+    if USE_MOCK:
+        return {"success": True}
+    try:
+        res = requests.post(f"{API_BASE_URL}/auth/reset-password",
+                            json={"email": email, "new_password": new_password}, timeout=10)
+        if res.status_code == 404:
+            return None
+        res.raise_for_status()
+        return res.json()
+    except requests.exceptions.ConnectionError:
+        st.error("Cannot connect to backend.")
+        return None
+    except requests.exceptions.HTTPError as e:
+        st.error(f"API error: {e}")
+        return None
+
+
+def demo_login():
+    """Log in as the pre-seeded demo@wouessi.com account. Returns {token, user} or None."""
+    if USE_MOCK:
+        return {
+            "token": "mock-demo-token-xyz",
+            "user":  {"full_name": "Demo User", "role": "viewer", "company_id": 1}
+        }
+    return _post("/auth/demo-login", {})
+
+
 # ════════════════════════════════════════════════════════════════
 # OVERVIEW
 # ════════════════════════════════════════════════════════════════

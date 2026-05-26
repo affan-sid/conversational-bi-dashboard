@@ -10,6 +10,8 @@ def show():
     }
     [data-testid="stHeader"] { background: transparent !important; }
     footer, #MainMenu { visibility: hidden; }
+    [data-testid="stToolbar"]    { display: none !important; }
+    [data-testid="stDecoration"] { display: none !important; }
     @media (max-width: 768px) {
       [data-testid="stMainBlockContainer"] { 
         max-width: 100% !important; 

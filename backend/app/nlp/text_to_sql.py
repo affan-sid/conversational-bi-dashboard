@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-_GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-_GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions"
-_GROQ_MODEL   = "llama-3.1-8b-instant"
+_OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+_OPENAI_URL     = "https://api.openai.com/v1/chat/completions"
+_OPENAI_MODEL   = "gpt-4o-mini"
 
 _SCHEMA = """
 Tables:
@@ -72,20 +72,20 @@ SQL:"""
 
     try:
         resp = requests.post(
-            _GROQ_URL,
-            headers={"Authorization": f"Bearer {_GROQ_API_KEY}",
+            _OPENAI_URL,
+            headers={"Authorization": f"Bearer {_OPENAI_API_KEY}",
                      "Content-Type": "application/json"},
-            json={"model": _GROQ_MODEL,
+            json={"model": _OPENAI_MODEL,
                   "messages": [{"role": "user", "content": prompt}],
                   "temperature": 0},
-            timeout=20
+            timeout=30
         )
         sql = resp.json()["choices"][0]["message"]["content"].strip()
         sql = sql.replace("```sql", "").replace("```", "").strip()
         print("Generated SQL:", sql[:120])
         return sql
     except Exception as e:
-        print(f"Groq SQL generation failed: {e}")
+        print(f"OpenAI SQL generation failed: {e}")
         return "SELECT 'Could not generate SQL' AS error"
 
 

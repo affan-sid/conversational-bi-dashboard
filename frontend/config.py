@@ -5,7 +5,7 @@ import os
 USE_MOCK = False
 
 # Update this when Affan deploys the backend
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8001")
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 
 # ── APP SETTINGS ─────────────────────────────────────────────────
 APP_TITLE        = "BI Dashboard"
@@ -33,3 +33,10 @@ CAMPAIGN_ROI_MIN            = 0.0
 # ── DEFAULT PERIOD ────────────────────────────────────────────────
 DEFAULT_PERIOD   = "Last 3 months"
 PERIOD_OPTIONS   = ["Last 7 days", "Last 30 days", "Last 3 months", "Last 6 months", "All time"]
+PERIOD_API_MAP   = {
+    "Last 7 days":   "last_7_days",
+    "Last 30 days":  "last_30_days",
+    "Last 3 months": "last_3_months",
+    "Last 6 months": "last_6_months",
+    "All time":      "all_time",
+}

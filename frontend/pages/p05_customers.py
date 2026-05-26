@@ -1,12 +1,12 @@
 import streamlit as st
 import pandas as pd
 from api_client import get_customers
-from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD
+from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
     st.title("Customers")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
-    data = get_customers(period)
+    data = get_customers(PERIOD_API_MAP.get(period, "last_3_months"))
     if not data: st.error("Could not load customer data."); return
     if data.get("has_data") is False:
         st.info("📁 No customer data uploaded yet. Upload your customers CSV to see this dashboard.")
@@ -30,7 +30,7 @@ def show():
         df_seg = pd.DataFrame(data["revenue_by_segment"]).set_index("segment")
         st.bar_chart(df_seg["revenue"])
         for row in data["revenue_by_segment"]:
-            st.caption(f"• {row['segment']}: {row['customers']} customers — {CURRENCY_SYMBOL}{row['revenue']:,}")
+            st.caption(f"• {row['segment']}: {row['customers']:,} customers — {CURRENCY_SYMBOL}{row['revenue']:,.0f}")
     with c_right:
         st.subheader("Customer growth")
         if data.get("growth_trend"):
@@ -41,7 +41,7 @@ def show():
     st.markdown("---")
     st.subheader("Top customers by revenue")
     df_top = pd.DataFrame(data["top_customers"])
-    df_top["total_revenue"] = df_top["total_revenue"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,}")
+    df_top["total_revenue"] = df_top["total_revenue"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,.0f}")
     df_top.columns = ["ID","Name","Revenue","Orders","Segment"]
     st.dataframe(df_top, use_container_width=True, hide_index=True)
     st.markdown("---")

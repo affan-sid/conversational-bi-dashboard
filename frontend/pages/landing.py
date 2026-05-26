@@ -1,4 +1,5 @@
 import streamlit as st
+from api_client import demo_login
 
 def show():
     st.markdown("""
@@ -13,6 +14,8 @@ def show():
     [data-testid="stMainBlockContainer"] { padding: 0 !important; max-width: 100% !important; }
     .block-container { padding: 0 !important; max-width: 100% !important; }
     footer, #MainMenu { visibility: hidden; }
+    [data-testid="stToolbar"]    { display: none !important; }
+    [data-testid="stDecoration"] { display: none !important; }
 
     div[data-testid="stButton"] > button {
         font-family: 'DM Sans', sans-serif !important;
@@ -319,9 +322,18 @@ def show():
     </div>
     """, unsafe_allow_html=True)
 
-    # Nav Open Dashboard button
-    nav1, nav2, nav3 = st.columns([3, 0.1, 1.5])
-    with nav3:
+    # Nav buttons
+    nav1, nav2, nav3, nav4 = st.columns([3, 1.2, 0.05, 1.2])
+    with nav2:
+        if st.button("Try Demo →", key="nav_demo_btn", use_container_width=True):
+            result = demo_login()
+            if result:
+                st.session_state.token      = result["token"]
+                st.session_state.user_name  = result["user"]["full_name"]
+                st.session_state.company_id = result["user"].get("company_id")
+                st.session_state.page = "dashboard"
+                st.rerun()
+    with nav4:
         if st.button("Open Dashboard →", type="primary", key="nav_btn", use_container_width=True):
             st.session_state.page = "login"; st.rerun()
 
@@ -341,6 +353,7 @@ def show():
         </div>
         <div class="ld-frame-body">
           <div class="ld-live"><div class="ld-live-dot"></div>LIVE</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;color:rgba(123,92,245,0.7);text-transform:uppercase;background:rgba(123,92,245,0.08);border:1px solid rgba(123,92,245,0.2);border-radius:4px;padding:2px 8px;display:inline-block;margin-bottom:8px;">Demo data</div>
           <div class="ld-kpis">
             <div class="ld-kpi"><div class="ld-kpi-lbl">Revenue</div><div class="ld-kpi-val">$125K</div><div class="ld-kpi-up">▲ 6%</div></div>
             <div class="ld-kpi"><div class="ld-kpi-lbl">Net Profit</div><div class="ld-kpi-val">$36K</div><div class="ld-kpi-up">▲ 4%</div></div>
@@ -438,11 +451,20 @@ def show():
     </section>
     """, unsafe_allow_html=True)
 
-    # CTA Get Started button
-    _, cta_col, _ = st.columns([2, 1.5, 2])
-    with cta_col:
+    # CTA buttons
+    _, cta_col1, cta_gap, cta_col2, _ = st.columns([2, 1.2, 0.1, 1.2, 2])
+    with cta_col1:
         if st.button("Get Started →", type="primary", key="cta_btn", use_container_width=True):
             st.session_state.page = "register"; st.rerun()
+    with cta_col2:
+        if st.button("Try Demo →", key="cta_demo_btn", use_container_width=True):
+            result = demo_login()
+            if result:
+                st.session_state.token      = result["token"]
+                st.session_state.user_name  = result["user"]["full_name"]
+                st.session_state.company_id = result["user"].get("company_id")
+                st.session_state.page = "dashboard"
+                st.rerun()
 
     st.markdown("""
 

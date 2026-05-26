@@ -10,7 +10,7 @@ from backend.app.nlp.text_to_sql import generate_sql, is_safe_sql
 from backend.app.services.query_engine import execute_sql
 from backend.app.analytics.anomaly_detection import run_all_detectors
 from backend.app.semantic.kpis import KPI_DEFINITIONS, map_to_kpi
-from backend.app.services.explainer import explain_result, enrich_anomalies_with_explanations
+from backend.app.services.explainer import explain_result, generate_insight, enrich_anomalies_with_explanations
 from backend.app.services.insights import get_revenue_insight
 from backend.app.services.recommendations import generate_recommendations
 
@@ -53,6 +53,7 @@ def _period_interval(period: str) -> str:
         "last_30_days":  "30 days",
         "last_3_months": "3 months",
         "last_6_months": "6 months",
+        "all_time":      "100 years",
     }.get(period, "3 months")
 
 
@@ -91,6 +92,11 @@ def _startup():
 class LoginRequest(BaseModel):
     email: str
     password: str
+
+
+class ResetPasswordRequest(BaseModel):
+    email: str
+    new_password: str
 
 
 class RegisterRequest(BaseModel):
@@ -167,6 +173,72 @@ def register_user(req: RegisterRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/auth/demo-login")
+def demo_login():
+    """Return a session token for the read-only demo@wouessi.com account.
+    Creates the account on first call if it does not yet exist in the DB."""
+    DEMO_EMAIL = "demo@wouessi.com"
+    DEMO_NAME  = "Demo User"
+    try:
+        with engine.connect() as conn:
+            row = conn.execute(
+                text("SELECT user_id, full_name, role, company_id FROM dim_users WHERE email = :e LIMIT 1"),
+                {"e": DEMO_EMAIL}
+            ).fetchone()
+
+            if not row:
+                company_row = conn.execute(
+                    text("SELECT company_id FROM dim_companies ORDER BY company_id LIMIT 1")
+                ).fetchone()
+                demo_cid = int(company_row[0]) if company_row else 1
+
+                uid = int(conn.execute(
+                    text("SELECT COALESCE(MAX(user_id), 0) + 1 FROM dim_users")
+                ).scalar())
+                conn.execute(
+                    text("""INSERT INTO dim_users
+                            (user_id, company_id, full_name, email, role, password_hash, created_at)
+                            VALUES (:uid, :cid, :name, :email, :role, :hash, :ts)"""),
+                    {"uid": uid, "cid": demo_cid, "name": DEMO_NAME, "email": DEMO_EMAIL,
+                     "role": "viewer", "hash": _hash("WouessDemo2024!"),
+                     "ts": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                )
+                conn.commit()
+                user_id, full_name, role, company_id = uid, DEMO_NAME, "viewer", demo_cid
+            else:
+                user_id, full_name, role, company_id = row[0], row[1], row[2], row[3]
+
+        token = f"tok-demo-{uuid.uuid4().hex}"
+        _TOKENS[token] = {"user_id": user_id, "company_id": company_id,
+                          "full_name": full_name, "role": role}
+        return {"token": token, "user": {"full_name": full_name, "role": role,
+                                         "company_id": company_id}}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/auth/reset-password")
+def reset_password(req: ResetPasswordRequest):
+    try:
+        with engine.connect() as conn:
+            row = conn.execute(
+                text("SELECT user_id FROM dim_users WHERE email = :email LIMIT 1"),
+                {"email": req.email}
+            ).fetchone()
+            if not row:
+                raise HTTPException(status_code=404, detail="No account found with that email")
+            conn.execute(
+                text("UPDATE dim_users SET password_hash = :hash WHERE email = :email"),
+                {"hash": _hash(req.new_password), "email": req.email}
+            )
+            conn.commit()
+        return {"success": True}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # OVERVIEW
 # ─────────────────────────────────────────────────────────────────────────────
@@ -220,8 +292,8 @@ def get_overview(company_id: int = Depends(get_company_id)):
     top_ch = _rows("SELECT channel FROM fact_sales WHERE status='completed' AND company_id=:cid GROUP BY channel ORDER BY SUM(line_total) DESC LIMIT 1", p)
     top_channel = top_ch[0]["channel"] if top_ch else "N/A"
 
-    prev_rev = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND order_date >= DATE_TRUNC('month', NOW()) - INTERVAL '1 month' AND order_date < DATE_TRUNC('month', NOW())", p)
-    curr_rev = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND order_date >= DATE_TRUNC('month', NOW())", p)
+    prev_rev = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= DATE_TRUNC('month', NOW()) - INTERVAL '1 month' AND CAST(order_date AS DATE) < DATE_TRUNC('month', NOW())", p)
+    curr_rev = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= DATE_TRUNC('month', NOW())", p)
     revenue_trend = "up" if curr_rev >= prev_rev else "down"
 
     best_camp = _rows("""
@@ -274,9 +346,9 @@ def get_finance(period: str = Query(default="last_3_months"), company_id: int = 
         return {"has_data": False}
 
     interval = _period_interval(period)
-    revenue      = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
-    expenses     = _scalar("SELECT SUM(amount) FROM fact_expenses WHERE company_id=:cid", p)
-    gross_profit = _scalar("SELECT SUM(gross_profit) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
+    revenue      = _scalar(f"SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    expenses     = _scalar(f"SELECT SUM(amount) FROM fact_expenses WHERE company_id=:cid AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    gross_profit = _scalar(f"SELECT SUM(gross_profit) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
     net_profit   = revenue - expenses
     profit_margin = round((net_profit / revenue * 100), 1) if revenue else 0
 
@@ -290,17 +362,19 @@ def get_finance(period: str = Query(default="last_3_months"), company_id: int = 
     """, p)
     cash_runway = round(cash / monthly_burn, 1) if monthly_burn else 0
 
-    rev_rows = _rows("""
-        SELECT TO_CHAR(DATE_TRUNC('month', order_date), 'Mon YYYY') AS month,
+    rev_rows = _rows(f"""
+        SELECT TO_CHAR(DATE_TRUNC('month', CAST(order_date AS DATE)), 'Mon YYYY') AS month,
                SUM(line_total) AS revenue
         FROM fact_sales WHERE status='completed' AND company_id=:cid
-        GROUP BY DATE_TRUNC('month', order_date)
-        ORDER BY DATE_TRUNC('month', order_date)
+          AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
+        GROUP BY DATE_TRUNC('month', CAST(order_date AS DATE))
+        ORDER BY DATE_TRUNC('month', CAST(order_date AS DATE))
     """, p)
-    exp_rows = _rows("""
+    exp_rows = _rows(f"""
         SELECT TO_CHAR(DATE_TRUNC('month', CAST(date AS DATE)), 'Mon YYYY') AS month,
                SUM(amount) AS expenses
         FROM fact_expenses WHERE company_id=:cid
+          AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'
         GROUP BY DATE_TRUNC('month', CAST(date AS DATE))
     """, p)
     exp_map = {r["month"]: float(r["expenses"]) for r in exp_rows}
@@ -311,16 +385,18 @@ def get_finance(period: str = Query(default="last_3_months"), company_id: int = 
         for r in rev_rows
     ]
 
-    expense_breakdown = _rows("""
+    expense_breakdown = _rows(f"""
         SELECT expense_category AS category, SUM(amount) AS amount
         FROM fact_expenses WHERE company_id=:cid
+          AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'
         GROUP BY expense_category ORDER BY amount DESC
     """, p)
 
-    cash_trend = _rows("""
+    cash_trend = _rows(f"""
         SELECT TO_CHAR(date, 'YYYY-MM-DD') AS date,
                SUM(signed_amount) OVER (ORDER BY date) AS closing_balance
         FROM fact_cash_flow WHERE company_id=:cid
+          AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'
         ORDER BY date LIMIT 12
     """, p)
 
@@ -350,33 +426,35 @@ def get_sales(period: str = Query(default="last_3_months"), company_id: int = De
         return {"has_data": False}
 
     interval = _period_interval(period)
-    total_orders    = _scalar("SELECT COUNT(*) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
-    returned_orders = _scalar("SELECT COUNT(*) FROM fact_sales WHERE status='returned' AND company_id=:cid", p)
-    avg_order       = _scalar("SELECT AVG(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
-    total_revenue   = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
+    total_orders    = _scalar(f"SELECT COUNT(*) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    returned_orders = _scalar(f"SELECT COUNT(*) FROM fact_sales WHERE status='returned' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    avg_order       = _scalar(f"SELECT AVG(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_revenue   = _scalar(f"SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
     return_rate     = round(returned_orders / (total_orders + returned_orders) * 100, 1) if total_orders else 0
 
-    revenue_by_channel = _rows("""
+    revenue_by_channel = _rows(f"""
         SELECT channel, SUM(line_total) AS revenue, COUNT(*) AS orders
         FROM fact_sales WHERE status='completed' AND company_id=:cid
+          AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
         GROUP BY channel ORDER BY revenue DESC
     """, p)
 
-    top_products = _rows("""
+    top_products = _rows(f"""
         SELECT dp.product_name, SUM(fs.quantity) AS units_sold, SUM(fs.line_total) AS revenue
         FROM fact_sales fs
         JOIN dim_products dp ON fs.product_id = dp.product_id
         WHERE fs.status='completed' AND fs.company_id=:cid
+          AND CAST(fs.order_date AS DATE) >= NOW() - INTERVAL '{interval}'
         GROUP BY dp.product_name ORDER BY revenue DESC LIMIT 5
     """, p)
 
     monthly_revenue = _rows(f"""
-        SELECT TO_CHAR(DATE_TRUNC('month', order_date), 'Mon YYYY') AS month,
+        SELECT TO_CHAR(DATE_TRUNC('month', CAST(order_date AS DATE)), 'Mon YYYY') AS month,
                SUM(line_total) AS revenue
         FROM fact_sales WHERE status='completed' AND company_id=:cid
-          AND order_date >= NOW() - INTERVAL '{interval}'
-        GROUP BY DATE_TRUNC('month', order_date)
-        ORDER BY DATE_TRUNC('month', order_date)
+          AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
+        GROUP BY DATE_TRUNC('month', CAST(order_date AS DATE))
+        ORDER BY DATE_TRUNC('month', CAST(order_date AS DATE))
     """, p)
 
     campaign_performance = _rows("""
@@ -425,12 +503,12 @@ def get_marketing(period: str = Query(default="last_3_months"), company_id: int 
         return {"has_data": False}
 
     interval = _period_interval(period)
-    total_spend       = _scalar("SELECT SUM(spend) FROM fact_marketing WHERE company_id=:cid", p)
-    total_attributed  = _scalar("SELECT SUM(revenue_attributed) FROM fact_marketing WHERE company_id=:cid", p)
-    total_impressions = _scalar("SELECT SUM(impressions) FROM fact_marketing WHERE company_id=:cid", p)
-    total_clicks      = _scalar("SELECT SUM(clicks) FROM fact_marketing WHERE company_id=:cid", p)
-    total_leads       = _scalar("SELECT SUM(leads) FROM fact_marketing WHERE company_id=:cid", p)
-    total_conversions = _scalar("SELECT SUM(conversions) FROM fact_marketing WHERE company_id=:cid", p)
+    total_spend       = _scalar(f"SELECT SUM(spend) FROM fact_marketing WHERE company_id=:cid AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_attributed  = _scalar(f"SELECT SUM(revenue_attributed) FROM fact_marketing WHERE company_id=:cid AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_impressions = _scalar(f"SELECT SUM(impressions) FROM fact_marketing WHERE company_id=:cid AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_clicks      = _scalar(f"SELECT SUM(clicks) FROM fact_marketing WHERE company_id=:cid AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_leads       = _scalar(f"SELECT SUM(leads) FROM fact_marketing WHERE company_id=:cid AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_conversions = _scalar(f"SELECT SUM(conversions) FROM fact_marketing WHERE company_id=:cid AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
     overall_roi = round((total_attributed - total_spend) / total_spend, 2) if total_spend else 0
     ctr = round(total_clicks / total_impressions * 100, 2) if total_impressions else 0
     cpa = round(total_spend / total_conversions, 2) if total_conversions else 0
@@ -484,10 +562,11 @@ def get_customers(period: str = Query(default="last_3_months"), company_id: int 
 
     interval = _period_interval(period)
     total_customers  = _scalar("SELECT COUNT(*) FROM dim_customers WHERE company_id=:cid", p)
-    active_customers = _scalar("SELECT COUNT(DISTINCT customer_id) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
-    repeat_customers = _scalar("""
+    active_customers = _scalar(f"SELECT COUNT(DISTINCT customer_id) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    repeat_customers = _scalar(f"""
         SELECT COUNT(*) FROM (
             SELECT customer_id FROM fact_sales WHERE status='completed' AND company_id=:cid
+              AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
             GROUP BY customer_id HAVING COUNT(*) > 1
         ) t
     """, p)
@@ -617,7 +696,16 @@ def api_chat(req: ChatRequest, company_id: int = Depends(get_company_id)):
         return {"answer": f"Query failed: {e}", "sql": sql, "confidence": 0.0}
 
     explanation = explain_result(user_query, result)
-    return {"answer": explanation, "sql": sql, "result": result, "confidence": 0.85}
+    insight = generate_insight(user_query, explanation, result=result, sql=sql)
+    return {
+        "answer":     explanation,
+        "sql":        sql,
+        "result":     result,
+        "reason":     insight["reason"],
+        "evidence":   insight["evidence"],
+        "action":     insight["action"],
+        "confidence": 0.85,
+    }
 
 
 # ─────────────────────────────────────────────────────────────────────────────

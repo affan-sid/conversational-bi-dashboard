@@ -1,12 +1,12 @@
 import streamlit as st
 import pandas as pd
 from api_client import get_finance
-from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD
+from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
     st.title("Finance Dashboard")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
-    data = get_finance(period)
+    data = get_finance(PERIOD_API_MAP.get(period, "last_3_months"))
     if not data: st.error("Could not load finance data."); return
     if data.get("has_data") is False:
         st.info("📁 No finance data uploaded yet. Upload your finance CSV to see this dashboard.")
