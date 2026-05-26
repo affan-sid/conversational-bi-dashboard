@@ -28,6 +28,81 @@ header { visibility: hidden !important; }
 a[href*="streamlit.io"] { display: none !important; }
 a[href*="github.com"] { display: none !important; }
 [data-testid="baseButton-headerNoPadding"] { display: none !important; }
+
+/* ── MOBILE RESPONSIVENESS ── */
+
+/* Tablet (≤768px): 4-col → 2-col */
+@media (max-width: 768px) {
+    /* Stack columns into 2-per-row */
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+    [data-testid="stHorizontalBlock"] > [data-testid="column"] {
+        min-width: calc(50% - 0.5rem) !important;
+        flex: 1 1 calc(50% - 0.5rem) !important;
+    }
+    /* Reduce page padding */
+    .block-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 1rem !important;
+    }
+    /* Smaller metric values */
+    [data-testid="stMetricValue"] {
+        font-size: 1.4rem !important;
+    }
+    [data-testid="stMetricLabel"] {
+        font-size: 0.75rem !important;
+    }
+    /* Prevent dataframes from breaking layout */
+    [data-testid="stDataFrame"] {
+        overflow-x: auto !important;
+        max-width: 100% !important;
+    }
+    /* Charts fill width */
+    [data-testid="stPlotlyChart"],
+    [data-testid="stArrowVegaLiteChart"] {
+        width: 100% !important;
+        overflow-x: auto !important;
+    }
+    /* Sidebar as overlay instead of squeezing content */
+    [data-testid="stSidebar"] {
+        width: 260px !important;
+    }
+    /* Header wraps gracefully */
+    .wh-top, .wh-bottom {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+    .wh-title {
+        font-size: 1.1rem !important;
+    }
+}
+
+/* Phone (≤480px): everything single column */
+@media (max-width: 480px) {
+    [data-testid="stHorizontalBlock"] > [data-testid="column"] {
+        min-width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+    .block-container {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    [data-testid="stMetricValue"] {
+        font-size: 1.2rem !important;
+    }
+    h1 { font-size: 1.4rem !important; }
+    h2 { font-size: 1.2rem !important; }
+    h3 { font-size: 1rem !important; }
+    .wh-logo img {
+        height: 36px !important;
+    }
+    .wh-title {
+        font-size: 0.95rem !important;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
