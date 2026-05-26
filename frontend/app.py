@@ -33,6 +33,24 @@ a[href*="github.com"] { display: none !important; }
 
 /* Tablet (≤768px): 4-col → 2-col */
 @media (max-width: 768px) {
+    /* Restore the header so the hamburger/sidebar toggle is accessible */
+    header { visibility: visible !important; }
+    [data-testid="stHeader"] {
+        display: flex !important;
+        background: transparent !important;
+        height: 3rem !important;
+    }
+    /* Keep hiding branding inside the header */
+    [data-testid="stStatusWidget"],
+    [data-testid="stDecoration"],
+    .viewerBadge_container__1QSob,
+    .viewerBadge_link__1S137,
+    a[href*="streamlit.io"],
+    a[href*="github.com"],
+    [data-testid="baseButton-headerNoPadding"]:not([data-testid="collapsedControl"]) {
+        display: none !important;
+    }
+
     /* Stack columns into 2-per-row */
     [data-testid="stHorizontalBlock"] {
         flex-wrap: wrap !important;
@@ -46,7 +64,7 @@ a[href*="github.com"] { display: none !important; }
     .block-container {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
-        padding-top: 1rem !important;
+        padding-top: 3.5rem !important;
     }
     /* Smaller metric values */
     [data-testid="stMetricValue"] {
@@ -66,7 +84,7 @@ a[href*="github.com"] { display: none !important; }
         width: 100% !important;
         overflow-x: auto !important;
     }
-    /* Sidebar as overlay instead of squeezing content */
+    /* Sidebar as overlay */
     [data-testid="stSidebar"] {
         width: 260px !important;
     }
