@@ -1,4 +1,7 @@
 import streamlit as st
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from header_footer import render_header, render_footer
 import pandas as pd
 from api_client import ask_question, get_overview
 
@@ -20,14 +23,14 @@ def show():
     if not st.session_state.get("has_data"):
         _no_data_state(); return
 
-    st.title("Ask a question")
+    render_header("Ask a Question")
     st.caption("Ask anything about your business in plain English.")
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
     st.markdown("**Suggested questions:**")
-    suggestions = ["Who are my best customers?", "Which products sell best?",
-                   "Which campaign is wasting money?", "How many months of cash runway do I have?",
-                   "What is total revenue?", "Which channel drives the most revenue?"]
+    suggestions = ["Why is profit down this month?","Which products sell best?",
+                   "Which campaign is wasting money?","How many months of cash runway do I have?",
+                   "Who are my best customers?","Which channel drives the most revenue?"]
     cols = st.columns(3)
     for i, q in enumerate(suggestions):
         if cols[i % 3].button(q, key=f"suggest_{i}"):
@@ -82,3 +85,4 @@ def show():
         if st.button("Clear conversation"):
             st.session_state.chat_history = []
             st.rerun()
+    render_footer()

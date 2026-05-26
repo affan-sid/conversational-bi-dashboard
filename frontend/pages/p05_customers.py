@@ -1,10 +1,13 @@
 import streamlit as st
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from header_footer import render_header, render_footer
 import pandas as pd
 from api_client import get_customers
 from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
-    st.title("Customers")
+    render_header("Customers")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     data = get_customers(PERIOD_API_MAP.get(period, "last_3_months"))
     if not data: st.error("Could not load customer data."); return
@@ -49,3 +52,4 @@ def show():
     for c in data["churn_risk_list"]:
         color = "🔴" if c["churn_risk_score"] >= 0.9 else "🟡"
         st.warning(f"{color} **{c['full_name']}** — Risk: {c['churn_risk_score']:.2f} — Last order: {c['last_order_days_ago']} days ago")
+    render_footer()

@@ -1,8 +1,11 @@
 import streamlit as st
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from header_footer import render_header, render_footer
 from api_client import upload_csv, get_upload_history
 
 def show():
-    st.title("Upload Data")
+    render_header("Upload Data")
     st.caption("Upload your CSV files. The system will validate, clean, and load them automatically.")
     st.subheader("Upload a new file")
 
@@ -48,3 +51,4 @@ def show():
             c1.metric("Status", job["status"].title())
             c2.metric("Records accepted", job["records_accepted"])
             c3.metric("Domain", job["domain"].title())
+    render_footer()

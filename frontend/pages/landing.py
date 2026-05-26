@@ -97,7 +97,7 @@ def show():
     @media (max-width: 480px) {{
       .ld-h1 {{ font-size: clamp(34px, 8vw, 44px) !important; }}
       .ld-nav {{ padding: 10px 12px !important; }}
-      .ld-logo-img {{ height: 36px !important; width: auto !important; max-width: 160px !important; }}
+      .ld-logo-img {{ height: 44px !important; width: auto !important; max-width: 180px !important; }}
     }}
 
     @keyframes fadeUp  {{ from{{opacity:0;transform:translateY(20px)}} to{{opacity:1;transform:translateY(0)}} }}
@@ -114,7 +114,7 @@ def show():
         backdrop-filter: blur(20px);
     }}
     .ld-logo-img {{
-        height: 44px; width: auto; border-radius: 0; object-fit: contain;
+        height: 52px; width: auto; max-width: 220px; border-radius: 0; object-fit: contain;
     }}
     .ld-badge {{
         font-family:'DM Mono',monospace; font-size:11px;

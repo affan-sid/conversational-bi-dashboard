@@ -1,10 +1,13 @@
 import streamlit as st
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from header_footer import render_header, render_footer
 import pandas as pd
 from api_client import get_sales, get_marketing
 from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
-    st.title("Sales & Marketing")
+    render_header("Sales & Marketing")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     period_api = PERIOD_API_MAP.get(period, "last_3_months")
     sales_data = get_sales(period_api); mkt_data = get_marketing(period_api)
@@ -71,3 +74,4 @@ def show():
             st.dataframe(df_d, use_container_width=True, hide_index=True)
         else:
             st.info("No campaign data available.")
+    render_footer()

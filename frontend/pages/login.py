@@ -1,4 +1,5 @@
-﻿import streamlit as st
+import streamlit as st
+from header_footer import render_footer
 from api_client import login
 
 def show():
@@ -16,22 +17,27 @@ def show():
     @media (max-width: 768px) {
       [data-testid="stMainBlockContainer"] {
         max-width: 100%% !important;
+    @media (max-width: 768px) {
+      [data-testid="stMainBlockContainer"] { 
+        max-width: 100% !important; 
         padding: 24px 20px !important;
         margin-top: 0 !important;
       }
     }
+    
+    [data-testid="stMainBlockContainer"] { max-width: 420px !important; margin: 0 auto !important; padding-top: 80px !important; }
     .stTextInput input { background: #12103A !important; color: #F4F1EB !important; border: 1px solid rgba(123,92,245,0.2) !important; border-radius: 6px !important; }
     .stTextInput input:focus { border-color: #7B5CF5 !important; box-shadow: none !important; }
     .stTextInput label { color: #8A94A8 !important; font-size: 12px !important; font-family: 'DM Mono', monospace !important; letter-spacing: 1px !important; }
     div[data-testid="stButton"] button[kind="primary"] {
         background: #7B5CF5 !important; color: #0A0A1A !important;
         font-weight: 700 !important; border: none !important;
-        width: 100%% !important; padding: 12px !important;
+        width: 100% !important; padding: 12px !important;
     }
     div[data-testid="stButton"] button[kind="secondary"] {
         background: transparent !important; color: #8A94A8 !important;
         border: 1px solid rgba(138,148,168,0.3) !important;
-        width: 100%% !important;
+        width: 100% !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -49,12 +55,7 @@ def show():
     email    = st.text_input("EMAIL ADDRESS", placeholder="you@company.com")
     password = st.text_input("PASSWORD", type="password", placeholder="••••••••")
 
-    st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
-    st.markdown("<div style='text-align:right;margin-bottom:12px;'>", unsafe_allow_html=True)
-    if st.button("Forgot password?", key="fp_link", type="tertiary"):
-        st.session_state.page = "forgot_password"
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
     if st.button("Sign In →", type="primary"):
         if not email or not password:
@@ -82,3 +83,4 @@ def show():
     if st.button("← Back to home"):
         st.session_state.page = "landing"
         st.rerun()
+# Note: login.py already uses max-width:420px centered layout which works on mobile

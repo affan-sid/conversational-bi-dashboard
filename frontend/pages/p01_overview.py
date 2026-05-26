@@ -1,4 +1,7 @@
 import streamlit as st
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from header_footer import render_header, render_footer
 from api_client import get_overview
 from config import CURRENCY_SYMBOL
 
@@ -11,7 +14,7 @@ def _no_data_prompt(domain: str = ""):
 
 
 def show():
-    st.title("Executive Overview")
+    render_header("Executive Overview")
     data = get_overview()
     if not data:
         st.error("Could not load overview data."); return
@@ -58,3 +61,4 @@ def show():
     if c1.button("💬 Ask about profit"): st.session_state.page = "chat"; st.rerun()
     if c2.button("📈 View top products"): st.session_state.page = "sales"; st.rerun()
     if c3.button("📊 Check marketing ROI"): st.session_state.page = "sales"; st.rerun()
+    render_footer()

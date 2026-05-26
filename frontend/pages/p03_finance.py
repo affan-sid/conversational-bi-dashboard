@@ -1,10 +1,13 @@
 import streamlit as st
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from header_footer import render_header, render_footer
 import pandas as pd
 from api_client import get_finance
 from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
-    st.title("Finance Dashboard")
+    render_header("Finance Dashboard")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     data = get_finance(PERIOD_API_MAP.get(period, "last_3_months"))
     if not data: st.error("Could not load finance data."); return
@@ -58,3 +61,4 @@ def show():
     else:
         st.info("No cash flow data available. Upload a finance CSV to see this chart.")
     st.caption(f"Monthly burn rate: **{CURRENCY_SYMBOL}{kpis['monthly_burn']:,.0f}** — Runway: **{kpis['cash_runway_months']:.1f} months**")
+    render_footer()
