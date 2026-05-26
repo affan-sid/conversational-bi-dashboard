@@ -54,3 +54,21 @@ def render_footer():
 <span class="wf-copy">&#169; 2025 Wouessi Inc. All rights reserved.</span>
 </div>
 </div>''', unsafe_allow_html=True)
+
+def render_empty_state():
+    """Shows empty/first-run state with Import Data CTA."""
+    st.markdown(f'''
+    <div style="text-align:center;padding:80px 40px;background:rgba(123,92,245,0.05);
+    border:1px dashed rgba(123,92,245,0.2);border-radius:12px;margin:32px 0;">
+        <div style="font-size:48px;margin-bottom:16px;">📁</div>
+        <h3 style="font-family:'DM Sans',sans-serif;font-size:22px;font-weight:700;
+        color:#F4F1EB;margin-bottom:10px;">No data yet</h3>
+        <p style="font-size:15px;color:#8A94A8;max-width:400px;margin:0 auto 24px;line-height:1.6;">
+        Import your CSV files to get started. Your dashboard will populate
+        automatically once data is loaded.</p>
+    </div>
+    ''', unsafe_allow_html=True)
+    if st.button("Import your data →", type="primary"):
+        import streamlit as st
+        st.session_state.page = "upload"
+        st.rerun()

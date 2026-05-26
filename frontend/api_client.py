@@ -44,7 +44,15 @@ def _post(endpoint, payload):
 def login(email: str, password: str):
     """Returns {token, user} or None."""
     if USE_MOCK:
-        # Mock: accept any non-empty credentials
+        if not email or not password:
+            return None
+        # Demo account — pre-seeded for stakeholder review
+        if email.lower() == "demo@wouessi.com" and password == "wouessi2025":
+            return {
+                "token": "demo-jwt-token-xyz789",
+                "user":  {"full_name": "Demo User", "role": "manager"}
+            }
+        # Accept any other non-empty credentials for team testing
         if email and password:
             return {
                 "token": "mock-jwt-token-abc123",
@@ -249,18 +257,72 @@ def get_customers(period="last_3_months"):
 
 def ask_question(question: str, company_id: int = 1):
     if USE_MOCK:
-        return {
-            "answer":     f"Mock answer for: '{question}'. Connect backend for real AI responses.",
-            "result":     {"metric": "net_profit", "value": -18.0, "unit": "percent", "trend": "down"},
-            "reason":     "Ad spend increased 31% while sales rose only 6%.",
-            "evidence":   [
-                {"source": "transactions",          "detail": "Dec expenses: $30,900 vs Nov: $30,200"},
-                {"source": "marketing_performance", "detail": "Campaign 2: $15,800 with 1.41x ROI"},
-            ],
-            "action":     "Review Campaign 2 and reallocate to Campaign 1 (2.93x ROI).",
-            "confidence": 0.87,
-            "charts":     [],
-        }
+        # Rich mock response with recommendations
+        q_lower = question.lower()
+        if "profit" in q_lower or "revenue" in q_lower:
+            return {
+                "answer": "Net profit dropped 18.0% in the last period due to rising ad spend.",
+                "result": {"metric": "net_profit", "value": -18.0, "unit": "percent", "trend": "down"},
+                "reason": "Ad spend increased 31% while revenue grew only 6.0%.",
+                "evidence": [
+                    {"source": "transactions", "detail": "Dec expenses: $30,900.00 vs Nov: $30,200.00"},
+                    {"source": "marketing_performance", "detail": "Campaign 2: $15,800.00 spend at 1.41x ROI"},
+                ],
+                "action": "Pause Campaign 2 immediately. Reallocate $15,800.00 budget to Campaign 1 which delivers 2.93x ROI. Expected profit recovery: +12.0% within 30 days.",
+                "confidence": 0.87,
+                "charts": [],
+            }
+        elif "campaign" in q_lower or "marketing" in q_lower or "roi" in q_lower:
+            return {
+                "answer": "Campaign 1 delivers the best ROI at 2.93x. Campaign 2 is underperforming at 1.41x.",
+                "result": {"metric": "campaign_roi", "value": 2.93, "unit": "x", "trend": "up"},
+                "reason": "Campaign 1 generated $48,000.00 from $12,200.00 spend. Campaign 2 generated $38,000.00 from $15,800.00 spend.",
+                "evidence": [
+                    {"source": "marketing_performance", "detail": "Campaign 1: $12,200.00 spend → $48,000.00 revenue"},
+                    {"source": "marketing_performance", "detail": "Campaign 2: $15,800.00 spend → $38,000.00 revenue"},
+                ],
+                "action": "Increase Campaign 1 budget by 20% ($2,440.00). Reduce Campaign 2 by 30% ($4,740.00). Review Campaign 2 targeting and creative assets.",
+                "confidence": 0.91,
+                "charts": [],
+            }
+        elif "customer" in q_lower or "churn" in q_lower:
+            return {
+                "answer": "3 customers are at critical churn risk with no orders in 60+ days.",
+                "result": {"metric": "churn_risk", "value": 3, "unit": "customers", "trend": "down"},
+                "reason": "Customer 12, 45, and 78 have not placed orders in 78, 65, and 61 days respectively.",
+                "evidence": [
+                    {"source": "customer_metrics", "detail": "Customer 12: risk score 0.92, last order 78 days ago"},
+                    {"source": "customer_metrics", "detail": "Customer 45: risk score 0.87, last order 65 days ago"},
+                ],
+                "action": "Launch immediate retention campaign targeting these 3 customers. Offer 15% discount on next order. Send personalised re-engagement email within 24 hours.",
+                "confidence": 0.84,
+                "charts": [],
+            }
+        elif "cash" in q_lower or "runway" in q_lower:
+            return {
+                "answer": "Cash runway is 2.4 months — critically below the 3-month safe threshold.",
+                "result": {"metric": "cash_runway", "value": 2.4, "unit": "months", "trend": "down"},
+                "reason": "Monthly burn rate of $29,700.00 against cash balance of $210,000.00.",
+                "evidence": [
+                    {"source": "cash_balances", "detail": "Current balance: $210,000.00"},
+                    {"source": "transactions", "detail": "Average monthly burn: $29,700.00"},
+                ],
+                "action": "Take immediate action: (1) Cut non-essential recurring expenses, (2) Accelerate receivables collection, (3) Delay non-critical purchases. Target: extend runway to 6+ months.",
+                "confidence": 0.95,
+                "charts": [],
+            }
+        else:
+            return {
+                "answer": f"Based on your data, here is the analysis for: \'{question}\'.",
+                "result": {"metric": "general", "value": 0, "unit": "", "trend": "flat"},
+                "reason": "Connect the backend to get real AI-powered analysis from your actual data.",
+                "evidence": [
+                    {"source": "system", "detail": "Currently showing demo data — import CSV to see real insights"},
+                ],
+                "action": "Import your CSV data files to unlock real AI-powered business insights and recommendations.",
+                "confidence": 0.70,
+                "charts": [],
+            }
     return _post("/api/chat", {"question": question, "company_id": company_id})
 
 
