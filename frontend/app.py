@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="BI Dashboard",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 
@@ -35,6 +35,7 @@ a[href*="github.com"] { display: none !important; }
 if "token"     not in st.session_state: st.session_state.token     = None
 if "user_name"  not in st.session_state: st.session_state.user_name  = None
 if "company_id" not in st.session_state: st.session_state.company_id = None
+if "currency"   not in st.session_state: st.session_state.currency   = "CAD"
 if "page"       not in st.session_state: st.session_state.page       = "landing"
 
 page = st.session_state.page
@@ -72,6 +73,7 @@ elif st.session_state.token:
             st.session_state.token      = None
             st.session_state.user_name  = None
             st.session_state.company_id = None
+            st.session_state.currency   = "CAD"
             st.session_state.page       = "landing"
             st.rerun()
 
@@ -100,6 +102,7 @@ elif st.session_state.token:
             st.session_state.token      = None
             st.session_state.user_name  = None
             st.session_state.company_id = None
+            st.session_state.currency   = "CAD"
             st.session_state.page       = "landing"
             st.rerun()
 
