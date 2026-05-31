@@ -3,7 +3,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from header_footer import render_header, render_footer
 from api_client import get_overview
-from config import CURRENCY_SYMBOL
+from config import currency_symbol
 
 def _no_data_prompt(domain: str = ""):
     st.markdown("---")
@@ -14,6 +14,7 @@ def _no_data_prompt(domain: str = ""):
 
 
 def show():
+    SYM = currency_symbol(st.session_state.get("currency", "CAD"))
     render_header("Executive Overview")
     data = get_overview()
     if not data:
@@ -28,23 +29,23 @@ def show():
     st.markdown("---")
     st.subheader("Finance")
     c1,c2,c3,c4 = st.columns(4)
-    c1.metric("Total Revenue", f"{CURRENCY_SYMBOL}{fin['total_revenue']:,.0f}")
-    c2.metric("Total Expenses", f"{CURRENCY_SYMBOL}{fin['total_expenses']:,.0f}")
-    c3.metric("Net Profit", f"{CURRENCY_SYMBOL}{fin['net_profit']:,.0f}")
+    c1.metric("Total Revenue", f"{SYM}{fin['total_revenue']:,.0f}")
+    c2.metric("Total Expenses", f"{SYM}{fin['total_expenses']:,.0f}")
+    c3.metric("Net Profit", f"{SYM}{fin['net_profit']:,.0f}")
     c4.metric("Cash Runway", f"{fin['cash_runway_months']:.1f} months",
               delta="⚠ Below 3 months" if fin["cash_runway_months"] < 3 else None, delta_color="inverse")
     st.markdown("---")
     st.subheader("Sales")
     c1,c2,c3,c4 = st.columns(4)
     c1.metric("Total Orders", f"{sal['total_orders']:,}")
-    c2.metric("Avg Order Value", f"{CURRENCY_SYMBOL}{sal['avg_order_value']:.2f}")
+    c2.metric("Avg Order Value", f"{SYM}{sal['avg_order_value']:.2f}")
     c3.metric("Top Channel", sal.get("top_channel", "N/A").title())
     c4.metric("Revenue Trend", sal.get("revenue_trend", "stable").replace("_"," ").title())
     st.markdown("---")
     st.subheader("Marketing")
     c1,c2,c3,c4 = st.columns(4)
-    c1.metric("Total Ad Spend", f"{CURRENCY_SYMBOL}{mkt['total_spend']:,.0f}")
-    c2.metric("Attributed Revenue", f"{CURRENCY_SYMBOL}{mkt['total_attributed']:,.0f}")
+    c1.metric("Total Ad Spend", f"{SYM}{mkt['total_spend']:,.0f}")
+    c2.metric("Attributed Revenue", f"{SYM}{mkt['total_attributed']:,.0f}")
     c3.metric("Overall ROI", f"{mkt['overall_roi']:.2f}x")
     c4.metric("Best Campaign", mkt.get("best_campaign", "N/A"))
     st.markdown("---")

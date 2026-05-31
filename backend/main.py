@@ -105,6 +105,7 @@ class RegisterRequest(BaseModel):
     password: str
     company_name: str = "My Company"
     role: str = "manager"
+    currency: str = "CAD"
 
 
 @app.post("/auth/login")
@@ -112,14 +113,20 @@ def login(req: LoginRequest):
     try:
         with engine.connect() as conn:
             row = conn.execute(
-                text("SELECT user_id, full_name, role, company_id, password_hash FROM dim_users WHERE email = :email LIMIT 1"),
+                text("""
+                    SELECT u.user_id, u.full_name, u.role, u.company_id, u.password_hash,
+                           COALESCE(c.currency, 'CAD') AS currency
+                    FROM dim_users u
+                    LEFT JOIN dim_companies c ON c.company_id = u.company_id
+                    WHERE u.email = :email LIMIT 1
+                """),
                 {"email": req.email}
             ).fetchone()
         if not row or row[4] != _hash(req.password):
             raise HTTPException(status_code=401, detail="Invalid email or password")
         token = f"tok-{uuid.uuid4().hex}"
         _TOKENS[token] = {"user_id": row[0], "company_id": row[3], "full_name": row[1], "role": row[2]}
-        return {"token": token, "user": {"full_name": row[1], "role": row[2], "company_id": row[3]}}
+        return {"token": token, "user": {"full_name": row[1], "role": row[2], "company_id": row[3], "currency": row[5]}}
     except HTTPException:
         raise
     except Exception as e:
@@ -142,8 +149,8 @@ def register_user(req: RegisterRequest):
                 text("SELECT COALESCE(MAX(company_id), 0) + 1 FROM dim_companies")
             ).scalar())
             conn.execute(
-                text("INSERT INTO dim_companies (company_id, company_name, industry, country, currency, created_at) VALUES (:cid, :name, 'General', 'Canada', 'CAD', NOW())"),
-                {"cid": company_id, "name": req.company_name}
+                text("INSERT INTO dim_companies (company_id, company_name, industry, country, currency, created_at) VALUES (:cid, :name, 'General', 'General', :cur, NOW())"),
+                {"cid": company_id, "name": req.company_name, "cur": req.currency.upper()}
             )
             conn.commit()
 
@@ -166,7 +173,7 @@ def register_user(req: RegisterRequest):
         _TOKENS[token] = {"user_id": user_id, "company_id": company_id,
                           "full_name": req.full_name, "role": req.role}
         return {"token": token, "user": {"full_name": req.full_name, "role": req.role,
-                                         "company_id": company_id}}
+                                         "company_id": company_id, "currency": req.currency.upper()}}
     except HTTPException:
         raise
     except Exception as e:
@@ -182,15 +189,22 @@ def demo_login():
     try:
         with engine.connect() as conn:
             row = conn.execute(
-                text("SELECT user_id, full_name, role, company_id FROM dim_users WHERE email = :e LIMIT 1"),
+                text("""
+                    SELECT u.user_id, u.full_name, u.role, u.company_id,
+                           COALESCE(c.currency, 'CAD') AS currency
+                    FROM dim_users u
+                    LEFT JOIN dim_companies c ON c.company_id = u.company_id
+                    WHERE u.email = :e LIMIT 1
+                """),
                 {"e": DEMO_EMAIL}
             ).fetchone()
 
             if not row:
                 company_row = conn.execute(
-                    text("SELECT company_id FROM dim_companies ORDER BY company_id LIMIT 1")
+                    text("SELECT company_id, COALESCE(currency, 'CAD') FROM dim_companies ORDER BY company_id LIMIT 1")
                 ).fetchone()
                 demo_cid = int(company_row[0]) if company_row else 1
+                demo_currency = company_row[1] if company_row else "CAD"
 
                 uid = int(conn.execute(
                     text("SELECT COALESCE(MAX(user_id), 0) + 1 FROM dim_users")
@@ -204,15 +218,15 @@ def demo_login():
                      "ts": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
                 )
                 conn.commit()
-                user_id, full_name, role, company_id = uid, DEMO_NAME, "viewer", demo_cid
+                user_id, full_name, role, company_id, currency = uid, DEMO_NAME, "viewer", demo_cid, demo_currency
             else:
-                user_id, full_name, role, company_id = row[0], row[1], row[2], row[3]
+                user_id, full_name, role, company_id, currency = row[0], row[1], row[2], row[3], row[4]
 
         token = f"tok-demo-{uuid.uuid4().hex}"
         _TOKENS[token] = {"user_id": user_id, "company_id": company_id,
                           "full_name": full_name, "role": role}
         return {"token": token, "user": {"full_name": full_name, "role": role,
-                                         "company_id": company_id}}
+                                         "company_id": company_id, "currency": currency}}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

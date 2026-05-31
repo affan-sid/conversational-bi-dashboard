@@ -4,9 +4,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from header_footer import render_header, render_footer
 import pandas as pd
 from api_client import get_customers
-from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
+from config import currency_symbol, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
+    SYM = currency_symbol(st.session_state.get("currency", "CAD"))
     render_header("Customers")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     data = get_customers(PERIOD_API_MAP.get(period, "last_3_months"))
@@ -24,7 +25,7 @@ def show():
               delta="Low" if kpis["repeat_rate"] < 30 else None, delta_color="inverse")
     c4.metric("Churn Rate", f"{kpis.get('churn_rate', 0):.1f}%")
     c1,c2 = st.columns(2)
-    c1.metric("Avg Customer Lifetime Value", f"{CURRENCY_SYMBOL}{kpis.get('avg_clv', 0):,.0f}")
+    c1.metric("Avg Customer Lifetime Value", f"{SYM}{kpis.get('avg_clv', 0):,.0f}")
     c2.metric("New This Period", f"{kpis.get('new_this_period', 0)}")
     st.markdown("---")
     c_left, c_right = st.columns(2)
@@ -33,7 +34,7 @@ def show():
         df_seg = pd.DataFrame(data["revenue_by_segment"]).set_index("segment")
         st.bar_chart(df_seg["revenue"])
         for row in data["revenue_by_segment"]:
-            st.caption(f"• {row['segment']}: {row['customers']:,} customers — {CURRENCY_SYMBOL}{row['revenue']:,.0f}")
+            st.caption(f"• {row['segment']}: {row['customers']:,} customers — {SYM}{row['revenue']:,.0f}")
     with c_right:
         st.subheader("Customer growth")
         if data.get("growth_trend"):
@@ -44,7 +45,7 @@ def show():
     st.markdown("---")
     st.subheader("Top customers by revenue")
     df_top = pd.DataFrame(data["top_customers"])
-    df_top["total_revenue"] = df_top["total_revenue"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,.0f}")
+    df_top["total_revenue"] = df_top["total_revenue"].apply(lambda x: f"{SYM}{x:,.0f}")
     df_top.columns = ["ID","Name","Revenue","Orders","Segment"]
     st.dataframe(df_top, use_container_width=True, hide_index=True)
     st.markdown("---")

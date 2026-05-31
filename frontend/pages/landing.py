@@ -331,6 +331,7 @@ def show():
                 st.session_state.token      = result["token"]
                 st.session_state.user_name  = result["user"]["full_name"]
                 st.session_state.company_id = result["user"].get("company_id")
+                st.session_state.currency   = result["user"].get("currency", "CAD")
                 st.session_state.page = "dashboard"
                 st.rerun()
     with nav4:
@@ -463,6 +464,7 @@ def show():
                 st.session_state.token      = result["token"]
                 st.session_state.user_name  = result["user"]["full_name"]
                 st.session_state.company_id = result["user"].get("company_id")
+                st.session_state.currency   = result["user"].get("currency", "CAD")
                 st.session_state.page = "dashboard"
                 st.rerun()
 

@@ -50,6 +50,63 @@ fact_cash_flow(
 """
 
 
+_FEW_SHOT_EXAMPLES = """
+Examples:
+
+Q: What is my total revenue?
+SQL: SELECT SUM(line_total) AS total_revenue FROM fact_sales WHERE status = 'completed';
+
+Q: What are my top 5 best-selling products?
+SQL: SELECT p.product_name, SUM(s.line_total) AS revenue
+     FROM fact_sales s
+     JOIN dim_products p ON s.product_id = p.product_id
+     WHERE s.status = 'completed'
+     GROUP BY p.product_name
+     ORDER BY revenue DESC
+     LIMIT 5;
+
+Q: Which marketing campaign has the best ROI?
+SQL: SELECT c.campaign_name,
+            SUM(m.revenue_attributed) AS revenue,
+            SUM(m.spend) AS spend,
+            (SUM(m.revenue_attributed) - SUM(m.spend)) / NULLIF(SUM(m.spend), 0) AS roi
+     FROM fact_marketing m
+     JOIN dim_campaigns c ON m.campaign_id = c.campaign_id
+     GROUP BY c.campaign_name
+     ORDER BY roi DESC
+     LIMIT 20;
+
+Q: Show me monthly revenue trend
+SQL: SELECT DATE_TRUNC('month', order_date) AS month, SUM(line_total) AS revenue
+     FROM fact_sales
+     WHERE status = 'completed'
+     GROUP BY month
+     ORDER BY month;
+
+Q: What are my biggest expense categories?
+SQL: SELECT expense_category, SUM(amount) AS total_expense
+     FROM fact_expenses
+     GROUP BY expense_category
+     ORDER BY total_expense DESC
+     LIMIT 10;
+
+Q: What is my current cash balance?
+SQL: SELECT SUM(signed_amount) AS current_balance FROM fact_cash_flow;
+
+Q: Who are my top customers by revenue?
+SQL: SELECT c.full_name, SUM(s.line_total) AS total_revenue
+     FROM fact_sales s
+     JOIN dim_customers c ON s.customer_id = c.customer_id
+     WHERE s.status = 'completed'
+     GROUP BY c.full_name
+     ORDER BY total_revenue DESC
+     LIMIT 10;
+
+Q: What is my gross profit?
+SQL: SELECT SUM(gross_profit) AS total_gross_profit FROM fact_sales WHERE status = 'completed';
+"""
+
+
 def generate_sql(user_query: str) -> str:
     prompt = f"""You are a PostgreSQL expert. Convert the user question to a single PostgreSQL SELECT query.
 
@@ -67,6 +124,7 @@ Rules:
 Schema:
 {_SCHEMA}
 
+{_FEW_SHOT_EXAMPLES}
 Question: {user_query}
 SQL:"""
 

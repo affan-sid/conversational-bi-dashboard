@@ -4,9 +4,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from header_footer import render_header, render_footer
 import pandas as pd
 from api_client import get_sales, get_marketing
-from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
+from config import currency_symbol, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
+    SYM = currency_symbol(st.session_state.get("currency", "CAD"))
     render_header("Sales & Marketing")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     period_api = PERIOD_API_MAP.get(period, "last_3_months")
@@ -23,7 +24,7 @@ def show():
     c1,c2,c3,c4 = st.columns(4)
     c1.metric("Total Orders", f"{sk['total_orders']:,}")
     c2.metric("Returned Orders", f"{sk['returned_orders']:,}")
-    c3.metric("Avg Order Value", f"{CURRENCY_SYMBOL}{sk['avg_order_value']:.2f}")
+    c3.metric("Avg Order Value", f"{SYM}{sk['avg_order_value']:.2f}")
     c4.metric("Return Rate", f"{sk['return_rate']:.1f}%")
     st.markdown("---")
     c_left, c_right = st.columns(2)
@@ -32,13 +33,13 @@ def show():
         df_ch = pd.DataFrame(sales_data["revenue_by_channel"]).set_index("channel")
         st.bar_chart(df_ch["revenue"])
         for row in sales_data["revenue_by_channel"]:
-            st.caption(f"• {row['channel'].title()}: {row['orders']:,} orders — {CURRENCY_SYMBOL}{row['revenue']:,.0f}")
+            st.caption(f"• {row['channel'].title()}: {row['orders']:,} orders — {SYM}{row['revenue']:,.0f}")
     with c_right:
         st.subheader("Top products")
         df_prod = pd.DataFrame(sales_data["top_products"]).set_index("product_name")
         st.bar_chart(df_prod["revenue"])
         for row in sales_data["top_products"]:
-            st.caption(f"• {row['product_name']}: {row['units_sold']:,} units — {CURRENCY_SYMBOL}{row['revenue']:,.0f}")
+            st.caption(f"• {row['product_name']}: {row['units_sold']:,} units — {SYM}{row['revenue']:,.0f}")
     st.markdown("---")
     st.subheader("Monthly revenue trend")
     if sales_data.get("monthly_revenue"):
@@ -49,10 +50,10 @@ def show():
     st.markdown("---")
     st.subheader("Marketing")
     c1,c2,c3,c4 = st.columns(4)
-    c1.metric("Total Ad Spend", f"{CURRENCY_SYMBOL}{mk['total_spend']:,.0f}")
-    c2.metric("Attributed Revenue", f"{CURRENCY_SYMBOL}{mk['total_attributed']:,.0f}")
+    c1.metric("Total Ad Spend", f"{SYM}{mk['total_spend']:,.0f}")
+    c2.metric("Attributed Revenue", f"{SYM}{mk['total_attributed']:,.0f}")
     c3.metric("Overall ROI", f"{mk['overall_roi']:.2f}x")
-    c4.metric("Cost per Acquisition", f"{CURRENCY_SYMBOL}{mk['cpa']:.2f}")
+    c4.metric("Cost per Acquisition", f"{SYM}{mk['cpa']:.2f}")
     st.markdown("---")
     camp_perf = mkt_data.get("campaign_performance", [])
     c_left, c_right = st.columns(2)
@@ -67,8 +68,8 @@ def show():
         st.subheader("Campaign details")
         if camp_perf:
             df_d = pd.DataFrame(camp_perf)
-            df_d["spend"]   = df_d["spend"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,.0f}")
-            df_d["revenue"] = df_d["revenue"].apply(lambda x: f"{CURRENCY_SYMBOL}{x:,.0f}")
+            df_d["spend"]   = df_d["spend"].apply(lambda x: f"{SYM}{x:,.0f}")
+            df_d["revenue"] = df_d["revenue"].apply(lambda x: f"{SYM}{x:,.0f}")
             df_d["roi"]     = df_d["roi"].apply(lambda x: f"{x:.2f}x")
             df_d.columns = ["Campaign","Spend","Revenue","ROI","Conversions"]
             st.dataframe(df_d, use_container_width=True, hide_index=True)

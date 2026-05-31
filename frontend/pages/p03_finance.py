@@ -4,9 +4,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from header_footer import render_header, render_footer
 import pandas as pd
 from api_client import get_finance
-from config import CURRENCY_SYMBOL, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
+from config import currency_symbol, PERIOD_OPTIONS, DEFAULT_PERIOD, PERIOD_API_MAP
 
 def show():
+    SYM = currency_symbol(st.session_state.get("currency", "CAD"))
     render_header("Finance Dashboard")
     period = st.selectbox("Period", PERIOD_OPTIONS, index=PERIOD_OPTIONS.index(DEFAULT_PERIOD))
     data = get_finance(PERIOD_API_MAP.get(period, "last_3_months"))
@@ -18,14 +19,14 @@ def show():
         return
     kpis = data["kpis"]
     c1,c2,c3,c4 = st.columns(4)
-    c1.metric("Total Revenue", f"{CURRENCY_SYMBOL}{kpis['total_revenue']:,.0f}")
-    c2.metric("Total Expenses", f"{CURRENCY_SYMBOL}{kpis['total_expenses']:,.0f}")
-    c3.metric("Net Profit", f"{CURRENCY_SYMBOL}{kpis['net_profit']:,.0f}")
+    c1.metric("Total Revenue", f"{SYM}{kpis['total_revenue']:,.0f}")
+    c2.metric("Total Expenses", f"{SYM}{kpis['total_expenses']:,.0f}")
+    c3.metric("Net Profit", f"{SYM}{kpis['net_profit']:,.0f}")
     c4.metric("Profit Margin", f"{kpis['profit_margin']:.1f}%",
               delta="Low" if kpis["profit_margin"] < 15 else None, delta_color="inverse")
     c1,c2,c3 = st.columns(3)
-    c1.metric("Cash in Bank", f"{CURRENCY_SYMBOL}{kpis['cash_in_bank']:,.0f}")
-    c2.metric("Monthly Burn Rate", f"{CURRENCY_SYMBOL}{kpis['monthly_burn']:,.0f}")
+    c1.metric("Cash in Bank", f"{SYM}{kpis['cash_in_bank']:,.0f}")
+    c2.metric("Monthly Burn Rate", f"{SYM}{kpis['monthly_burn']:,.0f}")
     c3.metric("Cash Runway", f"{kpis['cash_runway_months']:.1f} months",
               delta="⚠ Critical" if kpis["cash_runway_months"] < 3 else "Healthy",
               delta_color="inverse" if kpis["cash_runway_months"] < 3 else "normal")
@@ -60,5 +61,5 @@ def show():
         st.area_chart(df_cash["closing_balance"])
     else:
         st.info("No cash flow data available. Upload a finance CSV to see this chart.")
-    st.caption(f"Monthly burn rate: **{CURRENCY_SYMBOL}{kpis['monthly_burn']:,.0f}** — Runway: **{kpis['cash_runway_months']:.1f} months**")
+    st.caption(f"Monthly burn rate: **{SYM}{kpis['monthly_burn']:,.0f}** — Runway: **{kpis['cash_runway_months']:.1f} months**")
     render_footer()

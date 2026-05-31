@@ -54,20 +54,21 @@ def login(email: str, password: str):
     return _post("/auth/login", {"email": email, "password": password})
 
 
-def register(full_name: str, email: str, password: str):
+def register(full_name: str, email: str, password: str, company_name: str = "My Company", currency: str = "CAD"):
     """Returns {token, user} or None."""
     if USE_MOCK:
         if full_name and email and password:
             return {
                 "token": "mock-jwt-token-abc123",
-                "user":  {"full_name": full_name, "role": "manager"}
+                "user":  {"full_name": full_name, "role": "manager", "currency": currency}
             }
         return None
     return _post("/auth/register", {
         "full_name":    full_name,
         "email":        email,
         "password":     password,
-        "company_name": "My Company",
+        "company_name": company_name,
+        "currency":     currency,
         "role":         "manager"
     })
 

@@ -1,6 +1,7 @@
 import streamlit as st
 from header_footer import render_footer
 from api_client import register
+from config import CURRENCY_OPTIONS
 
 def show():
     st.markdown("""
@@ -52,6 +53,10 @@ def show():
     email     = st.text_input("EMAIL ADDRESS",  placeholder="you@company.com")
     password  = st.text_input("PASSWORD",       type="password", placeholder="Min. 8 characters")
     password2 = st.text_input("CONFIRM PASSWORD", type="password", placeholder="Re-enter password")
+    currency_labels = [label for label, _ in CURRENCY_OPTIONS]
+    currency_idx    = st.selectbox("COMPANY CURRENCY", range(len(currency_labels)),
+                                   format_func=lambda i: currency_labels[i])
+    currency_code   = CURRENCY_OPTIONS[currency_idx][1]
 
     st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
@@ -64,12 +69,13 @@ def show():
             st.error("Passwords do not match.")
         else:
             with st.spinner("Creating your account..."):
-                result = register(full_name, email, password)
+                result = register(full_name, email, password, currency=currency_code)
             if result:
-                st.session_state.token     = result["token"]
-                st.session_state.user_name = result["user"]["full_name"]
+                st.session_state.token      = result["token"]
+                st.session_state.user_name  = result["user"]["full_name"]
                 st.session_state.company_id = result["user"].get("company_id", 1)
-                st.session_state.page      = "upload"
+                st.session_state.currency   = result["user"].get("currency", currency_code)
+                st.session_state.page       = "upload"
                 st.success(f"Welcome, {full_name}! Please upload your data to get started.")
                 st.rerun()
             else:
