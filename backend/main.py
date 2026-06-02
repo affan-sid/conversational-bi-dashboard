@@ -14,7 +14,7 @@ from backend.app.semantic.kpis import KPI_DEFINITIONS, map_to_kpi
 from backend.app.services.explainer import explain_result, generate_insight, enrich_anomalies_with_explanations, enrich_anomalies_fast
 from backend.app.services.insights import get_revenue_insight
 from backend.app.services.recommendations import generate_recommendations
-from backend.app.admin.seed_demo import seed_wouessi
+from backend.app.admin.seed_demo import seed_wouessi, seed_kp_fashion_services
 
 app = FastAPI(title="Conversational BI API")
 app.add_middleware(
@@ -1116,6 +1116,17 @@ def admin_seed_demo(secret: str = Query(...)):
         raise HTTPException(status_code=403, detail="Forbidden")
     try:
         result = seed_wouessi(engine)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/admin/seed-kp-fashion")
+def admin_seed_kp_fashion(secret: str = Query(...)):
+    if secret != "SEED_WOUESSI_2024":
+        raise HTTPException(status_code=403, detail="Forbidden")
+    try:
+        result = seed_kp_fashion_services(engine)
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

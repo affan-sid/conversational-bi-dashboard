@@ -320,3 +320,124 @@ def seed_wouessi(engine) -> dict:
             "fact_cash_flow":        cf_count,
         }
     }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+def seed_kp_fashion_services(engine) -> dict:
+    """Add services + service bookings to the KP Fashion Store (kenilp156@gmail.com).
+
+    Idempotent: wipes existing dim_services + fact_service_bookings for that
+    company first, then re-seeds. Does NOT touch products/sales/customers/etc.
+    """
+    random.seed(_SEED + 1)
+
+    KP_EMAIL = "kenilp156@gmail.com"
+
+    with engine.connect() as conn:
+        row = conn.execute(
+            text("SELECT company_id FROM dim_users WHERE email=:e"),
+            {"e": KP_EMAIL}
+        ).fetchone()
+        if not row:
+            return {"status": "error", "detail": f"{KP_EMAIL} not found in dim_users"}
+        CID = int(row[0])
+
+        # Wipe only services data — leave product sales intact
+        for t in ["fact_service_bookings", "dim_services"]:
+            conn.execute(text(f"DELETE FROM {t} WHERE company_id=:cid"), {"cid": CID})
+        conn.commit()
+
+    # ── Services (5 styling/consultation services) ────────────────────────────
+    with engine.connect() as conn:
+        svc_base = int(_s(conn, "SELECT COALESCE(MAX(service_id),0) FROM dim_services")) + 1
+
+    services_raw = [
+        ("Personal Styling Session", "Consulting",  60,  75.00, 20.00),
+        ("Wardrobe Consultation",    "Consulting",  90, 120.00, 35.00),
+        ("Custom Alteration",        "Tailoring",   30,  45.00, 12.00),
+        ("Style Workshop",           "Education",  120, 150.00, 40.00),
+        ("Gift Styling Package",     "Consulting",  45,  90.00, 25.00),
+    ]
+    SERVICES = [
+        {"service_id": svc_base + i, "company_id": CID,
+         "service_name": sv[0], "category": sv[1], "duration_minutes": sv[2],
+         "price": sv[3], "recurring_flag": 0, "active_flag": 1,
+         "description": f"{sv[0]} — professional {sv[1].lower()} service"}
+        for i, sv in enumerate(services_raw)
+    ]
+    svc_count = _ins(engine, pd.DataFrame(SERVICES), "dim_services")
+
+    # Fetch existing customers for this company
+    with engine.connect() as conn:
+        cust_rows = conn.execute(
+            text("SELECT customer_id FROM dim_customers WHERE company_id=:cid"),
+            {"cid": CID}
+        ).fetchall()
+    CUSTOMER_IDS = [int(r[0]) for r in cust_rows] if cust_rows else list(range(1, 151))
+
+    # ── Service Bookings (18 months, ~8% of monthly product revenue) ──────────
+    monthly_targets = {
+        "2025-01": 22000, "2025-02": 27000, "2025-03": 32000, "2025-04": 36000,
+        "2025-05": 40000, "2025-06": 47000, "2025-07": 44000, "2025-08": 41000,
+        "2025-09": 38000, "2025-10": 45000, "2025-11": 64000, "2025-12": 82000,
+        "2026-01": 35000, "2026-02": 42000, "2026-03": 51000, "2026-04": 59000,
+        "2026-05": 27000,
+    }
+
+    with engine.connect() as conn:
+        booking_id = int(_s(conn, "SELECT COALESCE(MAX(booking_id),0) FROM fact_service_bookings")) + 1
+
+    channels        = ["website", "marketplace", "whatsapp", "sales_rep"]
+    channel_weights = [0.45, 0.25, 0.18, 0.12]
+
+    booking_rows = []
+    for month_str, target_rev in monthly_targets.items():
+        yr, mo = int(month_str[:4]), int(month_str[5:])
+        m_start = date(yr, mo, 1)
+        m_end   = min(
+            date(yr, mo+1, 1) - timedelta(days=1) if mo < 12 else date(yr+1, 1, 1) - timedelta(days=1),
+            TODAY
+        )
+        monthly_svc_target = target_rev * 0.08
+        running_svc = 0.0
+        d_svc = m_start
+        while d_svc <= m_end and running_svc < monthly_svc_target:
+            n_books = max(0, int(random.gauss(2, 1)))
+            for _ in range(n_books):
+                if running_svc >= monthly_svc_target:
+                    break
+                sv     = random.choice(SERVICES)
+                sess   = random.choices([1, 2, 3], weights=[0.70, 0.22, 0.08])[0]
+                uprice = round(sv["price"] * random.uniform(0.95, 1.05), 2)
+                ltotal = round(uprice * sess, 2)
+                gp     = round((uprice - sv["price"] * 0.27) * sess, 2)
+                cid_   = random.choice(CUSTOMER_IDS)
+                chan   = random.choices(channels, weights=channel_weights)[0]
+                status = "cancelled" if random.random() < 0.06 else "completed"
+                booking_rows.append({
+                    "booking_id":   booking_id,
+                    "service_id":   sv["service_id"],
+                    "company_id":   CID,
+                    "customer_id":  cid_,
+                    "booking_date": d_svc.strftime("%Y-%m-%d"),
+                    "sessions":     sess,
+                    "unit_price":   uprice,
+                    "line_total":   ltotal,
+                    "gross_profit": gp,
+                    "channel":      chan,
+                    "status":       status,
+                })
+                running_svc += ltotal
+                booking_id  += 1
+            d_svc += timedelta(days=1)
+
+    booking_count = _ins(engine, pd.DataFrame(booking_rows), "fact_service_bookings")
+
+    return {
+        "status": "ok",
+        "company_id": CID,
+        "rows": {
+            "dim_services":          svc_count,
+            "fact_service_bookings": booking_count,
+        }
+    }

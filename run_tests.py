@@ -177,13 +177,17 @@ def api_check(tag, token, endpoint, kpi_key=None, assertion="nonzero", list_key=
         data = resp.json()
         check(f"[{tag}] {endpoint} has_data", 1 if data.get("has_data", True) else 0, nonzero=True)
         if kpi_key:
-            val = data.get("kpis", {}).get(kpi_key, None)
+            # /api/overview nests values under "finance"/"sales" etc., not "kpis"
+            if endpoint == "/api/overview":
+                val = data.get("finance", {}).get(kpi_key, None)
+            else:
+                val = data.get("kpis", {}).get(kpi_key, None)
             if val is None:
-                check(f"[{tag}] {endpoint}.kpis.{kpi_key} exists", 0, nonzero=True)
+                check(f"[{tag}] {endpoint}.{kpi_key} exists", 0, nonzero=True)
             elif assertion == "nonzero":
-                check(f"[{tag}] {endpoint}.kpis.{kpi_key} > 0", val, nonzero=True)
+                check(f"[{tag}] {endpoint}.{kpi_key} > 0", val, nonzero=True)
             elif assertion == "zero":
-                check(f"[{tag}] {endpoint}.kpis.{kpi_key} = 0", val, zero=True)
+                check(f"[{tag}] {endpoint}.{kpi_key} = 0", val, zero=True)
         if list_key:
             lst = data.get(list_key, [])
             check(f"[{tag}] {endpoint}.{list_key} not empty", len(lst), nonzero=True)
