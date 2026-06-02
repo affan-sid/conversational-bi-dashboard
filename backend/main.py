@@ -10,7 +10,7 @@ from backend.app.nlp.text_to_sql import generate_sql, is_safe_sql
 from backend.app.services.query_engine import execute_sql
 from backend.app.analytics.anomaly_detection import run_all_detectors
 from backend.app.semantic.kpis import KPI_DEFINITIONS, map_to_kpi
-from backend.app.services.explainer import explain_result, generate_insight, enrich_anomalies_with_explanations
+from backend.app.services.explainer import explain_result, generate_insight, enrich_anomalies_with_explanations, enrich_anomalies_fast
 from backend.app.services.insights import get_revenue_insight
 from backend.app.services.recommendations import generate_recommendations
 
@@ -667,8 +667,7 @@ def get_customers(period: str = Query(default="last_3_months"), company_id: int 
 @app.get("/api/anomalies")
 def get_anomalies(company_id: int = Depends(get_company_id)):
     result = run_all_detectors(company_id=company_id)
-    enriched = enrich_anomalies_with_explanations(result.get("anomalies", []))
-    result["anomalies"] = enriched
+    result["anomalies"] = enrich_anomalies_fast(result.get("anomalies", []))
     return result
 
 

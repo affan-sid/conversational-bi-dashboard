@@ -546,15 +546,24 @@ def explain_marketing_anomalies_with_shap(
 # ─────────────────────────────────────────────────────────────────────────────
 
 def enrich_anomalies_with_explanations(anomalies: list) -> list:
-    """
-    Add an 'explanation' field to every anomaly dict returned by
-    run_all_detectors(). Used by the dashboard alert panel.
-
-    Returns a new list (originals are not mutated).
-    """
+    """LLM-based enrichment — slow (one network call per anomaly). Use only offline."""
     enriched = []
     for anomaly in anomalies:
         copy = dict(anomaly)
         copy["explanation"] = explain_anomaly(anomaly)
+        enriched.append(copy)
+    return enriched
+
+
+def enrich_anomalies_fast(anomalies: list) -> list:
+    """
+    Template-only enrichment — no LLM calls, runs in milliseconds.
+    Used by the live /api/anomalies endpoint so it never times out.
+    SHAP-derived sentences are still included when shap_top_features is present.
+    """
+    enriched = []
+    for anomaly in anomalies:
+        copy = dict(anomaly)
+        copy["explanation"] = _template_explanation(anomaly)
         enriched.append(copy)
     return enriched

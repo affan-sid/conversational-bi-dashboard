@@ -30,7 +30,6 @@ def show():
         data = get_anomalies()
 
     if data is None:
-        st.error("Could not connect to backend.")
         render_footer()
         return
 
