@@ -18,7 +18,7 @@ def show():
     with c1:
         uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"], key=f"uploader_{st.session_state.upload_key}")
     with c2:
-        domain = st.selectbox("Data domain", ["sales","customers","finance","marketing","products","services","service_bookings"])
+        domain = st.selectbox("Data domain", ["sales","customers","finance","marketing","products","services"])
 
     if st.session_state.upload_result:
         result = st.session_state.upload_result
