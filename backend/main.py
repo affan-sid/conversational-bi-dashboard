@@ -307,15 +307,21 @@ def reset_password(req: ResetPasswordRequest):
 def get_overview(company_id: int = Depends(get_company_id)):
     p = {"cid": company_id}
 
-    has_sales = _scalar("SELECT COUNT(*) FROM fact_sales WHERE company_id=:cid", p) > 0
-    has_fin   = _scalar("SELECT COUNT(*) FROM fact_expenses WHERE company_id=:cid", p) > 0
-    if not has_sales and not has_fin:
+    has_sales    = _scalar("SELECT COUNT(*) FROM fact_sales WHERE company_id=:cid", p) > 0
+    has_services = _scalar("SELECT COUNT(*) FROM fact_service_bookings WHERE company_id=:cid", p) > 0
+    has_fin      = _scalar("SELECT COUNT(*) FROM fact_expenses WHERE company_id=:cid", p) > 0
+    if not has_sales and not has_services and not has_fin:
         return {"has_data": False}
 
-    revenue      = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
+    prod_revenue = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
+    svc_revenue  = _scalar("SELECT SUM(line_total) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid", p)
+    revenue      = prod_revenue + svc_revenue
     expenses     = _scalar("SELECT SUM(amount) FROM fact_expenses WHERE company_id=:cid", p)
-    gross_profit = _scalar("SELECT SUM(gross_profit) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
-    net_profit   = revenue - expenses
+    gross_profit = (
+        _scalar("SELECT SUM(gross_profit) FROM fact_sales WHERE status='completed' AND company_id=:cid", p) +
+        _scalar("SELECT SUM(gross_profit) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid", p)
+    )
+    net_profit    = revenue - expenses
     profit_margin = round((net_profit / revenue * 100), 1) if revenue else 0
 
     cash = _cash_in_bank(company_id)
@@ -328,18 +334,30 @@ def get_overview(company_id: int = Depends(get_company_id)):
     """, p)
     cash_runway = round(cash / monthly_burn, 1) if monthly_burn else 0
 
-    total_orders = _scalar("SELECT COUNT(*) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
-    avg_order    = _scalar("SELECT AVG(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
+    total_orders = (
+        _scalar("SELECT COUNT(*) FROM fact_sales WHERE status='completed' AND company_id=:cid", p) +
+        _scalar("SELECT COUNT(*) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid", p)
+    )
+    avg_order = revenue / total_orders if total_orders else 0
 
     mkt_spend   = _scalar("SELECT SUM(spend) FROM fact_marketing WHERE company_id=:cid", p)
     mkt_revenue = _scalar("SELECT SUM(revenue_attributed) FROM fact_marketing WHERE company_id=:cid", p)
     overall_roi = round((mkt_revenue - mkt_spend) / mkt_spend, 2) if mkt_spend else 0
 
-    active_customers = _scalar("SELECT COUNT(DISTINCT customer_id) FROM fact_sales WHERE status='completed' AND company_id=:cid", p)
+    active_customers = _scalar("""
+        SELECT COUNT(DISTINCT customer_id) FROM (
+            SELECT customer_id FROM fact_sales WHERE status='completed' AND company_id=:cid
+            UNION
+            SELECT customer_id FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+        ) t
+    """, p)
     repeat_customers = _scalar("""
         SELECT COUNT(*) FROM (
-            SELECT customer_id FROM fact_sales WHERE status='completed' AND company_id=:cid
-            GROUP BY customer_id HAVING COUNT(*) > 1
+            SELECT customer_id FROM (
+                SELECT customer_id FROM fact_sales WHERE status='completed' AND company_id=:cid
+                UNION ALL
+                SELECT customer_id FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+            ) combined GROUP BY customer_id HAVING COUNT(*) > 1
         ) t
     """, p)
     repeat_rate = round(repeat_customers / active_customers * 100, 1) if active_customers else 0
@@ -349,12 +367,22 @@ def get_overview(company_id: int = Depends(get_company_id)):
         WHERE dc.company_id=:cid AND cm.churn_risk_score > 0.7
     """, p))
 
-    top_ch = _rows("SELECT channel FROM fact_sales WHERE status='completed' AND company_id=:cid GROUP BY channel ORDER BY SUM(line_total) DESC LIMIT 1", p)
+    top_ch = _rows("""
+        SELECT channel, SUM(revenue) AS total FROM (
+            SELECT channel, SUM(line_total) AS revenue FROM fact_sales
+              WHERE status='completed' AND company_id=:cid GROUP BY channel
+            UNION ALL
+            SELECT channel, SUM(line_total) AS revenue FROM fact_service_bookings
+              WHERE status='completed' AND company_id=:cid GROUP BY channel
+        ) t GROUP BY channel ORDER BY total DESC LIMIT 1
+    """, p)
     top_channel = top_ch[0]["channel"] if top_ch else "N/A"
 
-    prev_rev = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= DATE_TRUNC('month', NOW()) - INTERVAL '1 month' AND CAST(order_date AS DATE) < DATE_TRUNC('month', NOW())", p)
-    curr_rev = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= DATE_TRUNC('month', NOW())", p)
-    revenue_trend = "up" if curr_rev >= prev_rev else "down"
+    prev_prod = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= DATE_TRUNC('month', NOW()) - INTERVAL '1 month' AND CAST(order_date AS DATE) < DATE_TRUNC('month', NOW())", p)
+    prev_svc  = _scalar("SELECT SUM(line_total) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= DATE_TRUNC('month', NOW()) - INTERVAL '1 month' AND CAST(booking_date AS DATE) < DATE_TRUNC('month', NOW())", p)
+    curr_prod = _scalar("SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= DATE_TRUNC('month', NOW())", p)
+    curr_svc  = _scalar("SELECT SUM(line_total) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= DATE_TRUNC('month', NOW())", p)
+    revenue_trend = "up" if (curr_prod + curr_svc) >= (prev_prod + prev_svc) else "down"
 
     best_camp = _rows("""
         SELECT dc.campaign_name
@@ -403,14 +431,24 @@ def get_overview(company_id: int = Depends(get_company_id)):
 def get_finance(period: str = Query(default="last_3_months"), company_id: int = Depends(get_company_id)):
     p = {"cid": company_id}
 
-    if _scalar("SELECT COUNT(*) FROM fact_expenses WHERE company_id=:cid", p) == 0:
+    has_any_revenue = (
+        _scalar("SELECT COUNT(*) FROM fact_sales WHERE company_id=:cid", p) > 0 or
+        _scalar("SELECT COUNT(*) FROM fact_service_bookings WHERE company_id=:cid", p) > 0 or
+        _scalar("SELECT COUNT(*) FROM fact_expenses WHERE company_id=:cid", p) > 0
+    )
+    if not has_any_revenue:
         return {"has_data": False}
 
     interval = _period_interval(period)
-    revenue      = _scalar(f"SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    prod_revenue = _scalar(f"SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    svc_revenue  = _scalar(f"SELECT SUM(line_total) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    revenue      = prod_revenue + svc_revenue
     expenses     = _scalar(f"SELECT SUM(amount) FROM fact_expenses WHERE company_id=:cid AND CAST(date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
-    gross_profit = _scalar(f"SELECT SUM(gross_profit) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
-    net_profit   = revenue - expenses
+    gross_profit = (
+        _scalar(f"SELECT SUM(gross_profit) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p) +
+        _scalar(f"SELECT SUM(gross_profit) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    )
+    net_profit    = revenue - expenses
     profit_margin = round((net_profit / revenue * 100), 1) if revenue else 0
 
     cash = _cash_in_bank(company_id)
@@ -424,12 +462,19 @@ def get_finance(period: str = Query(default="last_3_months"), company_id: int = 
     cash_runway = round(cash / monthly_burn, 1) if monthly_burn else 0
 
     rev_rows = _rows(f"""
-        SELECT TO_CHAR(DATE_TRUNC('month', CAST(order_date AS DATE)), 'Mon YYYY') AS month,
-               SUM(line_total) AS revenue
-        FROM fact_sales WHERE status='completed' AND company_id=:cid
-          AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
-        GROUP BY DATE_TRUNC('month', CAST(order_date AS DATE))
-        ORDER BY DATE_TRUNC('month', CAST(order_date AS DATE))
+        SELECT TO_CHAR(m, 'Mon YYYY') AS month, SUM(revenue) AS revenue
+        FROM (
+            SELECT DATE_TRUNC('month', CAST(order_date AS DATE)) AS m, SUM(line_total) AS revenue
+            FROM fact_sales WHERE status='completed' AND company_id=:cid
+              AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
+            GROUP BY 1
+            UNION ALL
+            SELECT DATE_TRUNC('month', CAST(booking_date AS DATE)) AS m, SUM(line_total) AS revenue
+            FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+              AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+            GROUP BY 1
+        ) combined
+        GROUP BY m ORDER BY m
     """, p)
     exp_rows = _rows(f"""
         SELECT TO_CHAR(DATE_TRUNC('month', CAST(date AS DATE)), 'Mon YYYY') AS month,
@@ -483,21 +528,34 @@ def get_finance(period: str = Query(default="last_3_months"), company_id: int = 
 def get_sales(period: str = Query(default="last_3_months"), company_id: int = Depends(get_company_id)):
     p = {"cid": company_id}
 
-    if _scalar("SELECT COUNT(*) FROM fact_sales WHERE company_id=:cid", p) == 0:
+    has_prod = _scalar("SELECT COUNT(*) FROM fact_sales WHERE company_id=:cid", p) > 0
+    has_svc  = _scalar("SELECT COUNT(*) FROM fact_service_bookings WHERE company_id=:cid", p) > 0
+    if not has_prod and not has_svc:
         return {"has_data": False}
 
     interval = _period_interval(period)
-    total_orders    = _scalar(f"SELECT COUNT(*) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    prod_orders     = _scalar(f"SELECT COUNT(*) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    svc_bookings    = _scalar(f"SELECT COUNT(*) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_orders    = prod_orders + svc_bookings
     returned_orders = _scalar(f"SELECT COUNT(*) FROM fact_sales WHERE status='returned' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
-    avg_order       = _scalar(f"SELECT AVG(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
-    total_revenue   = _scalar(f"SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
-    return_rate     = round(returned_orders / (total_orders + returned_orders) * 100, 1) if total_orders else 0
+    prod_revenue    = _scalar(f"SELECT SUM(line_total) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    svc_revenue     = _scalar(f"SELECT SUM(line_total) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_revenue   = prod_revenue + svc_revenue
+    avg_order       = total_revenue / total_orders if total_orders else 0
+    return_rate     = round(returned_orders / (prod_orders + returned_orders) * 100, 1) if prod_orders else 0
 
     revenue_by_channel = _rows(f"""
-        SELECT channel, SUM(line_total) AS revenue, COUNT(*) AS orders
-        FROM fact_sales WHERE status='completed' AND company_id=:cid
-          AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
-        GROUP BY channel ORDER BY revenue DESC
+        SELECT channel, SUM(revenue) AS revenue, SUM(cnt) AS orders FROM (
+            SELECT channel, SUM(line_total) AS revenue, COUNT(*) AS cnt
+            FROM fact_sales WHERE status='completed' AND company_id=:cid
+              AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
+            GROUP BY channel
+            UNION ALL
+            SELECT channel, SUM(line_total) AS revenue, COUNT(*) AS cnt
+            FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+              AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+            GROUP BY channel
+        ) t GROUP BY channel ORDER BY revenue DESC
     """, p)
 
     top_products = _rows(f"""
@@ -509,13 +567,27 @@ def get_sales(period: str = Query(default="last_3_months"), company_id: int = De
         GROUP BY dp.product_name ORDER BY revenue DESC LIMIT 5
     """, p)
 
+    top_services = _rows(f"""
+        SELECT ds.service_name, SUM(fsb.sessions) AS total_sessions, SUM(fsb.line_total) AS revenue
+        FROM fact_service_bookings fsb
+        JOIN dim_services ds ON fsb.service_id = ds.service_id
+        WHERE fsb.status='completed' AND fsb.company_id=:cid
+          AND CAST(fsb.booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+        GROUP BY ds.service_name ORDER BY revenue DESC LIMIT 5
+    """, p)
+
     monthly_revenue = _rows(f"""
-        SELECT TO_CHAR(DATE_TRUNC('month', CAST(order_date AS DATE)), 'Mon YYYY') AS month,
-               SUM(line_total) AS revenue
-        FROM fact_sales WHERE status='completed' AND company_id=:cid
-          AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
-        GROUP BY DATE_TRUNC('month', CAST(order_date AS DATE))
-        ORDER BY DATE_TRUNC('month', CAST(order_date AS DATE))
+        SELECT TO_CHAR(m, 'Mon YYYY') AS month, SUM(revenue) AS revenue FROM (
+            SELECT DATE_TRUNC('month', CAST(order_date AS DATE)) AS m, SUM(line_total) AS revenue
+            FROM fact_sales WHERE status='completed' AND company_id=:cid
+              AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
+            GROUP BY 1
+            UNION ALL
+            SELECT DATE_TRUNC('month', CAST(booking_date AS DATE)) AS m, SUM(line_total) AS revenue
+            FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+              AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+            GROUP BY 1
+        ) combined GROUP BY m ORDER BY m
     """, p)
 
     campaign_performance = _rows("""
@@ -547,9 +619,11 @@ def get_sales(period: str = Query(default="last_3_months"), company_id: int = De
             "total_orders": int(total_orders), "returned_orders": int(returned_orders),
             "avg_order_value": round(avg_order, 2), "total_revenue": total_revenue,
             "return_rate": return_rate,
+            "product_revenue": prod_revenue, "service_revenue": svc_revenue,
         },
         "revenue_by_channel": revenue_by_channel,
         "top_products": top_products,
+        "top_services": top_services,
         "monthly_revenue": monthly_revenue,
         "campaign_performance": campaign_performance,
         "spend_trend": spend_trend,
@@ -623,12 +697,24 @@ def get_customers(period: str = Query(default="last_3_months"), company_id: int 
 
     interval = _period_interval(period)
     total_customers  = _scalar("SELECT COUNT(*) FROM dim_customers WHERE company_id=:cid", p)
-    active_customers = _scalar(f"SELECT COUNT(DISTINCT customer_id) FROM fact_sales WHERE status='completed' AND company_id=:cid AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
-    repeat_customers = _scalar(f"""
-        SELECT COUNT(*) FROM (
+    active_customers = _scalar(f"""
+        SELECT COUNT(DISTINCT customer_id) FROM (
             SELECT customer_id FROM fact_sales WHERE status='completed' AND company_id=:cid
               AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
-            GROUP BY customer_id HAVING COUNT(*) > 1
+            UNION
+            SELECT customer_id FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+              AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+        ) t
+    """, p)
+    repeat_customers = _scalar(f"""
+        SELECT COUNT(*) FROM (
+            SELECT customer_id FROM (
+                SELECT customer_id FROM fact_sales WHERE status='completed' AND company_id=:cid
+                  AND CAST(order_date AS DATE) >= NOW() - INTERVAL '{interval}'
+                UNION ALL
+                SELECT customer_id FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+                  AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+            ) combined GROUP BY customer_id HAVING COUNT(*) > 1
         ) t
     """, p)
     repeat_rate = round(repeat_customers / active_customers * 100, 1) if active_customers else 0
@@ -649,21 +735,31 @@ def get_customers(period: str = Query(default="last_3_months"), company_id: int 
     """, p))
 
     revenue_by_segment = _rows("""
-        SELECT dc.segment, SUM(fs.line_total) AS revenue, COUNT(DISTINCT fs.customer_id) AS customers
-        FROM fact_sales fs
-        JOIN dim_customers dc ON fs.customer_id = dc.customer_id
-        WHERE fs.status='completed' AND fs.company_id=:cid
+        SELECT dc.segment, SUM(r.revenue) AS revenue, COUNT(DISTINCT r.customer_id) AS customers
+        FROM (
+            SELECT customer_id, line_total AS revenue FROM fact_sales
+              WHERE status='completed' AND company_id=:cid
+            UNION ALL
+            SELECT customer_id, line_total AS revenue FROM fact_service_bookings
+              WHERE status='completed' AND company_id=:cid
+        ) r
+        JOIN dim_customers dc ON r.customer_id = dc.customer_id
         GROUP BY dc.segment ORDER BY revenue DESC
     """, p)
 
     top_customers = _rows("""
         SELECT dc.customer_id, dc.full_name,
-               SUM(fs.line_total) AS total_revenue,
-               COUNT(fs.order_id) AS total_orders,
+               SUM(r.revenue) AS total_revenue,
+               COUNT(*) AS total_orders,
                dc.segment
-        FROM fact_sales fs
-        JOIN dim_customers dc ON fs.customer_id = dc.customer_id
-        WHERE fs.status='completed' AND fs.company_id=:cid
+        FROM (
+            SELECT customer_id, line_total AS revenue FROM fact_sales
+              WHERE status='completed' AND company_id=:cid
+            UNION ALL
+            SELECT customer_id, line_total AS revenue FROM fact_service_bookings
+              WHERE status='completed' AND company_id=:cid
+        ) r
+        JOIN dim_customers dc ON r.customer_id = dc.customer_id
         GROUP BY dc.customer_id, dc.full_name, dc.segment
         ORDER BY total_revenue DESC LIMIT 5
     """, p)
