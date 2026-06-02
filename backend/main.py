@@ -9,6 +9,7 @@ from backend.app.services.db import engine
 from backend.app.nlp.text_to_sql import generate_sql, is_safe_sql
 from backend.app.services.query_engine import execute_sql
 from backend.app.analytics.anomaly_detection import run_all_detectors
+from backend.app.analytics.forecasting import run_all_forecasts
 from backend.app.semantic.kpis import KPI_DEFINITIONS, map_to_kpi
 from backend.app.services.explainer import explain_result, generate_insight, enrich_anomalies_with_explanations, enrich_anomalies_fast
 from backend.app.services.insights import get_revenue_insight
@@ -669,6 +670,18 @@ def get_anomalies(company_id: int = Depends(get_company_id)):
     result = run_all_detectors(company_id=company_id)
     result["anomalies"] = enrich_anomalies_fast(result.get("anomalies", []))
     return result
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FORECASTS
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.get("/api/forecasts")
+def get_forecasts(
+    days_ahead: int = Query(default=30, ge=7, le=90),
+    company_id: int = Depends(get_company_id),
+):
+    return run_all_forecasts(company_id=company_id, days_ahead=days_ahead)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

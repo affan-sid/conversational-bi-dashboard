@@ -27,13 +27,16 @@ def _get(endpoint, params=None, timeout=10):
         st.error(f"API error: {e}")
         return None
 
-def _post(endpoint, payload):
+def _post(endpoint, payload, timeout=30):
     try:
-        res = requests.post(f"{API_BASE_URL}{endpoint}", headers=_headers(), json=payload, timeout=30)
+        res = requests.post(f"{API_BASE_URL}{endpoint}", headers=_headers(), json=payload, timeout=timeout)
         res.raise_for_status()
         return res.json()
     except requests.exceptions.ConnectionError:
-        st.error("Cannot connect to backend.")
+        st.error("Cannot connect to backend. Is it running?")
+        return None
+    except requests.exceptions.ReadTimeout:
+        st.error("Request timed out — the backend is taking too long to respond.")
         return None
     except requests.exceptions.HTTPError as e:
         st.error(f"API error: {e}")
@@ -102,7 +105,7 @@ def demo_login():
             "token": "mock-demo-token-xyz",
             "user":  {"full_name": "Demo User", "role": "viewer", "company_id": 1}
         }
-    return _post("/auth/demo-login", {})
+    return _post("/auth/demo-login", {}, timeout=90)
 
 
 # ════════════════════════════════════════════════════════════════
@@ -296,6 +299,56 @@ def ask_question(question: str):
             "charts":     [],
         }
     return _post("/api/chat", {"question": question})
+
+
+# ════════════════════════════════════════════════════════════════
+# FORECASTS
+# ════════════════════════════════════════════════════════════════
+
+def get_forecasts(days_ahead: int = 30):
+    if USE_MOCK:
+        def _mock_series(base, n_hist, n_fore, slope, std):
+            hist = [{"date": f"2025-{10+(i//30):02d}-{(i%30)+1:02d}",
+                     "value": round(base + slope*i + (((i*17)%11)-5)*std, 2)}
+                    for i in range(n_hist)]
+            last = hist[-1]["value"]
+            fore = []
+            for j in range(n_fore):
+                v = round(last + slope*(j+1) + (((j*13)%7)-3)*std*0.5, 2)
+                fore.append({"date": f"2026-0{1+(j//30)}-{(j%28)+1:02d}",
+                              "value": max(0, v),
+                              "lower": max(0, round(v - 1.96*std, 2)),
+                              "upper": round(v + 1.96*std, 2)})
+            return hist, fore
+
+        rev_h, rev_f = _mock_series(4500, 60, days_ahead, 18, 320)
+        cf_h,  cf_f  = _mock_series(-200, 60, days_ahead, -8, 150)
+        ex_h,  ex_f  = [
+            [{"date": f"2025-{10+i:02d}", "value": round(28000 + 400*i + (i%3)*200, 2)} for i in range(3)],
+            [{"date": f"2026-0{1+i}", "value": round(29600 + 400*(i+1), 2),
+              "lower": round(28000 + 400*(i+1), 2), "upper": round(31200 + 400*(i+1), 2)} for i in range(3)]
+        ]
+        return {
+            "revenue": {
+                "historical": rev_h, "forecast": rev_f,
+                "trend": "up", "trend_pct": 12.4, "r2_score": 0.81,
+                "model": "linear_regression", "days_ahead": days_ahead,
+                "summary": f"Revenue is forecast to increase by 12.4% over the next {days_ahead} days (model fit R²: 0.81).",
+            },
+            "cashflow": {
+                "historical": cf_h, "forecast": cf_f,
+                "trend": "down", "trend_pct": -6.2, "r2_score": 0.67,
+                "model": "linear_regression", "days_ahead": days_ahead,
+                "summary": f"Daily cash flow is forecast to decline by 6.2% over the next {days_ahead} days (model fit R²: 0.67).",
+            },
+            "expenses": {
+                "historical": ex_h, "forecast": ex_f,
+                "trend": "up", "trend_pct": 4.1, "r2_score": 0.93,
+                "model": "linear_regression", "months_ahead": 3,
+                "summary": "Monthly expenses are forecast to rise by 4.1% over the next 3 months (model fit R²: 0.93).",
+            },
+        }
+    return _get("/api/forecasts", params={"days_ahead": days_ahead}, timeout=30)
 
 
 # ════════════════════════════════════════════════════════════════
