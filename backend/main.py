@@ -14,6 +14,7 @@ from backend.app.semantic.kpis import KPI_DEFINITIONS, map_to_kpi
 from backend.app.services.explainer import explain_result, generate_insight, enrich_anomalies_with_explanations, enrich_anomalies_fast
 from backend.app.services.insights import get_revenue_insight
 from backend.app.services.recommendations import generate_recommendations
+from backend.app.admin.seed_demo import seed_wouessi
 
 app = FastAPI(title="Conversational BI API")
 app.add_middleware(
@@ -1102,3 +1103,19 @@ def query(user_query: str = Query(...), company_id: int = Depends(get_company_id
         "query": user_query, "sql": sql, "result": result,
         "explanation": explain_result(user_query, result),
     }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ADMIN — one-time demo seeding (seeds Wouessi Digital Agency on Render's DB)
+# Call: POST /api/admin/seed-demo?secret=SEED_WOUESSI_2024
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.post("/api/admin/seed-demo")
+def admin_seed_demo(secret: str = Query(...)):
+    if secret != "SEED_WOUESSI_2024":
+        raise HTTPException(status_code=403, detail="Forbidden")
+    try:
+        result = seed_wouessi(engine)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
