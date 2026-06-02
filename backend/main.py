@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, HTTPException, UploadFile, File, Form, Header, Depends
+from fastapi import FastAPI, Query, HTTPException, UploadFile, File, Form, Header, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from pydantic import BaseModel
@@ -841,7 +841,7 @@ def top_products():
 
 
 @app.post("/recommendations")
-def get_recommendations_endpoint(anomalies: list):
+def get_recommendations_endpoint(anomalies: list = Body(...)):
     return generate_recommendations(anomalies)
 
 
