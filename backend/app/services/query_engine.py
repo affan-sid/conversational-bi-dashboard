@@ -1,10 +1,10 @@
 from sqlalchemy import text
 from backend.app.services.db import engine
 
-def execute_sql(sql_query: str):
+def execute_sql(sql_query: str, params: dict = None):
     try:
         with engine.connect() as conn:
-            result = conn.execute(text(sql_query))
+            result = conn.execute(text(sql_query), params or {})
             rows = result.fetchall()
             columns = result.keys()
 

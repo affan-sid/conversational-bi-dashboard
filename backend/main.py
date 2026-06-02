@@ -38,6 +38,22 @@ def _scalar(sql: str, params: dict = None) -> float:
         return 0.0
 
 
+def _cash_in_bank(company_id: int) -> float:
+    """Return current cash balance.
+
+    Prefers fact_cash_balances.closing_balance (daily snapshot from ETL).
+    Falls back to cumulative sum of signed transactions if that table is empty.
+    """
+    p = {"cid": company_id}
+    val = _scalar(
+        "SELECT closing_balance FROM fact_cash_balances WHERE company_id=:cid ORDER BY date DESC LIMIT 1",
+        p,
+    )
+    if val != 0.0:
+        return val
+    return _scalar("SELECT SUM(signed_amount) FROM fact_cash_flow WHERE company_id=:cid", p)
+
+
 def _rows(sql: str, params: dict = None) -> list:
     try:
         with engine.connect().execution_options(timeout=8) as conn:
@@ -83,7 +99,36 @@ def root():
 
 @app.on_event("startup")
 def _startup():
-    pass  # dim_users and dim_companies already exist from ETL
+    with engine.connect() as conn:
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS dim_services (
+                service_id       BIGINT PRIMARY KEY,
+                company_id       BIGINT,
+                service_name     TEXT,
+                category         TEXT,
+                duration_minutes INT,
+                price            NUMERIC,
+                recurring_flag   INT DEFAULT 0,
+                active_flag      INT DEFAULT 1,
+                description      TEXT
+            )
+        """))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS fact_service_bookings (
+                booking_id    BIGINT PRIMARY KEY,
+                service_id    BIGINT,
+                company_id    BIGINT,
+                customer_id   BIGINT,
+                booking_date  TEXT,
+                sessions      INT DEFAULT 1,
+                unit_price    NUMERIC,
+                line_total    NUMERIC,
+                gross_profit  NUMERIC,
+                channel       TEXT,
+                status        TEXT
+            )
+        """))
+        conn.commit()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -273,7 +318,7 @@ def get_overview(company_id: int = Depends(get_company_id)):
     net_profit   = revenue - expenses
     profit_margin = round((net_profit / revenue * 100), 1) if revenue else 0
 
-    cash = _scalar("SELECT signed_amount FROM fact_cash_flow WHERE company_id=:cid ORDER BY date DESC LIMIT 1", p)
+    cash = _cash_in_bank(company_id)
     monthly_burn = _scalar("""
         SELECT AVG(monthly_total) FROM (
             SELECT DATE_TRUNC('month', CAST(date AS DATE)) AS m, SUM(amount) AS monthly_total
@@ -368,7 +413,7 @@ def get_finance(period: str = Query(default="last_3_months"), company_id: int = 
     net_profit   = revenue - expenses
     profit_margin = round((net_profit / revenue * 100), 1) if revenue else 0
 
-    cash = _scalar("SELECT signed_amount FROM fact_cash_flow WHERE company_id=:cid ORDER BY date DESC LIMIT 1", p)
+    cash = _cash_in_bank(company_id)
     monthly_burn = _scalar("""
         SELECT AVG(monthly_total) FROM (
             SELECT DATE_TRUNC('month', CAST(date AS DATE)) AS m, SUM(amount) AS monthly_total
@@ -662,6 +707,73 @@ def get_customers(period: str = Query(default="last_3_months"), company_id: int 
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# SERVICES
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.get("/api/services/summary")
+def get_services(period: str = Query(default="last_3_months"), company_id: int = Depends(get_company_id)):
+    p = {"cid": company_id}
+
+    if _scalar("SELECT COUNT(*) FROM fact_service_bookings WHERE company_id=:cid", p) == 0:
+        return {"has_data": False}
+
+    interval = _period_interval(period)
+    total_bookings    = _scalar(f"SELECT COUNT(*) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    cancelled_bookings = _scalar(f"SELECT COUNT(*) FROM fact_service_bookings WHERE status='cancelled' AND company_id=:cid AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    total_revenue     = _scalar(f"SELECT SUM(line_total) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    avg_booking_value = _scalar(f"SELECT AVG(line_total) FROM fact_service_bookings WHERE status='completed' AND company_id=:cid AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'", p)
+    cancellation_rate = round(cancelled_bookings / (total_bookings + cancelled_bookings) * 100, 1) if total_bookings else 0
+
+    top_services = _rows(f"""
+        SELECT ds.service_name, ds.category, SUM(fsb.sessions) AS total_sessions, SUM(fsb.line_total) AS revenue
+        FROM fact_service_bookings fsb
+        JOIN dim_services ds ON fsb.service_id = ds.service_id
+        WHERE fsb.status='completed' AND fsb.company_id=:cid
+          AND CAST(fsb.booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+        GROUP BY ds.service_name, ds.category ORDER BY revenue DESC LIMIT 5
+    """, p)
+
+    revenue_by_channel = _rows(f"""
+        SELECT channel, SUM(line_total) AS revenue, COUNT(*) AS bookings
+        FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+          AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+        GROUP BY channel ORDER BY revenue DESC
+    """, p)
+
+    revenue_by_category = _rows(f"""
+        SELECT ds.category, SUM(fsb.line_total) AS revenue, COUNT(*) AS bookings
+        FROM fact_service_bookings fsb
+        JOIN dim_services ds ON fsb.service_id = ds.service_id
+        WHERE fsb.status='completed' AND fsb.company_id=:cid
+          AND CAST(fsb.booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+        GROUP BY ds.category ORDER BY revenue DESC
+    """, p)
+
+    monthly_revenue = _rows(f"""
+        SELECT TO_CHAR(DATE_TRUNC('month', CAST(booking_date AS DATE)), 'Mon YYYY') AS month,
+               SUM(line_total) AS revenue
+        FROM fact_service_bookings WHERE status='completed' AND company_id=:cid
+          AND CAST(booking_date AS DATE) >= NOW() - INTERVAL '{interval}'
+        GROUP BY DATE_TRUNC('month', CAST(booking_date AS DATE))
+        ORDER BY DATE_TRUNC('month', CAST(booking_date AS DATE))
+    """, p)
+
+    return {
+        "has_data": True,
+        "kpis": {
+            "total_bookings":     int(total_bookings),
+            "total_revenue":      total_revenue,
+            "avg_booking_value":  round(avg_booking_value, 2),
+            "cancellation_rate":  cancellation_rate,
+        },
+        "top_services":       top_services,
+        "revenue_by_channel": revenue_by_channel,
+        "revenue_by_category": revenue_by_category,
+        "monthly_revenue":    monthly_revenue,
+    }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # ANOMALIES
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -712,13 +824,18 @@ def api_chat(req: ChatRequest, company_id: int = Depends(get_company_id)):
             return {"answer": f"Could not fetch anomalies: {e}", "confidence": 0.0}
 
     kpi = map_to_kpi(user_query)
-    sql = KPI_DEFINITIONS[kpi]["sql"] if kpi else generate_sql(user_query)
+    if kpi and kpi in KPI_DEFINITIONS:
+        sql = KPI_DEFINITIONS[kpi]["sql"]
+        sql_params = {"company_id": company_id}
+    else:
+        sql = generate_sql(user_query, company_id)
+        sql_params = None
 
     if not is_safe_sql(sql):
         return {"answer": "That query cannot be executed safely.", "confidence": 0.0}
 
     try:
-        result = execute_sql(sql)
+        result = execute_sql(sql, sql_params)
     except Exception as e:
         return {"answer": f"Query failed: {e}", "sql": sql, "confidence": 0.0}
 
@@ -745,6 +862,8 @@ _DOMAIN_TABLE_MAP = {
     "products":  "dim_products",
     "marketing": "fact_marketing",
     "finance":   "fact_expenses",
+    "services":  "dim_services",
+    "service_bookings": "fact_service_bookings",
 }
 
 _REQUIRED_COLS = {
@@ -753,6 +872,8 @@ _REQUIRED_COLS = {
     "products":  {"product_name", "price", "cost"},
     "marketing": {"date", "spend", "revenue_attributed"},
     "finance":   {"date", "expense_category", "amount"},
+    "services":  {"service_name", "category", "price"},
+    "service_bookings": {"booking_date", "service_id", "sessions", "unit_price"},
 }
 
 
@@ -803,9 +924,14 @@ async def upload_csv(
             conn.execute(text(f"DELETE FROM {table} WHERE company_id = :cid"), {"cid": company_id})
             conn.commit()
         df.to_sql(table, engine, if_exists="append", index=False, method="multi", chunksize=500)
-    except Exception:
-        # Table may not exist yet — create it via append
-        df.to_sql(table, engine, if_exists="append", index=False, method="multi", chunksize=500)
+    except Exception as db_err:
+        err_msg = str(db_err)
+        if "InvalidTextRepresentation" in err_msg or "invalid input syntax" in err_msg:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Data type mismatch in uploaded CSV — check that numeric columns (e.g. product_id) contain numbers, not text. Detail: {err_msg[:200]}"
+            )
+        raise HTTPException(status_code=500, detail=f"Database error during upload: {err_msg[:200]}")
 
     records_accepted = len(df)
     job = {
@@ -859,15 +985,20 @@ def get_recommendations_endpoint(anomalies: list = Body(...)):
 
 
 @app.post("/query")
-def query(user_query: str = Query(...)):
+def query(user_query: str = Query(...), company_id: int = Depends(get_company_id)):
     kpi = map_to_kpi(user_query)
-    sql = KPI_DEFINITIONS[kpi]["sql"] if kpi else generate_sql(user_query)
+    if kpi and kpi in KPI_DEFINITIONS:
+        sql = KPI_DEFINITIONS[kpi]["sql"]
+        sql_params = {"company_id": company_id}
+    else:
+        sql = generate_sql(user_query, company_id)
+        sql_params = None
 
     if not is_safe_sql(sql):
         return {"error": "Unsafe query"}
 
     try:
-        result = execute_sql(sql)
+        result = execute_sql(sql, sql_params)
     except Exception as e:
         return {"query": user_query, "sql": sql, "error": str(e)}
 

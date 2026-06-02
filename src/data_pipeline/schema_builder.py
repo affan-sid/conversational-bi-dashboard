@@ -51,7 +51,7 @@ class StarSchemaBuilder:
             logger.info(f"✓ Created dim_date with {len(star_schema['dim_date'])} rows")
         
         # Pass through dimension tables
-        dimension_tables = ['customers', 'products', 'campaigns', 'companies', 'users']
+        dimension_tables = ['customers', 'products', 'campaigns', 'companies', 'users', 'data_sources', 'services']
         for table in dimension_tables:
             if table in cleaned_dataframes:
                 star_schema[f'dim_{table}'] = cleaned_dataframes[table].copy()
@@ -85,5 +85,18 @@ class StarSchemaBuilder:
             fact_expenses = cleaned_dataframes['expenses'].copy()
             star_schema['fact_expenses'] = fact_expenses
             logger.info(f"✓ Created fact_expenses with {len(fact_expenses)} rows")
-        
+
+        # Create fact_service_bookings
+        if 'service_bookings' in cleaned_dataframes:
+            fact_service_bookings = cleaned_dataframes['service_bookings'].copy()
+            star_schema['fact_service_bookings'] = fact_service_bookings
+            logger.info(f"✓ Created fact_service_bookings with {len(fact_service_bookings)} rows")
+
+        # Create fact_cash_balances (daily opening/closing balance snapshots)
+        if 'cash_balances' in cleaned_dataframes:
+            fact_cash_balances = cleaned_dataframes['cash_balances'].copy()
+            fact_cash_balances['date'] = pd.to_datetime(fact_cash_balances['date'], errors='coerce')
+            star_schema['fact_cash_balances'] = fact_cash_balances
+            logger.info(f"✓ Created fact_cash_balances with {len(fact_cash_balances)} rows")
+
         return star_schema

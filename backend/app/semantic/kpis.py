@@ -12,7 +12,7 @@ def map_to_kpi(user_query: str):
     
     query = user_query.lower()
     synonym_map = {
-        "revenue": ["total revenue", "revenue", "income", "how much revenue", "sales revenue"],
+        "revenue": ["total revenue", "revenue", "income", "how much revenue", "sales revenue", "total sales", "how much did we sell", "how much have we made"],
         "gross_profit": ["gross profit"],
         "net_profit": ["net profit", "net income", "profit margin", "why is profit"],
         "cash_runway": ["cash runway", "months of cash", "runway", "burn rate", "how many months", "cash left"],
@@ -22,7 +22,6 @@ def map_to_kpi(user_query: str):
         "customer_retention_rate": ["customer retention", "retention rate", "retention"],
         "churn_risk": ["churn risk", "customer churn", "churn"],
         "avg_order_value": ["average order value", "avg order value", "aov", "order value"],
-        "order_fulfillment_time": ["order fulfillment", "fulfillment time"],
         "revenue_by_segment": ["segment", "spends the most", "segment spend", "segment revenue", "which segment", "by segment", "retail", "sme", "corporate"],
         "revenue_by_channel": ["by channel", "channel revenue", "channel performance", "which channel"],
         "revenue_by_city": ["by city", "city revenue", "city performance", "which city", "cities"],
