@@ -324,6 +324,18 @@ def get_overview(company_id: int = Depends(get_company_id)):
     seg_rows = _rows("SELECT segment, COUNT(*) AS cnt FROM dim_customers WHERE company_id=:cid GROUP BY segment", p)
     segments = {r["segment"]: int(r["cnt"]) for r in seg_rows}
 
+    try:
+        det = run_all_detectors(company_id=company_id)
+        alerts = [
+            {"level": a["severity"], "message": a["message"]}
+            for a in det.get("anomalies", [])
+            if a["severity"] in ("high", "medium")
+        ][:5]
+        anomaly_summary = det.get("summary", {"total": 0, "high": 0, "medium": 0, "low": 0})
+    except Exception:
+        alerts = []
+        anomaly_summary = {"total": 0, "high": 0, "medium": 0, "low": 0}
+
     return {
         "has_data": True,
         "finance": {
@@ -344,7 +356,8 @@ def get_overview(company_id: int = Depends(get_company_id)):
             "active_customers": int(active_customers), "repeat_rate": repeat_rate,
             "churn_risk_high": churn_risk_high, "segments": segments,
         },
-        "alerts": [],
+        "alerts": alerts,
+        "anomaly_summary": anomaly_summary,
     }
 
 

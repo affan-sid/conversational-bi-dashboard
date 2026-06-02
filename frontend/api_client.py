@@ -133,6 +133,7 @@ def get_overview():
                 {"level": "medium", "message": "6 marketing rows: conversions exceed clicks"},
                 {"level": "low",    "message": "12 finance rows missing category"},
             ],
+            "anomaly_summary": {"total": 3, "high": 1, "medium": 2, "low": 0},
         }
     return _get("/api/overview")
 
@@ -292,6 +293,102 @@ def ask_question(question: str):
             "charts":     [],
         }
     return _post("/api/chat", {"question": question})
+
+
+# ════════════════════════════════════════════════════════════════
+# ANOMALIES & RECOMMENDATIONS
+# ════════════════════════════════════════════════════════════════
+
+def get_anomalies():
+    if USE_MOCK:
+        return {
+            "summary": {"total": 3, "high": 1, "medium": 2, "low": 0},
+            "anomalies": [
+                {
+                    "domain": "sales", "type": "daily_revenue_drop", "severity": "high",
+                    "message": "Daily Revenue drop of 42.3% on 2025-12-14",
+                    "date": "2025-12-14", "value": 1204.0, "expected": 2088.5,
+                    "deviation_pct": -42.3, "z_score": 3.12, "method": "zscore", "unit": "$",
+                    "recommendation": "Investigate sales trends, campaigns, or seasonality changes.",
+                    "explanation": (
+                        "On 2025-12-14, your daily sales dropped 42% below the usual level "
+                        "($1,204 vs $2,089 typical). This is a significant one-day dip — "
+                        "check whether an outage, holiday effect, or channel issue caused the shortfall."
+                    ),
+                    "shap_top_features": None,
+                },
+                {
+                    "domain": "marketing", "type": "pattern_anomaly", "severity": "medium",
+                    "message": "Unusual marketing activity on 2025-11-22",
+                    "date": "2025-11-22", "value": 9800.0, "expected": None,
+                    "deviation_pct": None, "z_score": None, "method": "isolation_forest", "unit": "$",
+                    "recommendation": "Review campaign performance and targeting.",
+                    "explanation": (
+                        "On 2025-11-22, an unusual combination of spend, conversions, and attributed "
+                        "revenue was detected. This anomaly was mainly driven by: advertising spend "
+                        "was unusually high ($9,800); number of conversions was unusually low (12); "
+                        "revenue from campaigns was unusually low ($4,200)."
+                    ),
+                    "shap_top_features": [["spend", -0.42], ["conversions", -0.31], ["revenue_attributed", -0.18]],
+                    "feature_values": {"spend": 9800.0, "conversions": 12.0, "revenue_attributed": 4200.0},
+                    "feature_means":  {"spend": 4200.0, "conversions": 38.5, "revenue_attributed": 11800.0},
+                },
+                {
+                    "domain": "finance", "type": "cashflow_change_drop", "severity": "medium",
+                    "message": "Cashflow Change drop of 38.1% on 2025-12-01",
+                    "date": "2025-12-01", "value": -18200.0, "expected": -11200.5,
+                    "deviation_pct": -38.1, "z_score": 2.4, "method": "zscore", "unit": "$",
+                    "recommendation": "Monitor liquidity and upcoming liabilities.",
+                    "explanation": (
+                        "On 2025-12-01, your cash balance fell further than usual "
+                        "($18,200 outflow vs a normal $11,200). This may indicate a large "
+                        "unexpected payment going out — review your accounts payable for that date."
+                    ),
+                    "shap_top_features": None,
+                },
+            ],
+        }
+    return _get("/api/anomalies")
+
+
+def get_recommendations(anomalies: list):
+    if USE_MOCK:
+        return [
+            {
+                "type": "data_quality",
+                "confidence": 0.95,
+                "recommendation": (
+                    "Data quality issues were found in your marketing records — rows where conversions "
+                    "exceed clicks are mathematically impossible and indicate a tracking or import error. "
+                    "Export the affected rows, identify the source of the discrepancy (often a "
+                    "double-count in your CRM or ad platform), and correct the data before using it "
+                    "for campaign decisions."
+                ),
+            },
+            {
+                "type": "revenue_drop",
+                "confidence": 0.88,
+                "recommendation": (
+                    "Revenue is declining — compare this period's figures by channel and product "
+                    "against last quarter to pinpoint exactly where the drop is occurring. "
+                    "Once you identify the underperforming segment, check whether the cause is "
+                    "lower volume, lower prices, or higher returns, as each requires a different fix."
+                ),
+            },
+            {
+                "type": "cashflow",
+                "confidence": 0.82,
+                "recommendation": (
+                    "Cash flow volatility has been detected — calculate your current runway by "
+                    "dividing your cash balance by your average monthly burn rate to understand "
+                    "how much time you have. If runway is below three months, immediately contact "
+                    "your top customers with outstanding invoices and offer an early-payment discount."
+                ),
+            },
+        ]
+    if not anomalies:
+        return []
+    return _post("/recommendations", anomalies)
 
 
 # ════════════════════════════════════════════════════════════════

@@ -334,7 +334,18 @@ def _template_explanation(anomaly: dict) -> str:
         else ""
     )
 
-    return f"{date_part}{core}.{urgency}"
+    base = f"{date_part}{core}.{urgency}"
+
+    shap_top_features = anomaly.get("shap_top_features")
+    feature_values = anomaly.get("feature_values")
+    feature_means  = anomaly.get("feature_means")
+
+    if shap_top_features and feature_values and feature_means:
+        row_series = pd.Series(feature_values)
+        shap_text = _shap_to_plain_text(shap_top_features, row_series, feature_means)
+        return f"{base} {shap_text}"
+
+    return base
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -364,6 +375,15 @@ def explain_anomaly(anomaly: dict) -> str:
     deviation_str = f"{deviation_pct:.1f}%" if deviation_pct is not None else "N/A"
     z_str = f"{z_score:.2f}" if z_score is not None else "N/A"
 
+    shap_top_features = anomaly.get("shap_top_features")
+    shap_line = ""
+    if shap_top_features:
+        parts = [
+            f"{f.replace('_', ' ')} (impact {v:+.4f})"
+            for f, v in shap_top_features
+        ]
+        shap_line = "\n- Key feature drivers (SHAP): " + ", ".join(parts)
+
     prompt = f"""You are a business intelligence assistant explaining data anomalies to a non-technical small business owner.
 
 An anomaly was detected with the following details:
@@ -375,12 +395,13 @@ An anomaly was detected with the following details:
 - Expected (normal) value: {expected_str}
 - Deviation from normal: {deviation_str}
 - Statistical score: {z_str}
-- Detection method: {method}
+- Detection method: {method}{shap_line}
 - Suggested action: {recommendation}
 
 Write exactly 2-3 sentences explaining what this means for the business owner.
 Rules:
-- Use simple, everyday English. No jargon (do not say z-score, Isolation Forest, or statistical).
+- Use simple, everyday English. No jargon (do not say z-score, Isolation Forest, SHAP, or statistical).
+- If key feature drivers are listed above, name the specific metric(s) that caused the anomaly.
 - Clearly state what happened, why it matters, and what they should do.
 - Be specific with numbers if available.
 """

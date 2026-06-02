@@ -26,6 +26,13 @@ def show():
         if alert["level"] == "high": st.error(f"🔴 {alert['message']}")
         elif alert["level"] == "medium": st.warning(f"🟡 {alert['message']}")
         else: st.info(f"🔵 {alert['message']}")
+    a_sum = data.get("anomaly_summary", {})
+    if a_sum.get("total", 0) > 0:
+        high_txt = f" ({a_sum['high']} high severity)" if a_sum.get("high") else ""
+        col_l, col_r = st.columns([4, 1])
+        col_l.warning(f"⚠ {a_sum['total']} anomalies detected{high_txt} in your data.")
+        if col_r.button("View Details →", key="overview_anomaly_link"):
+            st.session_state.page = "anomalies"; st.rerun()
     st.markdown("---")
     st.subheader("Finance")
     c1,c2,c3,c4 = st.columns(4)

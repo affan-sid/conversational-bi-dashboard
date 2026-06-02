@@ -183,6 +183,8 @@ elif st.session_state.token:
             st.session_state.page = "sales";     st.rerun()
         if st.button("Customers",         use_container_width=True, key="nav_customers"):
             st.session_state.page = "customers"; st.rerun()
+        if st.button("Anomaly Insights",  use_container_width=True, key="nav_anomalies"):
+            st.session_state.page = "anomalies"; st.rerun()
 
         st.markdown("---")
 
@@ -202,7 +204,7 @@ elif st.session_state.token:
             st.rerun()
 
     # ── PAGE CONTENT ─────────────────────────────────────
-    if   page in ("overview", ) or page not in ["finance","sales","customers","chat","upload"]:
+    if   page in ("overview", ) or page not in ["finance","sales","customers","chat","upload","anomalies"]:
         from pages.p01_overview  import show; show()
     elif page == "finance":
         from pages.p03_finance   import show; show()
@@ -214,6 +216,8 @@ elif st.session_state.token:
         from pages.p02_chat      import show; show()
     elif page == "upload":
         from pages.p06_upload    import show; show()
+    elif page == "anomalies":
+        from pages.p07_anomalies import show; show()
 
 # ── FALLBACK ──────────────────────────────────────────────
 else:

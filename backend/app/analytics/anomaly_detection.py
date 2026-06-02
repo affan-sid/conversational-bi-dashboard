@@ -249,13 +249,8 @@ def detect_marketing_anomalies(company_id: int) -> list:
         )
 
     # ISOLATION FOREST
-    features = df[
-        [
-            "spend",
-            "conversions",
-            "revenue_attributed"
-        ]
-    ].dropna()
+    feature_cols = ["spend", "conversions", "revenue_attributed"]
+    features = df[feature_cols].dropna()
 
     if len(features) >= 20:
 
@@ -266,23 +261,50 @@ def detect_marketing_anomalies(company_id: int) -> list:
 
         preds = clf.fit_predict(features)
 
+        # Compute SHAP values to attribute which features drove each anomaly
+        shap_by_pos = {}
+        feat_means = features.mean().to_dict()
+        try:
+            import shap as _shap_lib
+            _explainer = _shap_lib.TreeExplainer(clf)
+            _sv = _explainer.shap_values(features.values, check_additivity=False)
+            for _pos, _pred in enumerate(preds):
+                if _pred == -1:
+                    _pairs = sorted(
+                        zip(feature_cols, _sv[_pos].tolist()),
+                        key=lambda x: abs(x[1]),
+                        reverse=True,
+                    )
+                    shap_by_pos[_pos] = [(f, round(v, 4)) for f, v in _pairs[:3]]
+        except Exception:
+            pass
+
         for idx in np.where(preds == -1)[0]:
 
             row = df.iloc[idx]
+            feat_row = features.iloc[int(idx)]
 
-            results.append(
-                _anomaly(
-                    "marketing",
-                    "pattern_anomaly",
-                    "medium",
-                    (
-                        f"Unusual marketing activity "
-                        f"on {row['date'].date()}"
-                    ),
-                    date=str(row["date"].date()),
-                    value=row["spend"]
-                )
+            anomaly = _anomaly(
+                "marketing",
+                "pattern_anomaly",
+                "medium",
+                f"Unusual marketing activity on {row['date'].date()}",
+                date=str(row["date"].date()),
+                value=row["spend"],
+                method="isolation_forest",
             )
+            # Store raw feature values and per-feature means so the explainer
+            # can generate direction-aware SHAP descriptions without a DB round-trip
+            anomaly["feature_values"] = {
+                c: round(float(feat_row[c]), 2) for c in feature_cols
+            }
+            anomaly["feature_means"] = {
+                k: round(float(v), 2) for k, v in feat_means.items()
+            }
+            if int(idx) in shap_by_pos:
+                anomaly["shap_top_features"] = shap_by_pos[int(idx)]
+
+            results.append(anomaly)
 
     return results
 
