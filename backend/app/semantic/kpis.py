@@ -17,6 +17,8 @@ def map_to_kpi(user_query: str):
         "net_profit": ["net profit", "net income", "profit margin", "why is profit"],
         "cash_runway": ["cash runway", "months of cash", "runway", "burn rate", "how many months", "cash left"],
         "top_products": ["top products", "best selling", "best product", "popular product", "which product", "sell best", "sells best", "products sell"],
+        "top_services": ["top services", "best service", "popular service", "which service", "services revenue", "service performance"],
+        "service_revenue": ["service revenue", "revenue from services", "how much from services"],
         "worst_campaign": ["wasting money", "worst campaign", "losing money", "negative roi", "pausing campaign", "waste", "worst performing", "which campaign to cut", "cut campaign"],
         "marketing_roi": ["marketing roi", "return on investment", "best campaign", "campaign performance", "which campaign", "campaign roi", "top campaign"],
         "customer_retention_rate": ["customer retention", "retention rate", "retention"],

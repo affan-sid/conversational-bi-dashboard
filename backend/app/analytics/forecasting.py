@@ -53,11 +53,18 @@ def _linear_forecast(values: np.ndarray, n_forecast: int, allow_negative: bool =
 
 def forecast_revenue(company_id: int, days_ahead: int = 30) -> dict:
     df = _fetch("""
-        SELECT CAST(order_date AS DATE) AS day, SUM(line_total) AS revenue
-        FROM fact_sales
-        WHERE status = 'completed' AND company_id = :cid
-        GROUP BY CAST(order_date AS DATE)
-        ORDER BY day
+        SELECT day, SUM(revenue) AS revenue FROM (
+            SELECT CAST(order_date AS DATE) AS day, SUM(line_total) AS revenue
+            FROM fact_sales
+            WHERE status = 'completed' AND company_id = :cid
+            GROUP BY CAST(order_date AS DATE)
+            UNION ALL
+            SELECT CAST(booking_date AS DATE) AS day, SUM(line_total) AS revenue
+            FROM fact_service_bookings
+            WHERE status = 'completed' AND company_id = :cid
+            GROUP BY CAST(booking_date AS DATE)
+        ) combined
+        GROUP BY day ORDER BY day
     """, {"cid": company_id})
 
     if df.empty or len(df) < 14:

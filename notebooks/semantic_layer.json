@@ -4,25 +4,25 @@
   "kpis": {
     "revenue": {
       "name": "Total Revenue",
-      "description": "Total sales revenue from all completed orders",
+      "description": "Total revenue from all completed product sales and service bookings",
       "category": "Financial Health",
-      "sql": "SELECT COALESCE(SUM(line_total), 0) as revenue FROM fact_sales WHERE status = 'completed' AND company_id = :company_id",
+      "sql": "SELECT COALESCE(SUM(line_total), 0) as revenue FROM (SELECT line_total FROM fact_sales WHERE status = 'completed' AND company_id = :company_id UNION ALL SELECT line_total FROM fact_service_bookings WHERE status = 'completed' AND company_id = :company_id) combined",
       "aggregation": "SUM",
       "unit": "CAD"
     },
     "gross_profit": {
       "name": "Gross Profit",
-      "description": "Revenue minus cost of goods sold",
+      "description": "Revenue minus cost of goods sold across products and services",
       "category": "Financial Health",
-      "sql": "SELECT COALESCE(SUM(gross_profit), 0) as gross_profit FROM fact_sales WHERE status = 'completed' AND company_id = :company_id",
+      "sql": "SELECT COALESCE(SUM(gross_profit), 0) as gross_profit FROM (SELECT gross_profit FROM fact_sales WHERE status = 'completed' AND company_id = :company_id UNION ALL SELECT gross_profit FROM fact_service_bookings WHERE status = 'completed' AND company_id = :company_id) combined",
       "aggregation": "SUM",
       "unit": "CAD"
     },
     "net_profit": {
       "name": "Net Profit",
-      "description": "Revenue minus all expenses (COGS + operating expenses)",
+      "description": "Revenue minus all expenses (COGS + operating expenses) across products and services",
       "category": "Financial Health",
-      "sql": "WITH revenue AS ( SELECT COALESCE(SUM(line_total), 0) as total_revenue FROM fact_sales WHERE status = 'completed' AND company_id = :company_id ), cogs AS ( SELECT COALESCE(SUM(quantity * cost_price), 0) as total_cogs FROM fact_sales WHERE status = 'completed' AND company_id = :company_id ), operating_expenses AS ( SELECT COALESCE(SUM(amount), 0) as total_expenses FROM fact_expenses WHERE company_id = :company_id ) SELECT (total_revenue - total_cogs - total_expenses) as net_profit FROM revenue, cogs, operating_expenses",
+      "sql": "WITH revenue AS ( SELECT COALESCE(SUM(line_total), 0) as total_revenue FROM (SELECT line_total FROM fact_sales WHERE status = 'completed' AND company_id = :company_id UNION ALL SELECT line_total FROM fact_service_bookings WHERE status = 'completed' AND company_id = :company_id) r ), cogs AS ( SELECT COALESCE(SUM(gross_profit_deduction), 0) as total_cogs FROM (SELECT quantity * cost_price as gross_profit_deduction FROM fact_sales WHERE status = 'completed' AND company_id = :company_id) c ), operating_expenses AS ( SELECT COALESCE(SUM(amount), 0) as total_expenses FROM fact_expenses WHERE company_id = :company_id ) SELECT (total_revenue - total_cogs - total_expenses) as net_profit FROM revenue, cogs, operating_expenses",
       "aggregation": "COMPOSITE",
       "unit": "CAD"
     },
@@ -52,9 +52,9 @@
     },
     "avg_order_value": {
       "name": "Average Order Value",
-      "description": "Average revenue per completed order",
+      "description": "Average revenue per completed order or booking across products and services",
       "category": "Operational Efficiency",
-      "sql": "SELECT AVG(line_total) as avg_order_value FROM fact_sales WHERE status = 'completed' AND company_id = :company_id",
+      "sql": "SELECT AVG(line_total) as avg_order_value FROM (SELECT line_total FROM fact_sales WHERE status = 'completed' AND company_id = :company_id UNION ALL SELECT line_total FROM fact_service_bookings WHERE status = 'completed' AND company_id = :company_id) combined",
       "aggregation": "AVG",
       "unit": "CAD"
     },

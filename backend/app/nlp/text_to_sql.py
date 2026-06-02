@@ -68,7 +68,10 @@ def _few_shot_examples(company_id: int) -> str:
 Examples (for company_id = {company_id}):
 
 Q: What is my total revenue?
-SQL: SELECT SUM(line_total) AS total_revenue FROM fact_sales WHERE status = 'completed' AND company_id = {company_id};
+SQL: SELECT SUM(line_total) AS total_revenue FROM (SELECT line_total FROM fact_sales WHERE status = 'completed' AND company_id = {company_id} UNION ALL SELECT line_total FROM fact_service_bookings WHERE status = 'completed' AND company_id = {company_id}) combined;
+
+Q: What was my revenue last month?
+SQL: SELECT SUM(line_total) AS revenue FROM (SELECT line_total, order_date AS txn_date FROM fact_sales WHERE status = 'completed' AND company_id = {company_id} UNION ALL SELECT line_total, CAST(booking_date AS DATE) AS txn_date FROM fact_service_bookings WHERE status = 'completed' AND company_id = {company_id}) combined WHERE CAST(txn_date AS DATE) >= DATE_TRUNC('month', NOW()) - INTERVAL '1 month' AND CAST(txn_date AS DATE) < DATE_TRUNC('month', NOW());
 
 Q: What are my top 5 best-selling products?
 SQL: SELECT p.product_name, SUM(s.line_total) AS revenue
@@ -151,8 +154,13 @@ Rules:
   Tables with company_id: fact_sales, dim_customers, fact_expenses, fact_marketing, fact_cash_flow, dim_services, fact_service_bookings
 - fact_marketing has NO roi or roas column — compute ROI as (revenue_attributed - spend) / NULLIF(spend, 0)
 - fact_expenses.date and fact_marketing.date are TEXT — use CAST(date AS DATE) for date functions
-- Revenue = fact_sales.line_total  |  Expenses = fact_expenses.amount
+- REVENUE RULE: Total revenue = fact_sales.line_total + fact_service_bookings.line_total combined.
+  Always UNION ALL both tables when calculating any revenue, order count, or average order value.
+  Example: SELECT SUM(line_total) FROM (SELECT line_total FROM fact_sales WHERE status='completed' AND company_id=X UNION ALL SELECT line_total FROM fact_service_bookings WHERE status='completed' AND company_id=X) combined
+  If the question is specifically about products use only fact_sales. If specifically about services use only fact_service_bookings. Otherwise always combine both.
+- Expenses = fact_expenses.amount
 - For product names JOIN dim_products ON product_id
+- For service names JOIN dim_services ON service_id
 - For campaign names JOIN dim_campaigns ON campaign_id
 - For customer names JOIN dim_customers ON customer_id
 - Limit results to 20 rows unless the query is for a single value

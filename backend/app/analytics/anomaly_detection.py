@@ -153,9 +153,11 @@ def detect_revenue_anomalies(company_id: int) -> list:
 
     df = _query_df(
         """
-        SELECT *
-        FROM fact_sales
-        WHERE status = 'completed'
+        SELECT company_id, CAST(order_date AS DATE) AS order_date, line_total
+        FROM fact_sales WHERE status = 'completed'
+        UNION ALL
+        SELECT company_id, CAST(booking_date AS DATE) AS order_date, line_total
+        FROM fact_service_bookings WHERE status = 'completed'
         """,
         company_id
     )
