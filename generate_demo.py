@@ -390,7 +390,8 @@ with engine.connect() as conn:
         W_USER_ID, CID_W = existing_w[0], existing_w[1]
         print(f"  Wouessi user exists: user_id={W_USER_ID}, company_id={CID_W} — wiping old data")
         for t in ["fact_service_bookings", "dim_services", "fact_expenses",
-                  "fact_marketing", "fact_cash_flow", "dim_customers", "dim_campaigns"]:
+                  "fact_marketing", "fact_cash_flow", "dim_customers", "dim_campaigns",
+                  "fact_sales", "dim_products"]:
             conn.execute(text(f"DELETE FROM {t} WHERE company_id=:cid"), {"cid": CID_W})
         conn.commit()
     else:
