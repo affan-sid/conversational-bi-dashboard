@@ -1,8 +1,15 @@
 import streamlit as st
 import sys, os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+_parent = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _parent not in sys.path:
+    sys.path.insert(0, _parent)
+
 from header_footer import render_header, render_footer
-from api_client import get_anomalies, get_recommendations
+import api_client as _ac
+
+get_anomalies      = _ac.get_anomalies
+get_recommendations = _ac.get_recommendations
 
 _SEVERITY_ICON  = {"high": "🔴", "medium": "🟡", "low": "🔵"}
 _DOMAIN_ICON    = {"sales": "💰", "finance": "💳", "marketing": "📣", "customers": "👥"}

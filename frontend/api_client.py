@@ -12,13 +12,16 @@ def _headers():
     token = st.session_state.get("token", "")
     return {"Authorization": f"Bearer {token}"}
 
-def _get(endpoint, params=None):
+def _get(endpoint, params=None, timeout=10):
     try:
-        res = requests.get(f"{API_BASE_URL}{endpoint}", headers=_headers(), params=params, timeout=10)
+        res = requests.get(f"{API_BASE_URL}{endpoint}", headers=_headers(), params=params, timeout=timeout)
         res.raise_for_status()
         return res.json()
     except requests.exceptions.ConnectionError:
         st.error("Cannot connect to backend. Is it running?")
+        return None
+    except requests.exceptions.ReadTimeout:
+        st.error("Request timed out — the backend is taking too long to respond.")
         return None
     except requests.exceptions.HTTPError as e:
         st.error(f"API error: {e}")
@@ -348,7 +351,7 @@ def get_anomalies():
                 },
             ],
         }
-    return _get("/api/anomalies")
+    return _get("/api/anomalies", timeout=60)
 
 
 def get_recommendations(anomalies: list):
