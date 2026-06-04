@@ -47,7 +47,9 @@ def show():
     c1.metric("Total Ad Spend", f"{SYM}{mkt['total_spend']:,.0f}")
     c2.metric("Attributed Revenue", f"{SYM}{mkt['total_attributed']:,.0f}")
     c3.metric("Overall ROI", f"{mkt['overall_roi']:.2f}x")
-    c4.metric("Best Campaign", mkt.get("best_campaign", "N/A"))
+    _bc = mkt.get("best_campaign", "N/A")
+    _bc_cls = "kpi-long" if len(_bc) > 14 else ""
+    c4.markdown(f'<div class="kpi-box"><p class="kpi-lbl">Best Campaign</p><div class="kpi-wrap"><span class="kpi-val {_bc_cls}">{_bc}</span></div></div>', unsafe_allow_html=True)
     st.markdown("---")
     st.subheader("Customers")
     c1,c2,c3,c4 = st.columns(4)
@@ -55,7 +57,9 @@ def show():
     c2.metric("Repeat Rate", f"{cust.get('repeat_rate', 0):.1f}%")
     c3.metric("High Churn Risk", f"{cust.get('churn_risk_high', 0)} customers")
     segs = cust.get("segments", {})
-    c4.metric("Segments", ", ".join(segs.keys()) if segs else "N/A")
+    _sg = ", ".join(segs.keys()) if segs else "N/A"
+    _sg_cls = "kpi-long" if len(_sg) > 14 else ""
+    c4.markdown(f'<div class="kpi-box"><p class="kpi-lbl">Segments</p><div class="kpi-wrap"><span class="kpi-val {_sg_cls}">{_sg}</span></div></div>', unsafe_allow_html=True)
     st.markdown("---")
     st.subheader("Quick actions")
     c1,c2,c3,c4 = st.columns(4)

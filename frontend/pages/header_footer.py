@@ -8,9 +8,7 @@ def render_header(page_title=""):
     st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
-.wh{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid rgba(123,92,245,0.2);margin-bottom:32px;flex-wrap:wrap;gap:12px;}
-.wh-top{display:flex;align-items:center;margin-bottom:12px;}
-.wh-bottom{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.wh{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(123,92,245,0.2);margin-bottom:32px;gap:12px;}
 
 .wh-logo{height:48px;width:auto;max-width:220px;border-radius:0;object-fit:contain;}.wh-title{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:700;color:#F4F1EB;letter-spacing:0.3px;background:rgba(123,92,245,0.2);border:1px solid rgba(123,92,245,0.35);border-left:3px solid #7B5CF5;border-radius:6px;padding:8px 18px;display:inline-block;}
 .wh-right{display:flex;align-items:center;gap:10px;}
@@ -31,13 +29,9 @@ def render_header(page_title=""):
     user_name = st.session_state.get("user_name", "User")
     avatar = user_name[0].upper() if user_name else "U"
     st.markdown(f'''<div class="wh">
-<div class="wh-top">
 <img src="data:image/png;base64,{_LOGO}" class="wh-logo" alt="Wouessi"/>
-</div>
-<div class="wh-bottom">
 <span class="wh-title">{page_title}</span>
 <div class="wh-user"><div class="wh-av">{avatar}</div>{user_name}</div>
-</div>
 </div>''', unsafe_allow_html=True)
 
 

@@ -28,6 +28,25 @@ header { visibility: hidden !important; }
 a[href*="streamlit.io"] { display: none !important; }
 a[href*="github.com"] { display: none !important; }
 [data-testid="baseButton-headerNoPadding"] { display: none !important; }
+[data-testid="stAppDeployButton"] { display: none !important; }
+[data-testid="stToolbarActions"] { display: none !important; }
+[data-testid="stActionButton"] { display: none !important; }
+.stDeployButton { display: none !important; }
+[class*="deployButton"] { display: none !important; }
+[class*="viewerBadge"] { display: none !important; }
+[class*="manage-app"] { display: none !important; }
+
+/* ── GLOBAL METRIC SIZE ── */
+[data-testid="stMetricValue"] { font-size: 1.6rem !important; }
+[data-testid="stMetricLabel"] { font-size: 0.78rem !important; }
+
+/* ── SLIDING METRIC (long text like campaign/segment names) ── */
+.kpi-box { padding: 0.6rem 0; }
+.kpi-lbl { font-size: 0.78rem; color: rgba(250,250,250,0.6); margin: 0 0 4px 0; font-weight: 400; letter-spacing: 0.02em; }
+.kpi-wrap { overflow: hidden; white-space: nowrap; max-width: 100%; }
+.kpi-val { display: inline-block; font-size: 1.6rem; font-weight: 700; color: #fafafa; white-space: nowrap; }
+@keyframes kpi-scroll { 0%, 25% { transform: translateX(0); } 75%, 100% { transform: translateX(calc(-100% + 160px)); } }
+.kpi-val.kpi-long { animation: kpi-scroll 5s ease-in-out infinite alternate; }
 
 /* ── MOBILE RESPONSIVENESS ── */
 
@@ -79,7 +98,7 @@ a[href*="github.com"] { display: none !important; }
     /* Sidebar as overlay */
     [data-testid="stSidebar"] { width: 260px !important; }
     /* Header wraps gracefully */
-    .wh-top, .wh-bottom { flex-wrap: wrap !important; gap: 8px !important; }
+    .wh { flex-wrap: wrap !important; gap: 8px !important; }
     .wh-title { font-size: 1.1rem !important; }
 }
 
