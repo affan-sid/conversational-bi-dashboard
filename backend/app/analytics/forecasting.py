@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from sqlalchemy import text
 from datetime import timedelta
 
@@ -16,8 +16,9 @@ def _fetch(sql: str, params: dict) -> pd.DataFrame:
 def _linear_forecast(values: np.ndarray, n_forecast: int, allow_negative: bool = False):
     """
     Fit a LinearRegression on equally-spaced values and project n_forecast steps ahead.
-    Returns (forecast, lower_95, upper_95, r2, trend_pct).
+    Returns (forecast, lower_95, upper_95, metrics, trend_pct).
 
+    metrics dict contains: r2, rmse, mae, mape
     allow_negative=True for cash flow where negative values are meaningful.
     """
     X_hist = np.arange(len(values)).reshape(-1, 1)
@@ -25,8 +26,25 @@ def _linear_forecast(values: np.ndarray, n_forecast: int, allow_negative: bool =
     model.fit(X_hist, values)
 
     y_hist_pred = model.predict(X_hist)
-    res_std = float(np.std(values - y_hist_pred))
-    r2 = float(r2_score(values, y_hist_pred))
+    residuals = values - y_hist_pred
+    res_std = float(np.std(residuals))
+
+    r2   = float(r2_score(values, y_hist_pred))
+    rmse = float(np.sqrt(mean_squared_error(values, y_hist_pred)))
+    mae  = float(mean_absolute_error(values, y_hist_pred))
+    # MAPE: exclude near-zero actuals to avoid division instability
+    nonzero_mask = np.abs(values) > 1e-6
+    mape = (
+        float(np.mean(np.abs(residuals[nonzero_mask] / values[nonzero_mask])) * 100)
+        if nonzero_mask.any() else None
+    )
+
+    metrics = {
+        "r2":   round(r2, 3),
+        "rmse": round(rmse, 2),
+        "mae":  round(mae, 2),
+        "mape": round(mape, 2) if mape is not None else None,
+    }
 
     X_future = np.arange(len(values), len(values) + n_forecast).reshape(-1, 1)
     y_future = model.predict(X_future).tolist()
@@ -44,7 +62,7 @@ def _linear_forecast(values: np.ndarray, n_forecast: int, allow_negative: bool =
     end_val  = float(model.predict([[len(values) + n_forecast - 1]])[0])
     trend_pct = round((end_val - baseline) / abs(baseline) * 100, 1) if abs(baseline) > 1 else 0.0
 
-    return forecast, lower, upper, round(r2, 3), trend_pct
+    return forecast, lower, upper, metrics, trend_pct
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -75,7 +93,7 @@ def forecast_revenue(company_id: int, days_ahead: int = 30) -> dict:
     df = df[df["day"] >= cutoff].copy().reset_index(drop=True)
 
     values = df["revenue"].values.astype(float)
-    fc, lo, hi, r2, trend_pct = _linear_forecast(values, days_ahead)
+    fc, lo, hi, metrics, trend_pct = _linear_forecast(values, days_ahead)
 
     last_date = df["day"].max()
     historical = [
@@ -91,18 +109,21 @@ def forecast_revenue(company_id: int, days_ahead: int = 30) -> dict:
     ]
 
     trend = "up" if trend_pct > 0 else "down"
+    r2 = metrics["r2"]
     return {
         "historical": historical,
         "forecast": forecast,
         "trend": trend,
         "trend_pct": trend_pct,
-        "r2_score": r2,
+        "metrics": metrics,
         "model": "linear_regression",
         "days_ahead": days_ahead,
         "summary": (
             f"Revenue is forecast to {'increase' if trend == 'up' else 'decrease'} "
             f"by {abs(trend_pct):.1f}% over the next {days_ahead} days "
-            f"(model fit R²: {r2:.2f})."
+            f"(R²={r2:.3f}, RMSE={metrics['rmse']:.2f}, MAE={metrics['mae']:.2f}"
+            + (f", MAPE={metrics['mape']:.1f}%" if metrics['mape'] is not None else "")
+            + ")."
         ),
     }
 
@@ -128,7 +149,7 @@ def forecast_cashflow(company_id: int, days_ahead: int = 30) -> dict:
     df = df[df["day"] >= cutoff].copy().reset_index(drop=True)
 
     values = df["cashflow"].values.astype(float)
-    fc, lo, hi, r2, trend_pct = _linear_forecast(values, days_ahead, allow_negative=True)
+    fc, lo, hi, metrics, trend_pct = _linear_forecast(values, days_ahead, allow_negative=True)
 
     last_date = df["day"].max()
     historical = [
@@ -144,18 +165,21 @@ def forecast_cashflow(company_id: int, days_ahead: int = 30) -> dict:
     ]
 
     trend = "up" if trend_pct > 0 else "down"
+    r2 = metrics["r2"]
     return {
         "historical": historical,
         "forecast": forecast,
         "trend": trend,
         "trend_pct": trend_pct,
-        "r2_score": r2,
+        "metrics": metrics,
         "model": "linear_regression",
         "days_ahead": days_ahead,
         "summary": (
             f"Daily cash flow is forecast to {'improve' if trend == 'up' else 'decline'} "
             f"by {abs(trend_pct):.1f}% over the next {days_ahead} days "
-            f"(model fit R²: {r2:.2f})."
+            f"(R²={r2:.3f}, RMSE={metrics['rmse']:.2f}, MAE={metrics['mae']:.2f}"
+            + (f", MAPE={metrics['mape']:.1f}%" if metrics['mape'] is not None else "")
+            + ")."
         ),
     }
 
@@ -178,7 +202,7 @@ def forecast_expenses(company_id: int, months_ahead: int = 3) -> dict:
 
     df["month"] = pd.to_datetime(df["month"])
     values = df["expenses"].values.astype(float)
-    fc, lo, hi, r2, trend_pct = _linear_forecast(values, months_ahead)
+    fc, lo, hi, metrics, trend_pct = _linear_forecast(values, months_ahead)
 
     last_month = df["month"].max()
     historical = [
@@ -194,18 +218,21 @@ def forecast_expenses(company_id: int, months_ahead: int = 3) -> dict:
     ]
 
     trend = "up" if trend_pct > 0 else "down"
+    r2 = metrics["r2"]
     return {
         "historical": historical,
         "forecast": forecast,
         "trend": trend,
         "trend_pct": trend_pct,
-        "r2_score": r2,
+        "metrics": metrics,
         "model": "linear_regression",
         "months_ahead": months_ahead,
         "summary": (
             f"Monthly expenses are forecast to {'rise' if trend == 'up' else 'fall'} "
             f"by {abs(trend_pct):.1f}% over the next {months_ahead} months "
-            f"(model fit R²: {r2:.2f})."
+            f"(R²={r2:.3f}, RMSE={metrics['rmse']:.2f}, MAE={metrics['mae']:.2f}"
+            + (f", MAPE={metrics['mape']:.1f}%" if metrics['mape'] is not None else "")
+            + ")."
         ),
     }
 
