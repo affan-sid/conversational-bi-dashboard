@@ -116,6 +116,7 @@ def forecast_revenue(company_id: int, days_ahead: int = 30) -> dict:
         "trend": trend,
         "trend_pct": trend_pct,
         "metrics": metrics,
+        "r2_score": r2,
         "model": "linear_regression",
         "days_ahead": days_ahead,
         "summary": (
@@ -172,6 +173,7 @@ def forecast_cashflow(company_id: int, days_ahead: int = 30) -> dict:
         "trend": trend,
         "trend_pct": trend_pct,
         "metrics": metrics,
+        "r2_score": r2,
         "model": "linear_regression",
         "days_ahead": days_ahead,
         "summary": (
@@ -225,6 +227,7 @@ def forecast_expenses(company_id: int, months_ahead: int = 3) -> dict:
         "trend": trend,
         "trend_pct": trend_pct,
         "metrics": metrics,
+        "r2_score": r2,
         "model": "linear_regression",
         "months_ahead": months_ahead,
         "summary": (
