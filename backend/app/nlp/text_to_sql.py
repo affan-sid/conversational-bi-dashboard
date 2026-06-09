@@ -184,7 +184,6 @@ SQL:"""
         )
         sql = resp.json()["choices"][0]["message"]["content"].strip()
         sql = sql.replace("```sql", "").replace("```", "").strip()
-        print("Generated SQL:", sql[:120])
         return sql
     except Exception as e:
         print(f"OpenAI SQL generation failed: {e}")

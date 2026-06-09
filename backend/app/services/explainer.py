@@ -146,7 +146,7 @@ EVIDENCE2_SOURCE: [second data area]
 EVIDENCE2_DETAIL: [second specific data point]
 ACTION: [Write 2-3 full sentences all on this single line. Sentence 1: the specific action to take right now using the actual names/numbers from the data. Sentence 2: why it matters — quantify the impact using figures from the result. Sentence 3: one concrete follow-up step to measure success within 2 weeks.]"""
 
-    raw = _call_groq(prompt)
+    raw = _call_openai(prompt)
     reason = action = ""
     ev1_source = ev1_detail = ev2_source = ev2_detail = ""
 
@@ -268,10 +268,10 @@ def explain_result(user_query: str, result: dict) -> str:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# OPENAI HELPER
+# LLM HELPER — calls OpenAI GPT-4o-mini
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _call_groq(prompt: str) -> str:
+def _call_openai(prompt: str) -> str:
     api_key = os.getenv("OPENAI_API_KEY", _OPENAI_API_KEY)
     if not api_key:
         return ""
@@ -293,7 +293,7 @@ def _call_groq(prompt: str) -> str:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# TEMPLATE FALLBACK (used when Ollama is unavailable)
+# TEMPLATE FALLBACK (used when OpenAI is unavailable)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _template_explanation(anomaly: dict) -> str:
@@ -349,14 +349,14 @@ def _template_explanation(anomaly: dict) -> str:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ANOMALY EXPLAINER (uses Ollama, falls back to template)
+# ANOMALY EXPLAINER
 # ─────────────────────────────────────────────────────────────────────────────
 
 def explain_anomaly(anomaly: dict) -> str:
     """
     Generate a plain-language explanation for a single anomaly dict.
-    Uses Ollama (llama3.1) to produce a business-friendly 2-3 sentence
-    explanation. Falls back to a rule-based template if Ollama is down.
+    Uses OpenAI GPT-4o-mini to produce a business-friendly 2-3 sentence
+    explanation. Falls back to a rule-based template if the API is unavailable.
     """
     domain = anomaly.get("domain", "")
     atype = anomaly.get("type", "").replace("_", " ")
@@ -406,7 +406,7 @@ Rules:
 - Be specific with numbers if available.
 """
 
-    explanation = _call_groq(prompt)
+    explanation = _call_openai(prompt)
     if explanation:
         return explanation
 

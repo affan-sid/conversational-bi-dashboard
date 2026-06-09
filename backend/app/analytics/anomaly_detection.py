@@ -258,10 +258,13 @@ def detect_marketing_anomalies(company_id: int) -> list:
 
         clf = IsolationForest(
             contamination=_IF_CONTAMINATION,
+            n_estimators=100,
             random_state=42
         )
 
         preds = clf.fit_predict(features)
+        # decision_function: negative = anomaly, threshold ≈ 0
+        if_scores = clf.decision_function(features.values)
 
         # Compute SHAP values to attribute which features drove each anomaly
         shap_by_pos = {}
@@ -295,6 +298,8 @@ def detect_marketing_anomalies(company_id: int) -> list:
                 value=row["spend"],
                 method="isolation_forest",
             )
+            # Negative score = anomaly; threshold boundary is 0 (contamination=0.05)
+            anomaly["if_score"] = round(float(if_scores[idx]), 4)
             # Store raw feature values and per-feature means so the explainer
             # can generate direction-aware SHAP descriptions without a DB round-trip
             anomaly["feature_values"] = {
